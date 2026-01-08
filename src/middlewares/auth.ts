@@ -2,11 +2,13 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { UnauthorizedError } from '../utils/customErrors';
 import { asyncHandler } from '../utils/asyncHandler';
+import { UserRole } from '../../generated/prisma';
 
 export interface AuthenticatedRequest extends Request {
     user?: {
         userId: number;
         email: string;
+        role: UserRole;
     };
 }
 
@@ -23,6 +25,7 @@ export const authenticate = asyncHandler(async (req: Request, res: Response, nex
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
             userId: number;
             email: string;
+            role: UserRole;
         }
 
         (req as AuthenticatedRequest).user = decoded;

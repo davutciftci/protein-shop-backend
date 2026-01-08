@@ -15,9 +15,15 @@ model User {
   tcNo           String   @unique(map: "users_unique_1") @map("tc_no") @db.VarChar
   hashedPassword String   @map("hashed_password") @db.VarChar
   birthDay       DateTime @map("birth_date") @db.Date
+  email          String   @unique(map: "users_unique") @map("email")
+  role           UserRole @default(CUSTOMER) @map("role")
   createdAt      DateTime @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamp(6)
-  email          String   @unique(map: "users_unique") @map("email")
 
   @@map("users")
+}
+
+enum UserRole {
+  CUSTOMER
+  ADMIN
 }
