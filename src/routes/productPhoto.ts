@@ -1,0 +1,48 @@
+import { Router } from 'express';
+import {
+    getProductPhotos,
+    getPhoto,
+    createNewPhoto,
+    updatePhotoById,
+    deletePhotoById,
+} from '../controllers/productPhoto';
+import { authenticate } from '../middlewares/auth';
+import { requireRole } from '../middlewares/roleMiddleware';
+import { validate } from '../middlewares/validate';
+import { createPhotoSchema, updatePhotoSchema } from '../validators/productPhoto';
+import { UserRole } from "../../generated/prisma";
+
+const router = Router();
+
+router.use((req, res, next) => {
+    console.log(`[PhotoRoutes] ${req.method} ${req.originalUrl}`);
+    next();
+});
+
+router.get('/product/:productId', getProductPhotos);
+router.get('/:id', getPhoto);
+
+router.post(
+    '/',
+    authenticate,
+    requireRole(UserRole.ADMIN),
+    validate(createPhotoSchema),
+    createNewPhoto
+);
+
+router.put(
+    '/:id',
+    authenticate,
+    requireRole(UserRole.ADMIN),
+    validate(updatePhotoSchema),
+    updatePhotoById
+);
+
+router.delete(
+    '/:id',
+    authenticate,
+    requireRole(UserRole.ADMIN),
+    deletePhotoById
+);
+
+export default router;

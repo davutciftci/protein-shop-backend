@@ -3,7 +3,8 @@ import dotenv from 'dotenv';
 import userRouter from './routes/user';
 import categoryRouter from './routes/category';
 import productRouter from './routes/product';
-import productVariant from './routes/productVariant';
+import productVariantRouter from './routes/productVariant';
+import photoRouter from './routes/productPhoto';
 import { errorHandler } from './middlewares/errorMiddleware';
 
 dotenv.config();
@@ -20,7 +21,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/user', userRouter);
 app.use('/api/categories', categoryRouter);
 app.use('/api/products', productRouter);
-app.use('/api/variants', productVariant);
+app.use('/api/variants', productVariantRouter);
+app.use('/api/photos', photoRouter);
 
 // Test endpoint (health check)
 app.get('/health', (req: Request, res: Response) => {

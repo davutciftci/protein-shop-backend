@@ -6,7 +6,7 @@ import {
     updateVariant,
     deleteVariant,
 } from '../services/productVariant';
-import { AuthenticatedRequest } from 'src/middlewares/auth';
+import { AuthenticatedRequest } from '../middlewares/auth';
 
 export const getProductVariants = async (
     req: Request,
