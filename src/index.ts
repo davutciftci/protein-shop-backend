@@ -4,7 +4,8 @@ import userRouter from './routes/user';
 import categoryRouter from './routes/category';
 import productRouter from './routes/product';
 import productVariantRouter from './routes/productVariant';
-import photoRouter from './routes/productPhoto';
+import productPhotoRouter from './routes/productPhoto';
+import productCommentRouter from './routes/productComment';
 import { errorHandler } from './middlewares/errorMiddleware';
 
 dotenv.config();
@@ -22,7 +23,8 @@ app.use('/api/user', userRouter);
 app.use('/api/categories', categoryRouter);
 app.use('/api/products', productRouter);
 app.use('/api/variants', productVariantRouter);
-app.use('/api/photos', photoRouter);
+app.use('/api/photos', productPhotoRouter);
+app.use('/api/comments', productCommentRouter);
 
 // Test endpoint (health check)
 app.get('/health', (req: Request, res: Response) => {

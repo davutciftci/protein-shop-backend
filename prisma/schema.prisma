@@ -9,16 +9,17 @@ datasource db {
 }
 
 model User {
-  id             Int      @id(map: "users_pk") @default(autoincrement())
-  firstName      String   @map("first_name")
-  lastName       String   @map("last_name")
-  tcNo           String   @unique(map: "users_unique_1") @map("tc_no") @db.VarChar
-  hashedPassword String   @map("hashed_password") @db.VarChar
-  birthDay       DateTime @map("birth_date") @db.Date
-  email          String   @unique(map: "users_unique") @map("email")
-  role           UserRole @default(CUSTOMER) @map("role")
-  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamp(6)
-  updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamp(6)
+  id             Int              @id(map: "users_pk") @default(autoincrement())
+  firstName      String           @map("first_name")
+  lastName       String           @map("last_name")
+  tcNo           String           @unique(map: "users_unique_1") @map("tc_no") @db.VarChar
+  hashedPassword String           @map("hashed_password") @db.VarChar
+  birthDay       DateTime         @map("birth_date") @db.Date
+  email          String           @unique(map: "users_unique") @map("email")
+  role           UserRole         @default(CUSTOMER) @map("role")
+  createdAt      DateTime         @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt      DateTime         @updatedAt @map("updated_at") @db.Timestamp(6)
+  comments       ProductComment[]
 
   @@map("users")
 }
@@ -55,9 +56,9 @@ model Product {
   updatedAt   DateTime         @updatedAt @map("updated_at") @db.Timestamp(6)
   variants    ProductVariant[]
   photos      ProductPhoto[]
+  comments    ProductComment[]
 
   //ileride order ilişkisi eklenecek
-  //comments ProductComment[]
   //cartItems CartItem[]
   //orderItems OrderItem[]
 
@@ -103,4 +104,22 @@ model ProductPhoto {
   @@index([productId])
   @@index([isPrimary])
   @@map("product_photos")
+}
+
+model ProductComment {
+  id         Int      @id @default(autoincrement())
+  rating     Int
+  comment    String   @db.Text
+  isApproved Boolean  @default(false) @map("is_approved")
+  userId     Int      @map("user_id")
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId  Int      @map("product_id")
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@index([productId])
+  @@index([userId])
+  @@index([isApproved])
+  @@map("product_comments")
 }
