@@ -20,6 +20,7 @@ model User {
   createdAt      DateTime         @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt      DateTime         @updatedAt @map("updated_at") @db.Timestamp(6)
   comments       ProductComment[]
+  addresses      UserAddress[]
 
   @@map("users")
 }
@@ -75,7 +76,6 @@ model ProductVariant {
   stockCount Int      @default(0) @map("stock_count")
   isActive   Boolean  @default(true) @map("is_active")
   attributes Json?
-  // Foreign key - Product ilişkisi
   productId  Int      @map("product_id")
   product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   createdAt  DateTime @default(now()) @map("created_at")
@@ -122,4 +122,28 @@ model ProductComment {
   @@index([userId])
   @@index([isApproved])
   @@map("product_comments")
+}
+
+model UserAddress {
+  id Int @id @default(autoincrement())
+
+  title        String
+  fullName     String   @map("full_name")
+  phoneNumber  String   @map("phone_number") @db.VarChar(20)
+  addressLine1 String   @map("address_line_1") @db.Text
+  city         String
+  district     String
+  postalCode   String?  @map("postal_code") @db.VarChar(10)
+  isDefault    Boolean  @default(false) @map("is_default")
+  userId       Int      @map("user_id")
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // İleride eklenecek ilişkiler:
+  // orders        Order[]
+
+  @@index([userId])
+  @@index([isDefault])
+  @@map("user_addresses")
 }
