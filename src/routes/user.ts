@@ -4,7 +4,7 @@ import { authenticate, AuthenticatedRequest } from "../middlewares/auth";
 import { loginSchema, registerSchema } from "../validators/user";
 import { validate } from "../middlewares/validate";
 import { UserRole } from '../../generated/prisma';
-import { requireRole } from "../middlewares/roleMiddleware";
+import { requireRole } from "../middlewares/role";
 
 const router = Router();
 

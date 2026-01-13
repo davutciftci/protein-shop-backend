@@ -7,7 +7,7 @@ import {
     deleteVariantById,
 } from '../controllers/productVariant';
 import { authenticate } from '../middlewares/auth';
-import { requireRole } from '../middlewares/roleMiddleware';
+import { requireRole } from '../middlewares/role';
 import { validate } from '../middlewares/validate';
 import { createVariantSchema, updateVariantSchema } from '../validators/productVariant';
 import { UserRole } from "../../generated/prisma";

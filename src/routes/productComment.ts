@@ -10,7 +10,7 @@ import {
     approveCommentById,
 } from '../controllers/productComment';
 import { authenticate } from '../middlewares/auth';
-import { requireRole } from '../middlewares/roleMiddleware';
+import { requireRole } from '../middlewares/role';
 import { validate } from '../middlewares/validate';
 import { createCommentSchema, updateCommentSchema, approveCommentSchema } from '../validators/productComment';
 import { UserRole } from '../../generated/prisma';

@@ -7,7 +7,7 @@ import {
     deletePhotoById,
 } from '../controllers/productPhoto';
 import { authenticate } from '../middlewares/auth';
-import { requireRole } from '../middlewares/roleMiddleware';
+import { requireRole } from '../middlewares/role';
 import { validate } from '../middlewares/validate';
 import { createPhotoSchema, updatePhotoSchema } from '../validators/productPhoto';
 import { UserRole } from "../../generated/prisma";

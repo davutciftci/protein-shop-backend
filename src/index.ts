@@ -8,7 +8,8 @@ import productPhotoRouter from './routes/productPhoto';
 import productCommentRouter from './routes/productComment';
 import userAddressRouter from './routes/userAddress';
 import cartRouter from './routes/cart';
-import { errorHandler } from './middlewares/errorMiddleware';
+import orderRouter from './routes/order';
+import { errorHandler } from './middlewares/error';
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use('/api/photos', productPhotoRouter);
 app.use('/api/comments', productCommentRouter);
 app.use('/api/addresses', userAddressRouter);
 app.use('/api/cart', cartRouter);
+app.use('/api/orders', orderRouter);
 
 // Test endpoint (health check)
 app.get('/health', (req: Request, res: Response) => {

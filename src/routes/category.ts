@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { createdNewCategory, deleteCategoryById, getCategories, getCategory, updateCategoryById } from '../controllers/category';
 import { authenticate } from '../middlewares/auth';
-import { requireRole } from '../middlewares/roleMiddleware';
+import { requireRole } from '../middlewares/role';
 import { UserRole } from '../../generated/prisma';
 import { validate } from '../middlewares/validate';
 import { createCategorySchema, updateCategorySchema } from '../validators/category';

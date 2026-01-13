@@ -2,7 +2,7 @@ import { Router } from "express";
 import { UserRole } from "../../generated/prisma";
 import { getProduct, getProducts, createNewProduct, deleteProductById, updateProductById } from "../controllers/product";
 import { authenticate } from "../middlewares/auth";
-import { requireRole } from "../middlewares/roleMiddleware";
+import { requireRole } from "../middlewares/role";
 import { validate } from "../middlewares/validate";
 import { createProductSchema, updateProductSchema } from "../validators/product";
 
