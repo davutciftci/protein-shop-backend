@@ -1,5 +1,6 @@
 import prisma from '../utils/prisma';
 import { ConflictError, NotFoundError, BadRequestError } from '../utils/customErrors';
+import { ProductWhereInput, ProductOrderByInput } from '../types';
 
 interface ProductFilters {
     search?: string;
@@ -13,7 +14,7 @@ interface ProductFilters {
 export const searchAndFilterProducts = async (filters: ProductFilters = {}) => {
     console.log('[ProductService] getAllProducts called with filters:', filters);
 
-    const where: any = {};
+    const where: ProductWhereInput = {};
 
     if (filters.search) {
         where.name = {
@@ -42,7 +43,7 @@ export const searchAndFilterProducts = async (filters: ProductFilters = {}) => {
         }
     }
 
-    let orderBy: any = { createdAt: 'desc' };
+    let orderBy: ProductOrderByInput = { createdAt: 'desc' };
 
     if (filters.sortBy) {
         switch (filters.sortBy) {
@@ -50,7 +51,7 @@ export const searchAndFilterProducts = async (filters: ProductFilters = {}) => {
                 orderBy = { price: 'asc' };
                 break;
             case 'price_desc':
-                orderBy = { price: ' desc' }
+                orderBy = { price: 'desc' }
                 break
             case 'name_asc':
                 orderBy = { name: 'asc' }
@@ -99,7 +100,7 @@ export const searchAndFilterProducts = async (filters: ProductFilters = {}) => {
 
 export const getPaginatedProducts = async (filters: ProductFilters, page: number = 1, limit: number = 12) => {
     console.log('[ProductService] getpaginatedProducts - Page:', page, 'Limit:', limit, 'Filters:', filters);
-    const where: any = {};
+    const where: ProductWhereInput = {};
 
     if (filters.search) {
         where.name = {
@@ -124,7 +125,7 @@ export const getPaginatedProducts = async (filters: ProductFilters, page: number
         }
     }
 
-    let orderBy: any = { createdAt: 'desc' };
+    let orderBy: ProductOrderByInput = { createdAt: 'desc' };
 
     if (filters.sortBy) {
         switch (filters.sortBy) {

@@ -1,3 +1,4 @@
+import { OrderWithRelations, OrderItemWithVariant } from '../types';
 
 // email template (tüm emaillerde ortak kısım)
 const baseTemplate = (content: string) => `
@@ -101,8 +102,8 @@ export const welcomeEmail = (firstName: string) => {
 };
 
 // Sipariş onay emaili
-export const orderConfirmationEmail = (order: any) => {
-    const itemsHtml = order.items.map((item: any) => `
+export const orderConfirmationEmail = (order: OrderWithRelations) => {
+    const itemsHtml = order.items.map((item: OrderItemWithVariant) => `
     <div class="product-item">
       <strong>${item.productName} - ${item.variantName}</strong><br>
       Miktar: ${item.quantity} x ${item.price} TL = ${item.subtotal} TL
@@ -150,7 +151,7 @@ export const orderConfirmationEmail = (order: any) => {
 };
 
 // Sipariş kargoya verildi emaili
-export const orderShippedEmail = (order: any) => {
+export const orderShippedEmail = (order: OrderWithRelations) => {
     const content = `
     <h2>Siparişiniz Kargoya Verildi! 📦</h2>
     <p>Merhaba ${order.user.firstName},</p>
@@ -158,7 +159,7 @@ export const orderShippedEmail = (order: any) => {
     
     <div class="order-details">
       <p><strong>Kargo Takip No:</strong> ${order.trackingNumber || 'Henüz eklenmedi'}</p>
-      <p><strong>Kargoya Verilme Tarihi:</strong> ${new Date(order.shippedAt).toLocaleDateString('tr-TR')}</p>
+      <p><strong>Kargoya Verilme Tarihi:</strong> ${order.shippedAt ? new Date(order.shippedAt).toLocaleDateString('tr-TR') : 'Bilinmiyor'}</p>
     </div>
 
     <p>Kargonuzu aşağıdaki linkten takip edebilirsiniz:</p>
@@ -174,7 +175,7 @@ export const orderShippedEmail = (order: any) => {
 
 //Sipariş iptal edildi emaili
 
-export const orderCancelledEmail = (order: any) => {
+export const orderCancelledEmail = (order: OrderWithRelations) => {
     const content = `
     <h2>Siparişiniz İptal Edildi</h2>
     <p>Merhaba ${order.user.firstName},</p>
@@ -182,7 +183,7 @@ export const orderCancelledEmail = (order: any) => {
     
     <div class="order-details">
       <p><strong>İptal Nedeni:</strong> ${order.cancelReason || 'Belirtilmemiş'}</p>
-      <p><strong>İptal Tarihi:</strong> ${new Date(order.cancelledAt).toLocaleDateString('tr-TR')}</p>
+      <p><strong>İptal Tarihi:</strong> ${order.cancelledAt ? new Date(order.cancelledAt).toLocaleDateString('tr-TR') : 'Bilinmiyor'}</p>
       <p><strong>Toplam Tutar:</strong> ${order.totalAmount} TL</p>
     </div>
 

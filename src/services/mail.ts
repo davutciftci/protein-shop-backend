@@ -1,5 +1,6 @@
 import { sendEmail } from '../config/email';
 import { orderCancelledEmail, orderConfirmationEmail, orderShippedEmail, passwordResetEmail, welcomeEmail } from '../templates/email';
+import { OrderWithRelations } from '../types';
 
 
 
@@ -13,7 +14,7 @@ export const sendWelcomeEmail = async (email: string, firstName: string) => {
     }
 }
 
-export const sendOrderConfirmationEmail = async (order: any) => {
+export const sendOrderConfirmationEmail = async (order: OrderWithRelations) => {
     try {
         await sendEmail(
             order.user.email, `Siparişiniz Alındı - ${order.orderNumber}`,
@@ -24,7 +25,7 @@ export const sendOrderConfirmationEmail = async (order: any) => {
     }
 };
 
-export const sendOrderShippedEmail = async (order: any) => {
+export const sendOrderShippedEmail = async (order: OrderWithRelations) => {
     try {
         await sendEmail(
             order.user.email, `Siparişiniz Kargoya Verildi - ${order.orderNumber}`,
@@ -35,7 +36,7 @@ export const sendOrderShippedEmail = async (order: any) => {
     }
 }
 
-export const sendOrderCancelledEmail = async (order: any) => {
+export const sendOrderCancelledEmail = async (order: OrderWithRelations) => {
     try {
         await sendEmail(
             order.user.email,

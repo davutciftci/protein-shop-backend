@@ -1,5 +1,6 @@
 import prisma from '../utils/prisma';
-import { NotFoundError, BadRequestError, UnauthorizedError } from '../utils/customErrors';
+import { NotFoundError, UnauthorizedError, BadRequestError } from '../utils/customErrors';
+import { ProductCommentWhereInput } from '../types';
 
 export const getCommentsByProductId = async (productId: number, approvedOnly: boolean = true) => {
     console.log('[CommentService] getCommentsByProductId called with productId:', productId, 'approvedOnly:', approvedOnly);
@@ -13,7 +14,7 @@ export const getCommentsByProductId = async (productId: number, approvedOnly: bo
         throw new NotFoundError('Ürün bulunamadı');
     }
 
-    const where: any = { productId };
+    const where: ProductCommentWhereInput = { productId };
     if (approvedOnly) {
         where.isApproved = true;
     }

@@ -11,7 +11,7 @@ import cartRouter from './routes/cart';
 import orderRouter from './routes/order';
 import { errorHandler } from './middlewares/error';
 import path from 'path';
-
+import adminStatsRouter from './routes/adminStats';
 dotenv.config();
 
 const app: Application = express();
@@ -38,6 +38,7 @@ app.use('/api/comments', productCommentRouter);
 app.use('/api/addresses', userAddressRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/orders', orderRouter);
+app.use('/api/admin/stats', adminStatsRouter);
 
 // Test endpoint (health check)
 app.get('/health', (req: Request, res: Response) => {
