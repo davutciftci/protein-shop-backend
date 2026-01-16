@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function RegisterPage() {
@@ -7,16 +7,15 @@ export default function RegisterPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // TODO: Implement actual registration logic
-        console.log('Registration attempt:', { firstName, lastName, email, password });
+        console.log('Register attempted', { firstName, lastName, email, password });
     };
 
     return (
         <div className="flex items-center justify-center px-4 py-20">
             <div className="w-[500px] h-[371px]">
-                {/* Tab Navigation */}
+                {}
                 <div className="flex space-x-4 text-center">
                     <Link
                         to="/giris"
@@ -32,7 +31,7 @@ export default function RegisterPage() {
 
                 <div className="border p-8">
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* Name Inputs - Side by Side */}
+                        {}
                         <div className="grid grid-cols-2 gap-4">
                             <div>
                                 <label htmlFor="firstName" className="block text-sm text-gray-700 mb-2">
@@ -62,7 +61,7 @@ export default function RegisterPage() {
                             </div>
                         </div>
 
-                        {/* Email Input */}
+                        {}
                         <div>
                             <label htmlFor="email" className="block text-sm text-gray-700 mb-2">
                                 E-Posta
@@ -77,7 +76,7 @@ export default function RegisterPage() {
                             />
                         </div>
 
-                        {/* Password Input */}
+                        {}
                         <div>
                             <label htmlFor="password" className="block text-sm text-gray-700 mb-2">
                                 Şifre
@@ -92,7 +91,7 @@ export default function RegisterPage() {
                             />
                         </div>
 
-                        {/* Submit Button */}
+                        {}
                         <button
                             type="submit"
                             className="w-full rounded-[4px] bg-black text-white p-4 text-sm font-bold tracking-wide hover:bg-gray-800 transition-colors"
@@ -101,7 +100,7 @@ export default function RegisterPage() {
                         </button>
                     </form>
 
-                    {/* Already have account link */}
+                    {}
                     <div className="mt-4 text-center text-sm text-gray-600">
                         Zaten hesabınız var mı?{' '}
                         <Link to="/giris" className="text-blue-600 hover:text-blue-700 font-medium">

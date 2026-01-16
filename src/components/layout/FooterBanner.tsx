@@ -1,9 +1,9 @@
-import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
+﻿import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function FooterBanner() {
     return (
         <section className="w-full mb-24">
-            {/* Banner Section */}
+            {}
             <div className="w-full bg-black">
                 <img
                     src="/images/Figure → image_1296.webp.png"
@@ -12,7 +12,7 @@ export default function FooterBanner() {
                 />
             </div>
 
-            {/* Reviews Section */}
+            {}
             <div className="bg-white py-10 sm:py-1 border-t border-gray-100">
                 <div className="container-custom">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-2 mb-8 pb-4 border-b border-gray-100 gap-4">

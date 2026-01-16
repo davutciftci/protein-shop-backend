@@ -8,20 +8,16 @@ export default function AllProductsPage() {
     const category = searchParams.get('kategori');
     const searchQuery = searchParams.get('search');
 
-    // Filter products based on category parameter and search query
     const filteredProducts = PRODUCTS.filter(product => {
-        // Kategori filtresi
         let matchesCategory = true;
         if (category) {
-            // Handle special cases for category names
-            if (category === 'spor-gidalari') {
+            if (category) {
                 matchesCategory = product.category === 'spor' || product.category === 'spor-gidalari' || product.category === 'preworkout';
             } else {
                 matchesCategory = product.category === category;
             }
         }
 
-        // Arama filtresi
         let matchesSearch = true;
         if (searchQuery) {
             const query = searchQuery.toLowerCase();
@@ -32,7 +28,6 @@ export default function AllProductsPage() {
         return matchesCategory && matchesSearch;
     });
 
-    // Get page title based on category or search
     const getPageTitle = () => {
         if (searchQuery) {
             return `ARAMA SONUÇLARI: "${searchQuery}"`;
@@ -51,12 +46,10 @@ export default function AllProductsPage() {
     return (
         <div className="min-h-screen bg-white">
             <div className="container-custom py-8">
-                {/* Page Title */}
                 <h1 className="text-3xl font-extrabold text-center text-gray-900 mb-8 uppercase tracking-wide">
                     {getPageTitle()}
                 </h1>
 
-                {/* Product Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
                     {filteredProducts.map((product) => (
                         <Link
@@ -64,7 +57,6 @@ export default function AllProductsPage() {
                             to={`/urun/${product.slug}`}
                             className="group flex flex-col"
                         >
-                            {/* Image Container with Discount Badge */}
                             <div className="relative aspect-square mb-2">
                                 <img
                                     src={product.image}
@@ -79,17 +71,14 @@ export default function AllProductsPage() {
                                 )}
                             </div>
 
-                            {/* Product Name */}
                             <h3 className="text-xs sm:text-sm font-bold text-gray-900 text-center min-h-[1.75rem] flex items-center justify-center uppercase">
                                 {product.name}
                             </h3>
 
-                            {/* Description */}
                             <p className="text-[10px] sm:text-xs text-gray-500 text-center min-h-[1.5rem] flex items-center justify-center leading-tight">
                                 {product.description}
                             </p>
 
-                            {/* Star Rating */}
                             <div className="flex items-center justify-center gap-0.5 mb-1">
                                 {[...Array(5)].map((_, i) => (
                                     <MdOutlineStar
@@ -99,12 +88,10 @@ export default function AllProductsPage() {
                                 ))}
                             </div>
 
-                            {/* Review Count */}
                             <p className="text-[10px] sm:text-xs text-gray-500 text-center mb-2">
                                 {product.reviews.toLocaleString('tr-TR')} Yorum
                             </p>
 
-                            {/* Price */}
                             <div className="flex items-center justify-center gap-2 flex-wrap">
                                 <span className="text-sm font-bold text-gray-900">{product.price} TL</span>
                                 {product.oldPrice && (
@@ -115,7 +102,6 @@ export default function AllProductsPage() {
                     ))}
                 </div>
 
-                {/* Product Count */}
                 <div className="text-center text-gray-900 text-sm font-bold m-24">
                     Toplam {filteredProducts.length} ürün görüntüleniyor
                 </div>

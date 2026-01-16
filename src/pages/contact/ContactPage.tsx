@@ -1,4 +1,4 @@
-
+﻿
 interface ContactPageProps {
     hideHeaderAndFooter?: boolean;
 }
@@ -7,7 +7,7 @@ const ContactPage = ({ hideHeaderAndFooter = false }: ContactPageProps) => {
     return (
         <div className="bg-white min-h-screen py-28">
             <div className="container-custom mx-auto px-4">
-                {/* Header Section */}
+                {}
                 {!hideHeaderAndFooter && (
                     <div className="text-center mb-12">
                         <h1 className="text-4xl md:text-5xl font-black mb-4">Bize Ulaşın</h1>
@@ -19,11 +19,11 @@ const ContactPage = ({ hideHeaderAndFooter = false }: ContactPageProps) => {
                     </p>
                 </div>
 
-                {/* Form Section */}
+                {}
                 <div className="max-w-3xl mx-auto">
                     <form className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {/* Name */}
+                            {}
                             <div className="space-y-2">
                                 <input
                                     type="text"
@@ -33,7 +33,7 @@ const ContactPage = ({ hideHeaderAndFooter = false }: ContactPageProps) => {
                                 />
                             </div>
 
-                            {/* Surname */}
+                            {}
                             <div className="space-y-2">
                                 <input
                                     type="text"
@@ -44,7 +44,7 @@ const ContactPage = ({ hideHeaderAndFooter = false }: ContactPageProps) => {
                             </div>
                         </div>
 
-                        {/* Email */}
+                        {}
                         <div className="space-y-2">
                             <input
                                 type="email"
@@ -54,7 +54,7 @@ const ContactPage = ({ hideHeaderAndFooter = false }: ContactPageProps) => {
                             />
                         </div>
 
-                        {/* Message */}
+                        {}
                         <div className="space-y-2">
                             <textarea
                                 id="message"
@@ -64,7 +64,7 @@ const ContactPage = ({ hideHeaderAndFooter = false }: ContactPageProps) => {
                             ></textarea>
                         </div>
 
-                        {/* Submit Button */}
+                        {}
                         <div className="flex justify-center pt-4">
                             <button
                                 type="submit"
@@ -75,7 +75,7 @@ const ContactPage = ({ hideHeaderAndFooter = false }: ContactPageProps) => {
                         </div>
                     </form>
 
-                    {/* Footer Info Text */}
+                    {}
                     {!hideHeaderAndFooter && (
                         <div className="mt-12 text-center space-y-4">
                             <p className="text-[12px] font-medium text-black">

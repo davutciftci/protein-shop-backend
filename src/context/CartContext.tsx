@@ -14,6 +14,7 @@ export interface CartItem {
 interface CartContextType {
     items: CartItem[];
     isOpen: boolean;
+    showAlert: boolean;
     addToCart: (item: Omit<CartItem, 'quantity'>) => void;
     removeFromCart: (id: number) => void;
     updateQuantity: (id: number, quantity: number) => void;
@@ -28,6 +29,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: ReactNode }) {
     const [items, setItems] = useState<CartItem[]>([]);
     const [isOpen, setIsOpen] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
 
     const addToCart = (newItem: Omit<CartItem, 'quantity'>) => {
         setItems(prevItems => {
@@ -46,6 +48,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
             return [...prevItems, { ...newItem, quantity: 1 }];
         });
         setIsOpen(true);
+        setShowAlert(true);
+        setTimeout(() => setShowAlert(false), 3000);
     };
 
     const removeFromCart = (id: number) => {
@@ -75,6 +79,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
             value={{
                 items,
                 isOpen,
+                showAlert,
                 addToCart,
                 removeFromCart,
                 updateQuantity,

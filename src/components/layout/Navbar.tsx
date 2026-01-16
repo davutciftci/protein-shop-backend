@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, User, Menu, X, ChevronDown } from 'lucide-react';
 import { CiFaceSmile } from "react-icons/ci";
@@ -18,7 +18,7 @@ export default function Navbar() {
     const handleSearch = () => {
         if (searchQuery.trim()) {
             navigate(`/urunler?search=${encodeURIComponent(searchQuery.trim())}`);
-            setSearchQuery(''); // Clear search after navigation
+            setSearchQuery('');
         }
     };
 
@@ -30,11 +30,11 @@ export default function Navbar() {
 
     return (
         <nav className="bg-white sticky top-0 z-50 shadow-md">
-            {/* Top Row - Logo, Search, Cart, Account */}
+            {}
             <div className=" border-gray-200 bg-white">
                 <div className="container-custom my-6">
                     <div className="flex items-center justify-between h-12 gap-6">
-                        {/* Mobile Menu Button - Only Mobile */}
+                        {}
                         <button
                             onClick={toggleMenu}
                             className="md:hidden p-2 text-gray-900 flex-shrink-0"
@@ -47,7 +47,7 @@ export default function Navbar() {
                             )}
                         </button>
 
-                        {/* Logo */}
+                        {}
                         <Link to="/" className="flex items-center flex-shrink-0">
                             <img
                                 src="/logo-dark.png"
@@ -56,7 +56,7 @@ export default function Navbar() {
                             />
                         </Link>
 
-                        {/* Search Bar - Desktop/Tablet */}
+                        {}
                         <div className="hidden md:flex flex-1 justify-center lg:justify-end">
                             <div className="relative flex">
                                 <input
@@ -80,9 +80,9 @@ export default function Navbar() {
                             </div>
                         </div>
 
-                        {/* Right Side - Cart & Account */}
+                        {}
                         <div className="hidden md:flex items-center space-x-3 lg:space-x-4 flex-shrink-0">
-                            {/* Account Button with Dropdown - Tablet/Desktop */}
+                            {}
                             <div
                                 className="relative"
                                 onMouseEnter={() => setIsAccountDropdownOpen(true)}
@@ -97,7 +97,7 @@ export default function Navbar() {
                                     <ChevronDown className="w-4 h-4" />
                                 </button>
 
-                                {/* Dropdown Menu */}
+                                {}
                                 {isAccountDropdownOpen && (
                                     <div className="absolute right-0 w-[93px] text-center justify-center bg-white border border-gray-200 rounded shadow-lg z-50">
                                         <Link
@@ -116,8 +116,7 @@ export default function Navbar() {
                                 )}
                             </div>
 
-                            {/* Cart Button - Tablet/Desktop */}
-                            {/* Cart Button - Tablet/Desktop */}
+                            {}
                             <button
                                 onClick={openCart}
                                 className="flex relative items-center justify-center gap-2 text-white rounded transition-colors px-3"
@@ -139,8 +138,8 @@ export default function Navbar() {
                             </button>
                         </div>
 
-                        {/* Mobile Cart - Icon Only */}
-                        {/* Mobile Cart - Icon Only */}
+                        {}
+                        {}
                         <button
                             onClick={openCart}
                             className="md:hidden p-2"
@@ -160,7 +159,7 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {/* Second Row - Black Background - Main Categories - Tablet & Desktop */}
+            {}
             <div className="hidden md:block bg-gray-900 text-white">
                 <div className="container-custom">
                     <div className="flex items-center justify-between h-8">
@@ -186,7 +185,7 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {/* Third Row - Info Bar - Tablet & Desktop */}
+            {}
             <div className="hidden md:block bg-gray-100 border-b border-gray-200">
                 <div className="container-custom">
                     <div className="flex items-center justify-center h-10 text-xs">
@@ -211,7 +210,7 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {/* Mobile Search */}
+            {}
             <div className="md:hidden relative flex items-center mb-2 px-4">
                 <button className="absolute px-3 left-3 p-1 border-none">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -228,72 +227,83 @@ export default function Navbar() {
                 />
             </div>
 
-            {/* Mobile Menu */}
+            {}
             {isMenuOpen && (
                 <div className="lg:hidden bg-white border-t border-gray-200">
-                    <div className="container-custom py-4">
-                        <div className="flex flex-col space-y-4">
-                            <div className="font-bold text-gray-900 text-sm mb-2">KATEGORİLER</div>
+                    <div className="flex flex-col">
+                        {}
+                        <div className="flex flex-col border-b border-gray-300">
                             <Link
-                                to="/urunler?kategori=protein"
-                                className="text-gray-700 hover:text-primary-600 font-medium transition-colors pl-4"
+                                to="/protein"
+                                className="flex items-center justify-between px-6 py-4 text-gray-900 hover:bg-gray-50 font-semibold border-b border-gray-200"
                                 onClick={toggleMenu}
                             >
-                                Protein
+                                <span>PROTEİN</span>
+                                <ChevronDown className="w-5 h-5 rotate-[-90deg]" />
                             </Link>
                             <Link
                                 to="/urunler?kategori=spor-gidalari"
-                                className="text-gray-700 hover:text-primary-600 font-medium transition-colors pl-4"
+                                className="flex items-center justify-between px-6 py-4 text-gray-900 hover:bg-gray-50 font-semibold border-b border-gray-200"
                                 onClick={toggleMenu}
                             >
-                                Spor Gıdaları
+                                <span>SPOR GIDALARI</span>
+                                <ChevronDown className="w-5 h-5 rotate-[-90deg]" />
                             </Link>
                             <Link
                                 to="/urunler?kategori=saglik"
-                                className="text-gray-700 hover:text-primary-600 font-medium transition-colors pl-4"
+                                className="flex items-center justify-between px-6 py-4 text-gray-900 hover:bg-gray-50 font-semibold border-b border-gray-200"
                                 onClick={toggleMenu}
                             >
-                                Sağlık
+                                <span>SAĞLIK</span>
+                                <ChevronDown className="w-5 h-5 rotate-[-90deg]" />
                             </Link>
                             <Link
                                 to="/urunler?kategori=gida"
-                                className="text-gray-700 hover:text-primary-600 font-medium transition-colors pl-4"
+                                className="flex items-center justify-between px-6 py-4 text-gray-900 hover:bg-gray-50 font-semibold border-b border-gray-200"
                                 onClick={toggleMenu}
                             >
-                                Gıda
+                                <span>GIDA</span>
+                                <ChevronDown className="w-5 h-5 rotate-[-90deg]" />
                             </Link>
                             <Link
                                 to="/urunler?kategori=vitamin"
-                                className="text-gray-700 hover:text-primary-600 font-medium transition-colors pl-4"
+                                className="flex items-center justify-between px-6 py-4 text-gray-900 hover:bg-gray-50 font-semibold border-b border-gray-200"
                                 onClick={toggleMenu}
                             >
-                                Vitamin
+                                <span>VİTAMİN</span>
+                                <ChevronDown className="w-5 h-5 rotate-[-90deg]" />
                             </Link>
-
-                            <div className="border-t border-gray-200 pt-4 mt-4">
-                                <Link
-                                    to="/sss"
-                                    className="text-gray-700 hover:text-primary-600 font-medium transition-colors block pl-4 py-2"
-                                    onClick={toggleMenu}
-                                >
-                                    S.S.S.
-                                </Link>
-                                <Link
-                                    to="/iletisim"
-                                    className="text-gray-700 hover:text-primary-600 font-medium transition-colors block pl-4 py-2"
-                                    onClick={toggleMenu}
-                                >
-                                    İletişim
-                                </Link>
-                            </div>
-
                             <Link
-                                to="/giris-yap"
-                                className="flex items-center space-x-2 text-gray-700 hover:text-primary-600 font-medium transition-colors pt-4 border-t border-gray-200"
+                                to="/urunler"
+                                className="flex items-center justify-between px-6 py-4 text-gray-900 hover:bg-gray-50 font-semibold"
                                 onClick={toggleMenu}
                             >
-                                <User className="w-5 h-5" />
-                                <span>Giriş Yap / Hesabım</span>
+                                <span>TÜM ÜRÜNLER</span>
+                            </Link>
+                        </div>
+
+                        {}
+                        <div className="bg-gray-200 flex flex-col">
+                            <Link
+                                to="/hesabim"
+                                className="px-6 py-4 text-gray-900 hover:bg-gray-300 font-medium"
+                                onClick={toggleMenu}
+                            >
+                                HESABIM
+                            </Link>
+                            <Link
+                                to="/yorumlar"
+                                className="px-6 py-4 text-gray-900 hover:bg-gray-300 font-medium"
+                                onClick={toggleMenu}
+                            >
+                                MÜŞTERİ YORUMLARI
+                            </Link>
+                            <Link
+                                to="/iletisim"
+                                className="px-6 py-4 text-gray-900 hover:bg-gray-300 font-medium"
+                                onClick={toggleMenu}
+                            >
+                                İLETİŞİM
                             </Link>
                         </div>
                     </div>

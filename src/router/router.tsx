@@ -1,8 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import AuthLayout from '../components/layout/AuthLayout';
+import AccountLayout from '../components/layout/AccountLayout';
+import CheckoutLayout from '../components/layout/CheckoutLayout';
 
-// Pages
 import HomePage from '../pages/home/HomePage';
 import ProductDetailPage from '../pages/products/ProductDetailPage';
 import AllProductsPage from '../pages/products/AllProductsPage';
@@ -12,6 +13,13 @@ import ReviewsPage from '../pages/reviews/ReviewsPage';
 import FAQPage from '../pages/faq/FAQPage';
 import LoginPage from '../pages/auth/LoginPage';
 import RegisterPage from '../pages/auth/RegisterPage';
+import AccountPage from '../pages/account/AccountPage';
+import OrderDetailPage from '../pages/orders/OrderDetailPage';
+import AboutPage from '../pages/about/AboutPage';
+import SalesAgreementPage from '../pages/policies/SalesAgreementPage';
+import RefundPolicyPage from '../pages/policies/RefundPolicyPage';
+import WorkPrinciplesPage from '../pages/policies/WorkPrinciplesPage';
+import KVKKPage from '../pages/policies/KVKKPage';
 
 export const router = createBrowserRouter([
     {
@@ -45,6 +53,26 @@ export const router = createBrowserRouter([
             {
                 path: 'S.S.S',
                 element: <FAQPage />,
+            },
+            {
+                path: 'hakkimizda',
+                element: <AboutPage />,
+            },
+            {
+                path: 'sozlesme',
+                element: <SalesAgreementPage />,
+            },
+            {
+                path: 'iade',
+                element: <RefundPolicyPage />,
+            },
+            {
+                path: 'ilkelerimiz',
+                element: <WorkPrinciplesPage />,
+            },
+            {
+                path: 'kvkk',
+                element: <KVKKPage />,
             }
         ]
     },
@@ -68,4 +96,29 @@ export const router = createBrowserRouter([
             }
         ]
     },
+    {
+        path: '/hesabim',
+        element: <AccountLayout />,
+        children: [
+            {
+                index: true,
+                element: <AccountPage />,
+            }
+        ]
+    },
+    {
+        path: '/siparis/:orderId',
+        element: <AccountLayout />,
+        children: [
+            {
+                index: true,
+                element: <OrderDetailPage />,
+            }
+        ]
+    },
+    {
+        path: '/odeme',
+        element: <CheckoutLayout />,
+    }
 ]);
+

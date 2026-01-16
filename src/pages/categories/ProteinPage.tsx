@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { MdOutlineStar } from 'react-icons/md';
 import DiscountBadge from '../../components/ui/DiscountBadge';
 
-// Simulated protein products (in real app, filter by category from API)
+
 const proteinProducts = [
     { id: 1, name: 'WHEY PROTEIN', description: 'EN ÇOK TERCİH EDİLEN PROTEİN TAKVİYESİ', price: 549, oldPrice: null, discountPercentage: null, rating: 5, reviews: 10869, image: '/src/img/anasayfa/whey-protein.jpg', slug: 'whey-protein' },
     { id: 2, name: 'WHEY ISOLATE', description: '%90 PROTEİN EN SAF WHEY', price: 749, oldPrice: null, discountPercentage: null, rating: 5, reviews: 887, image: '/src/img/anasayfa/whey-isolate.jpg', slug: 'whey-isolate' },
@@ -22,13 +22,13 @@ export default function ProteinPage() {
     return (
         <div className="min-h-screen bg-white">
             <div className="container-custom py-8">
-                {/* Page Title */}
+                {}
                 <h1 className="text-3xl font-extrabold text-center text-gray-900 mb-8 uppercase tracking-wide">
                     PROTEİN
                 </h1>
 
-                {/* Product Grid */}
-                {/* Desktop: 4 cols, Tablet: 3 cols, Mobile: 2 cols */}
+                {}
+                {}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
                     {proteinProducts.map((product) => (
                         <Link
@@ -36,7 +36,7 @@ export default function ProteinPage() {
                             to={`/urun/${product.slug}`}
                             className="group flex flex-col"
                         >
-                            {/* Image Container with Discount Badge */}
+                            {}
                             <div className="relative aspect-square mb-2">
                                 <img
                                     src={product.image}
@@ -51,17 +51,17 @@ export default function ProteinPage() {
                                 )}
                             </div>
 
-                            {/* Product Name */}
+                            {}
                             <h3 className="text-xs sm:text-sm font-bold text-gray-900 text-center min-h-[1.75rem] flex items-center justify-center uppercase">
                                 {product.name}
                             </h3>
 
-                            {/* Description */}
+                            {}
                             <p className="text-[10px] sm:text-xs text-gray-500 text-center min-h-[1.5rem] flex items-center justify-center leading-tight">
                                 {product.description}
                             </p>
 
-                            {/* Star Rating */}
+                            {}
                             <div className="flex items-center justify-center gap-0.5 mb-1">
                                 {[...Array(5)].map((_, i) => (
                                     <MdOutlineStar
@@ -71,12 +71,12 @@ export default function ProteinPage() {
                                 ))}
                             </div>
 
-                            {/* Review Count */}
+                            {}
                             <p className="text-[10px] sm:text-xs text-gray-500 text-center mb-2">
                                 {product.reviews.toLocaleString('tr-TR')} Yorum
                             </p>
 
-                            {/* Price */}
+                            {}
                             <div className="flex items-center justify-center gap-2 flex-wrap">
                                 <span className="text-sm font-bold text-gray-900">{product.price} TL</span>
                                 {product.oldPrice && (
@@ -87,12 +87,12 @@ export default function ProteinPage() {
                     ))}
                 </div>
 
-                {/* Product Count */}
+                {}
                 <div className="text-center text-gray-900 text-sm font-bold m-24">
                     Toplam {proteinProducts.length} ürün görüntüleniyor
                 </div>
 
-                {/* Description Section */}
+                {}
                 <div className="pb-6">
                     <p className="text-sm text-gray-900 leading-relaxed">
                         Vücudun tüm fonksiyonlarını sağlıklı bir şekilde yerine getirmesini sağlayan temel yapı taşlarından biri proteindir.

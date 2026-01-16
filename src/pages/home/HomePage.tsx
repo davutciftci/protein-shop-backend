@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Star } from 'lucide-react';
 import { PRODUCTS } from '../../data/products';
@@ -14,7 +14,6 @@ const PRODUCT_CATEGORIES = [
 
 const FEATURED_PRODUCTS = PRODUCTS;
 
-// Kategori kartları için veri dizisi
 const CATEGORY_CARDS = [
     {
         id: 1,
@@ -72,7 +71,7 @@ export default function HomePage() {
 
     return (
         <div className="bg-white">
-            {/* Hero Slider/Banner */}
+            {}
             <section className="relative">
                 <div className="w-full">
                     <img
@@ -84,7 +83,7 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* Features - Category Cards */}
+            {}
             <section className="py-4 px-4 overflow-hidden">
                 <div className="container-custom">
                     <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
@@ -118,20 +117,19 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* ÇOK SATANLAR */}
+            {}
             <section className="py-8 px-4">
                 <div className="container-custom">
                     <h2 className="text-xl font-bold text-center mb-8 tracking-wider">ÇOK SATANLAR</h2>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
                         {FEATURED_PRODUCTS.map((product, index) => {
-                            // Mobile-only image and order mapping
                             const mobileImageMap: { [key: number]: string } = {
-                                1: '/src/img/anasayfa/whey-protein.jpg', // WHEY PROTEIN
-                                2: '/src/img/anasayfa/fitness-package.jpg', // FITNESS PAKETİ
-                                3: '/src/img/anasayfa/pea-protein.jpg', // GÜNLÜK VİTAMİN
-                                4: '/src/img/anasayfa/micellar-casein.jpg', // PRE-WORKOUT
-                                5: '/src/img/anasayfa/egg-white-powder.jpg', // CREAM OF RICE
-                                6: '/src/img/anasayfa/whey-isolate.jpg'  // CREATINE
+                                1: '/src/img/anasayfa/whey-protein.jpg',
+                                2: '/src/img/anasayfa/fitness-package.jpg',
+                                3: '/src/img/anasayfa/pea-protein.jpg',
+                                4: '/src/img/anasayfa/micellar-casein.jpg',
+                                5: '/src/img/anasayfa/egg-white-powder.jpg',
+                                6: '/src/img/anasayfa/whey-isolate.jpg'
                             };
 
                             return (

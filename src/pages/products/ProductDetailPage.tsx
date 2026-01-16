@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronDown, Truck, ShoppingCart } from 'lucide-react';
 import { MdOutlineStar } from 'react-icons/md';
@@ -64,10 +64,9 @@ export default function ProductDetailPage() {
         setExpandedSection(prev => prev === section ? null : section);
     };
 
-    // Reusable Components
     const ExpandableSections = () => (
         <div className="border-t border-gray-200">
-            {/* Features */}
+            {}
             <div className="border-b border-gray-200">
                 <button
                     onClick={() => toggleSection('features')}
@@ -90,7 +89,7 @@ export default function ProductDetailPage() {
                 )}
             </div>
 
-            {/* Nutrition Info */}
+            {}
             <div className="border-b border-gray-200">
                 <button
                     onClick={() => toggleSection('nutrition')}
@@ -112,7 +111,7 @@ export default function ProductDetailPage() {
                 )}
             </div>
 
-            {/* Usage */}
+            {}
             <div>
                 <button
                     onClick={() => toggleSection('usage')}
@@ -139,7 +138,7 @@ export default function ProductDetailPage() {
 
     const ShippingIcons = () => (
         <div className="flex items-center justify-between py-4">
-            {/* Aynı Gün Ücretsiz Kargo */}
+            {}
             <div className="flex items-center gap-2">
                 <Truck className="w-6 h-6 text-gray-600" />
                 <div className="text-left">
@@ -148,7 +147,7 @@ export default function ProductDetailPage() {
                 </div>
             </div>
 
-            {/* 750.000+ Mutlu Müşteri */}
+            {}
             <div className="flex items-center gap-2">
                 <svg className="w-7 h-7 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -160,7 +159,7 @@ export default function ProductDetailPage() {
                 </div>
             </div>
 
-            {/* 100% Memnuniyet Garantisi */}
+            {}
             <div className="flex items-center gap-2">
                 <BsArrowClockwise className="w-6 h-6 text-gray-600" />
                 <div className="text-left">
@@ -173,7 +172,7 @@ export default function ProductDetailPage() {
 
     const QuantityPriceRow = () => (
         <div className="flex items-center gap-4 flex-wrap">
-            {/* Quantity Selector */}
+            {}
             <div className="flex items-center border border-gray-300 rounded">
                 <button
                     onClick={() => handleQuantityChange(-1)}
@@ -192,20 +191,20 @@ export default function ProductDetailPage() {
                 </button>
             </div>
 
-            {/* Price */}
+            {}
             <span className="text-2xl font-bold text-gray-900">{product.price} TL</span>
         </div>
     );
 
     const ProductInfo = () => (
         <>
-            {/* Title */}
+            {}
             <h1 className="text-2xl font-bold text-gray-900 mb-1">{product.name}</h1>
 
-            {/* Description */}
+            {}
             <p className="text-sm text-gray-500 mb-2">{product.description}</p>
 
-            {/* Rating */}
+            {}
             <div className="flex items-center gap-2 mb-4">
                 <div className="flex items-center gap-0.5">
                     {[...Array(5)].map((_, i) => (
@@ -220,7 +219,7 @@ export default function ProductDetailPage() {
                 </span>
             </div>
 
-            {/* Tags */}
+            {}
             <div className="flex gap-2 mb-6">
                 {product.tags.map((tag, index) => (
                     <span
@@ -317,12 +316,12 @@ export default function ProductDetailPage() {
 
     return (
         <div className="bg-white min-h-screen">
-            {/* Product Main Section */}
+            {}
             <div className="container-custom py-8">
 
-                {/* MOBILE LAYOUT (default) - Stack everything vertically */}
+                {}
                 <div className="md:hidden">
-                    {/* Image */}
+                    {}
                     <div className="flex items-start justify-center mb-6">
                         <img
                             src={product.image}
@@ -339,13 +338,13 @@ export default function ProductDetailPage() {
                     <AromaSelection />
                     <SizeSelection />
 
-                    {/* Price Row: Price left, Servis right */}
+                    {}
                     <div className="flex items-baseline justify-between mb-4">
                         <span className="text-3xl font-bold text-gray-900">{product.price} TL</span>
                         <span className="text-sm font-bold text-gray-500">{product.pricePerServing} TL /Servis</span>
                     </div>
 
-                    {/* Quantity & Add to Cart - Full width */}
+                    {}
                     <div className="flex items-center gap-4 mb-6">
                         <div className="flex items-center border border-gray-300 rounded">
                             <button
@@ -381,12 +380,12 @@ export default function ProductDetailPage() {
                     <ExpandableSections />
                 </div>
 
-                {/* TABLET LAYOUT (md) - Two columns with special arrangement */}
+                {}
                 <div className="hidden md:block lg:hidden">
                     <div className="grid md:grid-cols-2 md:gap-8">
-                        {/* Row 1: Image + Product Info */}
+                        {}
                         <div className="flex flex-col">
-                            {/* Image */}
+                            {}
                             <div className="flex items-start justify-center mb-4">
                                 <img
                                     src={product.image}
@@ -396,16 +395,16 @@ export default function ProductDetailPage() {
                                 />
                             </div>
 
-                            {/* Expiration Date */}
+                            {}
                             <div className="text-sm text-gray-500 mb-4">
                                 Son Kullanma Tarihi: {product.expirationDate}
                             </div>
 
-                            {/* Expandable Sections */}
+                            {}
                             <ExpandableSections />
                         </div>
 
-                        {/* Right Column: Product Info + Aroma + Size */}
+                        {}
                         <div className="flex flex-col">
                             <ProductInfo />
 
@@ -416,9 +415,9 @@ export default function ProductDetailPage() {
                         </div>
                     </div>
 
-                    {/* Price Row - Full width grid */}
+                    {}
                     <div className="grid md:grid-cols-2 md:gap-8 mt-6">
-                        {/* Left: Quantity + Price */}
+                        {}
                         <div className="flex items-center gap-4 flex-wrap">
                             <div className="flex items-center border border-gray-300 rounded">
                                 <button
@@ -440,7 +439,7 @@ export default function ProductDetailPage() {
                             <span className="text-2xl font-bold text-gray-900">{product.price} TL</span>
                         </div>
 
-                        {/* Right: Servis ücreti sağda, buton tam genişlikte */}
+                        {}
                         <div className="flex flex-col">
                             <div className="flex justify-end mb-2">
                                 <span className="text-sm font-bold text-gray-500">{product.pricePerServing} TL /Servis</span>
@@ -452,16 +451,16 @@ export default function ProductDetailPage() {
                         </div>
                     </div>
 
-                    {/* Shipping Icons */}
+                    {}
                     <div className="mt-4">
                         <ShippingIcons />
                     </div>
                 </div>
 
-                {/* DESKTOP LAYOUT (lg) - Original two column layout */}
+                {}
                 <div className="hidden lg:block">
                     <div className="grid grid-cols-2 gap-16 items-start mb-8">
-                        {/* Product Image - Left Side */}
+                        {}
                         <div className="flex items-start justify-center sticky top-8">
                             <img
                                 src={product.image}
@@ -471,7 +470,7 @@ export default function ProductDetailPage() {
                             />
                         </div>
 
-                        {/* Product Info - Right Side */}
+                        {}
                         <div className="flex flex-col">
                             <ProductInfo />
 
@@ -480,13 +479,13 @@ export default function ProductDetailPage() {
                             <AromaSelection />
                             <SizeSelection />
 
-                            {/* Price Row: Price left, Servis right */}
+                            {}
                             <div className="flex items-baseline justify-between mb-4">
                                 <span className="text-3xl font-bold text-gray-900">{product.price} TL</span>
                                 <span className="text-sm font-bold text-gray-500">{product.pricePerServing} TL /Servis</span>
                             </div>
 
-                            {/* Quantity & Add to Cart - Full width */}
+                            {}
                             <div className="flex items-center gap-4">
                                 <div className="flex items-center border border-gray-300 rounded">
                                     <button
@@ -513,7 +512,7 @@ export default function ProductDetailPage() {
                         </div>
                     </div>
 
-                    {/* Bottom Section - Desktop */}
+                    {}
                     <div className="w-1/2 ml-auto">
                         <ShippingIcons />
 
@@ -528,7 +527,7 @@ export default function ProductDetailPage() {
                 </div>
             </div>
 
-            {/* Son Görüntülenen Ürünler */}
+            {}
             <div className="container-custom py-8">
                 <h2 className="text-xl font-bold text-gray-900 mb-8 text-center uppercase tracking-wide">
                     Son Görüntülenen Ürünler
@@ -540,7 +539,7 @@ export default function ProductDetailPage() {
                             to={`/urun/${item.slug}`}
                             className="group flex flex-col"
                         >
-                            {/* Image Container with Discount Badge */}
+                            {}
                             <div className="relative aspect-square mb-1">
                                 <img
                                     src={item.image}
@@ -555,17 +554,17 @@ export default function ProductDetailPage() {
                                 )}
                             </div>
 
-                            {/* Product Name - Bold, Centered */}
+                            {}
                             <h3 className="text-xs sm:text-sm font-bold text-gray-900 text-center min-h-[1.75rem] flex items-center justify-center">
                                 {item.name}
                             </h3>
 
-                            {/* Description - Gray, Small, Centered */}
+                            {}
                             <p className="text-[10px] sm:text-xs text-gray-500 text-center min-h-[1.5rem] flex items-center justify-center leading-tight">
                                 {item.description}
                             </p>
 
-                            {/* Star Rating */}
+                            {}
                             <div className="flex items-center justify-center gap-0.5 mb-1">
                                 {[...Array(5)].map((_, i) => (
                                     <MdOutlineStar
@@ -575,12 +574,12 @@ export default function ProductDetailPage() {
                                 ))}
                             </div>
 
-                            {/* Review Count */}
+                            {}
                             <p className="text-[10px] sm:text-xs text-gray-500 text-center mb-2">
                                 {item.reviews.toLocaleString('tr-TR')} Yorum
                             </p>
 
-                            {/* Price Row */}
+                            {}
                             <div className="flex items-center justify-center gap-2 flex-wrap">
                                 <span className="text-sm font-bold text-gray-900">{item.price} TL</span>
                                 {item.oldPrice && (
@@ -592,11 +591,11 @@ export default function ProductDetailPage() {
                 </div>
             </div>
 
-            {/* Reviews Section */}
+            {}
             <div className="container-custom py-8">
-                {/* Rating Summary */}
+                {}
                 <div className="flex flex-col md:flex-row gap-8 mb-8">
-                    {/* Left - Overall Rating */}
+                    {}
                     <div className="flex flex-col items-center">
                         <div className="text-4xl font-bold text-gray-900">4.8</div>
                         <div className="flex items-center gap-1 my-2">
@@ -613,7 +612,7 @@ export default function ProductDetailPage() {
                         </button>
                     </div>
 
-                    {/* Right - Rating Bars */}
+                    {}
                     <div className="flex-1 space-y-2">
                         {[
                             { stars: 5, percent: 85, count: 9238 },
@@ -640,7 +639,7 @@ export default function ProductDetailPage() {
                     </div>
                 </div>
 
-                {/* Review Cards */}
+                {}
                 <div className="space-y-4 mb-8">
                     {[
                         { name: 'EREN U.', title: 'Her zamanki kalite. Teşekkürler', text: 'Her zamanki kalite. Teşekkürler', date: '08/09/24', rating: 5 },
@@ -658,7 +657,7 @@ export default function ProductDetailPage() {
                             key={index}
                             className={`bg-[#F7F7F7] px-6 py-8 rounded-[30px] ${index >= 3 ? 'hidden md:block' : ''}`}
                         >
-                            {/* Mobile Layout */}
+                            {}
                             <div className="md:hidden">
                                 <div className="flex items-center gap-0.5 mb-2">
                                     {[...Array(5)].map((_, i) => (
@@ -674,7 +673,7 @@ export default function ProductDetailPage() {
                                 </div>
                             </div>
 
-                            {/* Desktop Layout */}
+                            {}
                             <div className="hidden md:flex items-center justify-between mb-2">
                                 <div className="flex items-center gap-2">
                                     <div className="flex items-center gap-0.5">
@@ -696,10 +695,10 @@ export default function ProductDetailPage() {
                     ))}
                 </div>
 
-                {/* Pagination Dots */}
+                {}
                 <div className="flex items-center justify-center gap-2 mb-8">
                     <span className="text-gray-400 px-6">&lt;</span>
-                    {/* Mobile: show 3 pages */}
+                    {}
                     <div className="flex gap-2 md:hidden">
                         {[1, 2, 3].map((num) => (
                             <button
@@ -710,7 +709,7 @@ export default function ProductDetailPage() {
                             </button>
                         ))}
                     </div>
-                    {/* Desktop: show 10 pages */}
+                    {}
                     <div className="hidden md:flex gap-2">
                         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
                             <button
@@ -724,7 +723,7 @@ export default function ProductDetailPage() {
                     <span className="text-gray-400">&gt;</span>
                 </div>
 
-                {/* Çok Satanlar */}
+                {}
                 <h2 className="text-xl font-bold text-gray-900 mb-6 text-center uppercase tracking-wide">
                     ÇOK SATANLAR
                 </h2>
@@ -775,7 +774,7 @@ export default function ProductDetailPage() {
                     ))}
                 </div>
 
-                {/* Tümünü Gör Button */}
+                {}
                 <div className="flex justify-center ">
                     <Link
                         to="/urunler"
@@ -786,7 +785,7 @@ export default function ProductDetailPage() {
                     </Link>
                 </div>
 
-                {/* Breadcrumb Navigation */}
+                {}
                 <div className="flex items-center gap-2 mt-8 text-sm">
                     <Link to="/" className="text-gray-600 hover:text-gray-900">OJS Nutrition</Link>
                     <span className="text-gray-400">&gt;</span>

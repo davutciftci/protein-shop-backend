@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { ShoppingBag, Truck, Plus, Minus } from 'lucide-react';
 import { FaRegCreditCard } from 'react-icons/fa';
 import ContactPage from '../contact/ContactPage';
@@ -12,7 +12,7 @@ interface FAQ {
 }
 
 const faqs: FAQ[] = [
-    // Genel
+    
     {
         question: "OJS Nutrition ürünlerinin menşei neresi?",
         answer: "OJS Nutrition ürünleri Türkiye'de üretilmektedir. Tüm ürünlerimiz laboratuvar testlidir ve kalite standartlarına uygun olarak üretilmektedir.",
@@ -84,7 +84,7 @@ const faqs: FAQ[] = [
         category: 'genel'
     },
 
-    // Ürünler
+    
     {
         question: "Ürünlerinizin son kullanma tarihi ne kadar?",
         answer: "Tüm ürünlerimizin son kullanma tarihi en az 12 aydır. Her ürünün üzerinde son kullanma tarihi belirtilmiştir.",
@@ -126,7 +126,7 @@ const faqs: FAQ[] = [
         category: 'urunler'
     },
 
-    // Kargo
+    
     {
         question: "Kargo ücreti ne kadar?",
         answer: "Tüm siparişlerinizde kargo ücretsizdir.",
@@ -204,9 +204,9 @@ const FAQPage = () => {
 
     return (
         <div className="bg-white min-h-screen">
-            {/* FAQ Section */}
+            {}
             <div className="container-custom mx-auto px-4 py-12">
-                {/* Filter Buttons */}
+                {}
                 <div className="flex gap-3 mb-8 border-b">
                     <button
                         onClick={() => setActiveCategory('genel')}
@@ -237,7 +237,7 @@ const FAQPage = () => {
                     </button>
                 </div>
 
-                {/* Active Category Display */}
+                {}
                 <div className="flex items-center gap-2 mb-6">
                     <div className="text-blue-600">
                         {getCategoryIcon()}
@@ -247,7 +247,7 @@ const FAQPage = () => {
                     </h2>
                 </div>
 
-                {/* FAQ List */}
+                {}
                 <div className="border-[1px] border-gray-100 md:border-4 md:border-gray-200">
                     {filteredFAQs.map((faq, index) => (
                         <div
@@ -279,7 +279,7 @@ const FAQPage = () => {
                 </div>
             </div>
 
-            {/* Contact Form Section */}
+            {}
             <div className="max-w-2xl mx-auto">
                 <ContactPage hideHeaderAndFooter={true} />
             </div>

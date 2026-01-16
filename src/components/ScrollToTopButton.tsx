@@ -6,7 +6,6 @@ export default function ScrollToTopButton() {
 
     useEffect(() => {
         const toggleVisibility = () => {
-            // Sayfa 300px'den fazla scroll edildiğinde butonu göster
             if (window.pageYOffset > 300) {
                 setIsVisible(true);
             } else {

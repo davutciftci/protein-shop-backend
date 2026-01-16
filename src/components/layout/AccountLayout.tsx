@@ -1,27 +1,12 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import FooterBanner from './FooterBanner';
 import { useCart } from '../../context/CartContext';
 import CartSidepanel from '../cart/CartSidepanel';
 import ScrollToTop from '../ScrollToTop';
 import ScrollToTopButton from '../ScrollToTopButton';
 
-const PAGES_WITHOUT_FOOTER_BANNER = [
-    '/iletisim',
-    '/S.S.S',
-    '/hakkimizda',
-    '/sozlesme',
-    '/iade',
-    '/ilkelerimiz',
-    '/kvkk',
-    '/yorumlar'
-];
-
-export default function Layout() {
-    const location = useLocation();
-    const isProductPage = location.pathname.startsWith('/urun/');
-    const hideFooterBanner = isProductPage || PAGES_WITHOUT_FOOTER_BANNER.includes(location.pathname);
+export default function AccountLayout() {
     const { showAlert } = useCart();
 
     return (
@@ -36,7 +21,6 @@ export default function Layout() {
             <div className="min-h-screen flex flex-col">
                 <Navbar />
                 <Outlet />
-                {!hideFooterBanner && <FooterBanner />}
                 <Footer />
             </div>
             <CartSidepanel />

@@ -1,4 +1,4 @@
-
+﻿
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const REVIEWS = [
@@ -35,21 +35,21 @@ const REVIEWS = [
 const ReviewsPage = () => {
     return (
         <div className="bg-white min-h-screen">
-            {/* Banner Section */}
+            {}
             <div className="relative w-full h-[400px] bg-[#111] overflow-hidden">
-                {/* Background Decor */}
+                {}
                 <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-lime-400/80 opacity-90"></div>
 
-                {/* Content Container */}
+                {}
                 <div className="container-custom relative h-full flex flex-col justify-center">
                     <div className="max-w-xl">
-                        {/* OJS Logo Text Effect */}
+                        {}
                         <h1 className="text-6xl md:text-8xl font-black text-white italic tracking-tighter mb-2" style={{ fontFamily: 'Arial, sans-serif' }}>
                             OJS <br />
                             NUTRITION
                         </h1>
 
-                        {/* Dots Pattern decor */}
+                        {}
                         <div className="absolute bottom-10 left-10 flex gap-1">
                             <div className="grid grid-cols-6 gap-1">
                                 {[...Array(24)].map((_, i) => (
@@ -60,16 +60,16 @@ const ReviewsPage = () => {
                     </div>
                 </div>
 
-                {/* Right side image placeholder (simulating the gym person) */}
+                {}
                 <div className="absolute right-0 top-0 h-full w-1/2 flex items-end justify-center">
-                    {/* In a real app, this would be the actual image from the design */}
-                    {/* <img src="/path/to/gym-person.png" alt="Gym" className="h-full object-cover grayscale mix-blend-overlay" /> */}
+                    {}
+                    {}
                 </div>
             </div>
 
-            {/* Reviews Section */}
+            {}
             <div className="container-custom py-16">
-                {/* Header */}
+                {}
                 <div className="flex flex-col md:flex-row justify-between items-end mb-12 border-b border-gray-200 pb-6">
                     <div>
                         <h2 className="text-2xl font-black uppercase tracking-tight mb-2">GERÇEK MÜŞTERİ YORUMLARI</h2>
@@ -83,7 +83,7 @@ const ReviewsPage = () => {
                         </div>
                     </div>
 
-                    {/* Navigation Buttons */}
+                    {}
                     <div className="flex gap-2 mt-4 md:mt-0">
                         <button className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 transition-colors">
                             <ChevronLeft className="w-4 h-4 text-gray-600" />
@@ -94,7 +94,7 @@ const ReviewsPage = () => {
                     </div>
                 </div>
 
-                {/* Reviews Grid */}
+                {}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {REVIEWS.map((review) => (
                         <div key={review.id} className="flex flex-col gap-2">

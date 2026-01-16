@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronDown, ChevronUp, Star } from 'lucide-react';
 
@@ -51,7 +51,7 @@ export default function Footer() {
     return (
         <footer className="bg-[#222222] text-[#E5E5E5] pt-16 pb-8">
             <div className="container-custom">
-                {/* Top Section - Rating Above */}
+                {}
                 <div className="flex flex-row items-center gap-3 mb-6">
                     <div className="flex gap-1">
                         {[...Array(5)].map((_, i) => (
@@ -61,7 +61,7 @@ export default function Footer() {
                     <span className="text-[#999999] text-[10px] sm:text-xs tracking-wider font-medium">(140.000+)</span>
                 </div>
 
-                {/* Top Section - Aligned Title and Description */}
+                {}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16 items-start">
                     <h2 className="text-2xl md:text-3xl font-black leading-[1.1] tracking-tight uppercase max-w-xl italic">
                         LABORATUVAR TESTLİ ÜRÜNLER<br />
@@ -194,7 +194,7 @@ export default function Footer() {
                     </div>
                 </div>
 
-                {/* Bottom Section - Copyright */}
+                {}
                 <div className="pt-8 text-[10px] text-[#999999] uppercase border-t border-gray-800/50">
                     Copyright © - Tüm Hakları Saklıdır.
                 </div>
