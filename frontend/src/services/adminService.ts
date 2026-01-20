@@ -28,6 +28,12 @@ export interface CreateProductRequest {
         size?: string;
         servings?: string;
     }>;
+    photos?: Array<{
+        url: string;
+        altText?: string;
+        isPrimary?: boolean;
+        displayOrder?: number;
+    }>;
 }
 
 export interface UpdateProductRequest extends Partial<CreateProductRequest> { }

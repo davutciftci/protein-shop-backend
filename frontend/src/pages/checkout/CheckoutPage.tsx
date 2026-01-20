@@ -5,6 +5,16 @@ import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { addressService } from '../../services';
 import type { UserAddress } from '../../types';
+import { apiClient } from '../../api/client';
+
+interface ShippingMethod {
+    id: number;
+    name: string;
+    code: string;
+    price: number;
+    deliveryDays: string;
+    description: string | null;
+}
 
 export default function CheckoutPage() {
     const { items, totalPrice } = useCart();
@@ -13,6 +23,8 @@ export default function CheckoutPage() {
     const [step, setStep] = useState(1);
     const [addresses, setAddresses] = useState<UserAddress[]>([]);
     const [selectedAddressId, setSelectedAddressId] = useState<number | null>(null);
+    const [shippingMethods, setShippingMethods] = useState<ShippingMethod[]>([]);
+    const [selectedShipping, setSelectedShipping] = useState<string | null>(null);
     const [isEditing, setIsEditing] = useState(false);
     const [editingAddress, setEditingAddress] = useState<Partial<UserAddress> | null>(null);
 
@@ -38,6 +50,18 @@ export default function CheckoutPage() {
         };
         fetchAddresses();
     }, [isAuthenticated]);
+
+    useEffect(() => {
+        const fetchShippingMethods = async () => {
+            try {
+                const response = await apiClient.get('/shipping');
+                setShippingMethods(response.data.data);
+            } catch (error) {
+                console.error('Kargo yöntemleri yüklenemedi:', error);
+            }
+        };
+        fetchShippingMethods();
+    }, []);
 
     if (isLoading) {
         return (
@@ -317,8 +341,35 @@ export default function CheckoutPage() {
                         </div>
                         {step === 2 && (
                             <div className="pl-12 py-4">
-                                <div className="p-4 bg-gray-50 rounded-lg text-gray-600">
-                                    Kargo seçenekleri burada listelenecek...
+                                <h3 className="text-lg font-medium text-gray-900 mb-4">Kargo Seçimi</h3>
+                                <div className="space-y-4 mb-6">
+                                    {shippingMethods.map((method) => (
+                                        <div
+                                            key={method.id}
+                                            onClick={() => setSelectedShipping(method.code)}
+                                            className={`relative p-6 rounded-lg border-2 cursor-pointer transition-all ${selectedShipping === method.code
+                                                ? 'border-blue-600 bg-blue-50/10'
+                                                : 'border-gray-200 hover:border-gray-300'
+                                                }`}
+                                        >
+                                            <div className="flex justify-between items-start">
+                                                <div className="flex items-center gap-3">
+                                                    {selectedShipping === method.code ? (
+                                                        <div className="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center">
+                                                            <Check className="w-3 h-3" />
+                                                        </div>
+                                                    ) : (
+                                                        <div className="w-5 h-5 rounded-full border-2 border-gray-300" />
+                                                    )}
+                                                    <div>
+                                                        <span className="font-bold text-gray-900 text-lg">{method.name}</span>
+                                                        <p className="text-sm text-gray-600 mt-1">Teslimat süresi: {method.deliveryDays}</p>
+                                                    </div>
+                                                </div>
+                                                <span className="font-bold text-gray-900 text-lg">₺{method.price.toLocaleString('tr-TR')}</span>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                                 <div className="flex gap-4 mt-6">
                                     <button
@@ -329,9 +380,10 @@ export default function CheckoutPage() {
                                     </button>
                                     <button
                                         onClick={() => setStep(3)}
-                                        className="flex-1 bg-black text-white font-bold py-3 rounded-lg hover:bg-gray-900"
+                                        disabled={!selectedShipping}
+                                        className="flex-1 bg-black text-white font-bold py-3 rounded-lg hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
-                                        Ödemeye Geç
+                                        {selectedShipping ? 'Ödemeye Geç' : 'Önce Kargo Seçin'}
                                     </button>
                                 </div>
                             </div>
@@ -411,6 +463,14 @@ export default function CheckoutPage() {
                             <span className="font-medium">{totalPrice.toLocaleString('tr-TR')} TL</span>
                         </div>
                         <div className="flex justify-between items-center text-gray-600">
+                            <span className="text-sm">Kargo</span>
+                            <span className="font-medium">
+                                {selectedShipping
+                                    ? `${shippingMethods.find(m => m.code === selectedShipping)?.price.toLocaleString('tr-TR') || '0'} TL`
+                                    : '0 TL'}
+                            </span>
+                        </div>
+                        <div className="flex justify-between items-center text-gray-600">
                             <span className="text-sm">KDV (%20)</span>
                             <span className="font-medium">{(totalPrice * 0.20).toLocaleString('tr-TR')} TL</span>
                         </div>
@@ -419,7 +479,9 @@ export default function CheckoutPage() {
                     <div className="border-t border-gray-200 pt-6">
                         <div className="flex justify-between items-center">
                             <span className="text-lg font-bold text-gray-900">Toplam (KDV Dahil)</span>
-                            <span className="text-xl font-bold text-gray-900">{(totalPrice * 1.20).toLocaleString('tr-TR')} TL</span>
+                            <span className="text-xl font-bold text-gray-900">
+                                {((totalPrice * 1.20) + (shippingMethods.find(m => m.code === selectedShipping)?.price || 0)).toLocaleString('tr-TR')} TL
+                            </span>
                         </div>
                     </div>
                 </div>

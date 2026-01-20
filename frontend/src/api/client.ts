@@ -27,8 +27,13 @@ apiClient.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
-            localStorage.removeItem('authToken');
-            window.location.href = '/giris';
+            const isAuthEndpoint = error.config?.url?.includes('/login') ||
+                error.config?.url?.includes('/register');
+
+            if (!isAuthEndpoint) {
+                localStorage.removeItem('authToken');
+                window.location.href = '/giris';
+            }
         }
         return Promise.reject(error);
     }

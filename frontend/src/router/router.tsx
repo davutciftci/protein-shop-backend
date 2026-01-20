@@ -12,6 +12,8 @@ import ReviewsPage from '../pages/reviews/ReviewsPage';
 import FAQPage from '../pages/faq/FAQPage';
 import LoginPage from '../pages/auth/LoginPage';
 import RegisterPage from '../pages/auth/RegisterPage';
+import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage';
+import ResetPasswordPage from '../pages/auth/ResetPasswordPage';
 import AccountPage from '../pages/account/AccountPage';
 import OrderDetailPage from '../pages/orders/OrderDetailPage';
 import AboutPage from '../pages/about/AboutPage';
@@ -98,6 +100,26 @@ export const router = createBrowserRouter([
         ]
     },
     {
+        path: '/sifremi-unuttum',
+        element: <AuthLayout />,
+        children: [
+            {
+                index: true,
+                element: <ForgotPasswordPage />,
+            }
+        ]
+    },
+    {
+        path: '/sifre-sifirla',
+        element: <AuthLayout />,
+        children: [
+            {
+                index: true,
+                element: <ResetPasswordPage />,
+            }
+        ]
+    },
+    {
         path: '/hesabim',
         element: <AccountLayout />,
         children: [
@@ -152,3 +174,4 @@ export const router = createBrowserRouter([
         ]
     }
 ]);
+

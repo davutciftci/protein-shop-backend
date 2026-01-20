@@ -19,7 +19,7 @@ export default function LoginPage() {
         try {
             await login({ email, password });
 
-            // Get user from AuthContext after login
+            // Login başarılı - AuthContext'ten user'ı al
             const { authService } = await import('../../services/authService');
             const currentUser = await authService.getCurrentUser();
 
@@ -30,9 +30,9 @@ export default function LoginPage() {
                 navigate('/');
             }
         } catch (err) {
+            // Hata oldu - mesajı göster ve sayfada kal
             setError(err instanceof Error ? err.message : 'Giriş başarısız. Lütfen bilgilerinizi kontrol edin.');
-            setTimeout(() => setError(''), 5000);
-        } finally {
+            setTimeout(() => setError(''), 10000);
             setIsLoading(false);
         }
     };
@@ -41,7 +41,7 @@ export default function LoginPage() {
         <div className="flex items-center justify-center px-4 py-20">
             <div className="w-[500px]">
                 <div className="flex space-x-4 text-center">
-                    <button className="flex-1 border-t border-l border-r p-4 text-sm font-medium text-[#2126AB]">
+                    <button type="button" className="flex-1 border-t border-l border-r p-4 text-sm font-medium text-[#2126AB]">
                         Giriş Yap
                     </button>
                     <Link

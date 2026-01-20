@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, Plus, X, Upload } from 'lucide-react';
 import { adminService } from '../../services/adminService';
+import { uploadProductPhoto } from '../../services/photoService';
 import { categoryService } from '../../services/categoryService';
 import { AROMAS, SIZES } from '../../constants/productOptions';
 import type { Category } from '../../types';
@@ -134,6 +135,30 @@ export default function ProductCreatePage() {
 
         setIsLoading(true);
         try {
+            // Upload fotoğraflar
+            const uploadedPhotos = await Promise.all(
+                photos.map(async (photo, index) => {
+                    if (photo.file) {
+                        const url = await uploadProductPhoto(photo.file);
+                        return {
+                            url,
+                            altText: photo.altText,
+                            isPrimary: photo.isPrimary,
+                            displayOrder: photo.displayOrder,
+                        };
+                    }
+                    return null;
+                })
+            );
+
+            // Null olmayan fotoğrafları filtrele
+            const validPhotos = uploadedPhotos.filter(p => p !== null) as Array<{
+                url: string;
+                altText?: string;
+                isPrimary?: boolean;
+                displayOrder?: number;
+            }>;
+
             const nutritionValuesData = nutritionValues.length > 0 ? {
                 servingSize: formData.servingSize,
                 values: nutritionValues
@@ -154,6 +179,7 @@ export default function ProductCreatePage() {
                 nutritionValues: nutritionValuesData,
                 aminoAcids: aminoAcidsData,
                 variants: variants, // Varyantları ekle
+                photos: validPhotos.length > 0 ? validPhotos : undefined, // Fotoğrafları ekle
             });
 
             alert('Ürün başarıyla oluşturuldu!');
