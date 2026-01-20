@@ -66,7 +66,7 @@ export default function ProductDetailPage() {
 
     const ExpandableSections = () => (
         <div className="border-t border-gray-200">
-            {}
+            { }
             <div className="border-b border-gray-200">
                 <button
                     onClick={() => toggleSection('features')}
@@ -89,7 +89,7 @@ export default function ProductDetailPage() {
                 )}
             </div>
 
-            {}
+            { }
             <div className="border-b border-gray-200">
                 <button
                     onClick={() => toggleSection('nutrition')}
@@ -111,7 +111,7 @@ export default function ProductDetailPage() {
                 )}
             </div>
 
-            {}
+            { }
             <div>
                 <button
                     onClick={() => toggleSection('usage')}
@@ -138,7 +138,7 @@ export default function ProductDetailPage() {
 
     const ShippingIcons = () => (
         <div className="flex items-center justify-between py-4">
-            {}
+            { }
             <div className="flex items-center gap-2">
                 <Truck className="w-6 h-6 text-gray-600" />
                 <div className="text-left">
@@ -147,7 +147,7 @@ export default function ProductDetailPage() {
                 </div>
             </div>
 
-            {}
+            { }
             <div className="flex items-center gap-2">
                 <svg className="w-7 h-7 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -159,7 +159,7 @@ export default function ProductDetailPage() {
                 </div>
             </div>
 
-            {}
+            { }
             <div className="flex items-center gap-2">
                 <BsArrowClockwise className="w-6 h-6 text-gray-600" />
                 <div className="text-left">
@@ -172,7 +172,7 @@ export default function ProductDetailPage() {
 
     const QuantityPriceRow = () => (
         <div className="flex items-center gap-4 flex-wrap">
-            {}
+            { }
             <div className="flex items-center border border-gray-300 rounded">
                 <button
                     onClick={() => handleQuantityChange(-1)}
@@ -191,20 +191,20 @@ export default function ProductDetailPage() {
                 </button>
             </div>
 
-            {}
+            { }
             <span className="text-2xl font-bold text-gray-900">{product.price} TL</span>
         </div>
     );
 
     const ProductInfo = () => (
         <>
-            {}
+            { }
             <h1 className="text-2xl font-bold text-gray-900 mb-1">{product.name}</h1>
 
-            {}
+            { }
             <p className="text-sm text-gray-500 mb-2">{product.description}</p>
 
-            {}
+            { }
             <div className="flex items-center gap-2 mb-4">
                 <div className="flex items-center gap-0.5">
                     {[...Array(5)].map((_, i) => (
@@ -219,7 +219,7 @@ export default function ProductDetailPage() {
                 </span>
             </div>
 
-            {}
+            { }
             <div className="flex gap-2 mb-6">
                 {product.tags.map((tag, index) => (
                     <span
@@ -316,12 +316,12 @@ export default function ProductDetailPage() {
 
     return (
         <div className="bg-white min-h-screen">
-            {}
+            { }
             <div className="container-custom py-8">
 
-                {}
+                { }
                 <div className="md:hidden">
-                    {}
+                    { }
                     <div className="flex items-start justify-center mb-6">
                         <img
                             src={product.image}
@@ -338,13 +338,13 @@ export default function ProductDetailPage() {
                     <AromaSelection />
                     <SizeSelection />
 
-                    {}
+                    { }
                     <div className="flex items-baseline justify-between mb-4">
                         <span className="text-3xl font-bold text-gray-900">{product.price} TL</span>
                         <span className="text-sm font-bold text-gray-500">{product.pricePerServing} TL /Servis</span>
                     </div>
 
-                    {}
+                    { }
                     <div className="flex items-center gap-4 mb-6">
                         <div className="flex items-center border border-gray-300 rounded">
                             <button
@@ -380,12 +380,12 @@ export default function ProductDetailPage() {
                     <ExpandableSections />
                 </div>
 
-                {}
+                { }
                 <div className="hidden md:block lg:hidden">
                     <div className="grid md:grid-cols-2 md:gap-8">
-                        {}
+                        { }
                         <div className="flex flex-col">
-                            {}
+                            { }
                             <div className="flex items-start justify-center mb-4">
                                 <img
                                     src={product.image}
@@ -395,16 +395,16 @@ export default function ProductDetailPage() {
                                 />
                             </div>
 
-                            {}
+                            { }
                             <div className="text-sm text-gray-500 mb-4">
                                 Son Kullanma Tarihi: {product.expirationDate}
                             </div>
 
-                            {}
+                            { }
                             <ExpandableSections />
                         </div>
 
-                        {}
+                        { }
                         <div className="flex flex-col">
                             <ProductInfo />
 
@@ -415,9 +415,9 @@ export default function ProductDetailPage() {
                         </div>
                     </div>
 
-                    {}
+                    { }
                     <div className="grid md:grid-cols-2 md:gap-8 mt-6">
-                        {}
+                        { }
                         <div className="flex items-center gap-4 flex-wrap">
                             <div className="flex items-center border border-gray-300 rounded">
                                 <button
@@ -439,7 +439,7 @@ export default function ProductDetailPage() {
                             <span className="text-2xl font-bold text-gray-900">{product.price} TL</span>
                         </div>
 
-                        {}
+                        { }
                         <div className="flex flex-col">
                             <div className="flex justify-end mb-2">
                                 <span className="text-sm font-bold text-gray-500">{product.pricePerServing} TL /Servis</span>
@@ -451,16 +451,16 @@ export default function ProductDetailPage() {
                         </div>
                     </div>
 
-                    {}
+                    { }
                     <div className="mt-4">
                         <ShippingIcons />
                     </div>
                 </div>
 
-                {}
+                { }
                 <div className="hidden lg:block">
                     <div className="grid grid-cols-2 gap-16 items-start mb-8">
-                        {}
+                        { }
                         <div className="flex items-start justify-center sticky top-8">
                             <img
                                 src={product.image}
@@ -470,7 +470,7 @@ export default function ProductDetailPage() {
                             />
                         </div>
 
-                        {}
+                        { }
                         <div className="flex flex-col">
                             <ProductInfo />
 
@@ -479,13 +479,13 @@ export default function ProductDetailPage() {
                             <AromaSelection />
                             <SizeSelection />
 
-                            {}
+                            { }
                             <div className="flex items-baseline justify-between mb-4">
                                 <span className="text-3xl font-bold text-gray-900">{product.price} TL</span>
                                 <span className="text-sm font-bold text-gray-500">{product.pricePerServing} TL /Servis</span>
                             </div>
 
-                            {}
+                            { }
                             <div className="flex items-center gap-4">
                                 <div className="flex items-center border border-gray-300 rounded">
                                     <button
@@ -512,7 +512,7 @@ export default function ProductDetailPage() {
                         </div>
                     </div>
 
-                    {}
+                    { }
                     <div className="w-1/2 ml-auto">
                         <ShippingIcons />
 
@@ -527,7 +527,7 @@ export default function ProductDetailPage() {
                 </div>
             </div>
 
-            {}
+            { }
             <div className="container-custom py-8">
                 <h2 className="text-xl font-bold text-gray-900 mb-8 text-center uppercase tracking-wide">
                     Son Görüntülenen Ürünler
@@ -536,10 +536,10 @@ export default function ProductDetailPage() {
                     {PRODUCTS.map((item) => (
                         <Link
                             key={item.id}
-                            to={`/urun/${item.slug}`}
+                            to={`/urun/${item.category || 'urunler'}/${item.slug}`}
                             className="group flex flex-col"
                         >
-                            {}
+                            { }
                             <div className="relative aspect-square mb-1">
                                 <img
                                     src={item.image}
@@ -554,17 +554,17 @@ export default function ProductDetailPage() {
                                 )}
                             </div>
 
-                            {}
+                            { }
                             <h3 className="text-xs sm:text-sm font-bold text-gray-900 text-center min-h-[1.75rem] flex items-center justify-center">
                                 {item.name}
                             </h3>
 
-                            {}
+                            { }
                             <p className="text-[10px] sm:text-xs text-gray-500 text-center min-h-[1.5rem] flex items-center justify-center leading-tight">
                                 {item.description}
                             </p>
 
-                            {}
+                            { }
                             <div className="flex items-center justify-center gap-0.5 mb-1">
                                 {[...Array(5)].map((_, i) => (
                                     <MdOutlineStar
@@ -574,12 +574,12 @@ export default function ProductDetailPage() {
                                 ))}
                             </div>
 
-                            {}
+                            { }
                             <p className="text-[10px] sm:text-xs text-gray-500 text-center mb-2">
                                 {item.reviews.toLocaleString('tr-TR')} Yorum
                             </p>
 
-                            {}
+                            { }
                             <div className="flex items-center justify-center gap-2 flex-wrap">
                                 <span className="text-sm font-bold text-gray-900">{item.price} TL</span>
                                 {item.oldPrice && (
@@ -591,11 +591,11 @@ export default function ProductDetailPage() {
                 </div>
             </div>
 
-            {}
+            { }
             <div className="container-custom py-8">
-                {}
+                { }
                 <div className="flex flex-col md:flex-row gap-8 mb-8">
-                    {}
+                    { }
                     <div className="flex flex-col items-center">
                         <div className="text-4xl font-bold text-gray-900">4.8</div>
                         <div className="flex items-center gap-1 my-2">
@@ -612,7 +612,7 @@ export default function ProductDetailPage() {
                         </button>
                     </div>
 
-                    {}
+                    { }
                     <div className="flex-1 space-y-2">
                         {[
                             { stars: 5, percent: 85, count: 9238 },
@@ -639,7 +639,7 @@ export default function ProductDetailPage() {
                     </div>
                 </div>
 
-                {}
+                { }
                 <div className="space-y-4 mb-8">
                     {[
                         { name: 'EREN U.', title: 'Her zamanki kalite. Teşekkürler', text: 'Her zamanki kalite. Teşekkürler', date: '08/09/24', rating: 5 },
@@ -657,7 +657,7 @@ export default function ProductDetailPage() {
                             key={index}
                             className={`bg-[#F7F7F7] px-6 py-8 rounded-[30px] ${index >= 3 ? 'hidden md:block' : ''}`}
                         >
-                            {}
+                            { }
                             <div className="md:hidden">
                                 <div className="flex items-center gap-0.5 mb-2">
                                     {[...Array(5)].map((_, i) => (
@@ -673,7 +673,7 @@ export default function ProductDetailPage() {
                                 </div>
                             </div>
 
-                            {}
+                            { }
                             <div className="hidden md:flex items-center justify-between mb-2">
                                 <div className="flex items-center gap-2">
                                     <div className="flex items-center gap-0.5">
@@ -695,10 +695,10 @@ export default function ProductDetailPage() {
                     ))}
                 </div>
 
-                {}
+                { }
                 <div className="flex items-center justify-center gap-2 mb-8">
                     <span className="text-gray-400 px-6">&lt;</span>
-                    {}
+                    { }
                     <div className="flex gap-2 md:hidden">
                         {[1, 2, 3].map((num) => (
                             <button
@@ -709,7 +709,7 @@ export default function ProductDetailPage() {
                             </button>
                         ))}
                     </div>
-                    {}
+                    { }
                     <div className="hidden md:flex gap-2">
                         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
                             <button
@@ -723,7 +723,7 @@ export default function ProductDetailPage() {
                     <span className="text-gray-400">&gt;</span>
                 </div>
 
-                {}
+                { }
                 <h2 className="text-xl font-bold text-gray-900 mb-6 text-center uppercase tracking-wide">
                     ÇOK SATANLAR
                 </h2>
@@ -731,7 +731,7 @@ export default function ProductDetailPage() {
                     {PRODUCTS.slice(0, 6).map((item) => (
                         <Link
                             key={item.id}
-                            to={`/urun/${item.slug}`}
+                            to={`/urun/${item.category || 'urunler'}/${item.slug}`}
                             className="group flex flex-col"
                         >
                             <div className="relative aspect-square mb-1">
@@ -774,7 +774,7 @@ export default function ProductDetailPage() {
                     ))}
                 </div>
 
-                {}
+                { }
                 <div className="flex justify-center ">
                     <Link
                         to="/urunler"
@@ -785,7 +785,7 @@ export default function ProductDetailPage() {
                     </Link>
                 </div>
 
-                {}
+                { }
                 <div className="flex items-center gap-2 mt-8 text-sm">
                     <Link to="/" className="text-gray-600 hover:text-gray-900">OJS Nutrition</Link>
                     <span className="text-gray-400">&gt;</span>

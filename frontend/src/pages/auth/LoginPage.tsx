@@ -31,6 +31,7 @@ export default function LoginPage() {
             }
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Giriş başarısız. Lütfen bilgilerinizi kontrol edin.');
+            setTimeout(() => setError(''), 5000);
         } finally {
             setIsLoading(false);
         }

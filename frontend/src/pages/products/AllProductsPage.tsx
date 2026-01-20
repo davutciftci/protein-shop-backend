@@ -33,8 +33,10 @@ export default function AllProductsPage() {
     const filteredProducts = products.filter(product => {
         let matchesCategory = true;
         if (category) {
-            const categoryName = product.category?.slug || '';
-            matchesCategory = categoryName.includes(category);
+            const categorySlug = (product.category?.slug || '').toLowerCase();
+            const categoryName = (product.category?.name || '').toLowerCase();
+            const searchCategory = category.toLowerCase();
+            matchesCategory = categorySlug.includes(searchCategory) || categoryName.includes(searchCategory);
         }
 
         let matchesSearch = true;
@@ -60,6 +62,15 @@ export default function AllProductsPage() {
             return Math.max(...product.variants.map(v => v.discount || 0));
         }
         return 0;
+    };
+
+    const getDiscountedPrice = (product: Product) => {
+        const price = getDisplayPrice(product);
+        const discount = getMaxDiscount(product);
+        if (discount > 0) {
+            return Math.round(price * (1 - discount / 100));
+        }
+        return price;
     };
 
     const getProductImage = (product: Product) => {
@@ -102,14 +113,15 @@ export default function AllProductsPage() {
                 ) : (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
                         {filteredProducts.map((product) => {
-                            const price = getDisplayPrice(product);
+                            const originalPrice = getDisplayPrice(product);
                             const discount = getMaxDiscount(product);
+                            const discountedPrice = getDiscountedPrice(product);
                             const image = getProductImage(product);
 
                             return (
                                 <Link
                                     key={product.id}
-                                    to={`/urun/${product.slug}`}
+                                    to={`/urun/${product.category?.slug || 'urunler'}/${product.slug}`}
                                     className="group flex flex-col"
                                 >
                                     <div className="relative aspect-square mb-2 bg-gray-100 rounded-lg">
@@ -148,7 +160,10 @@ export default function AllProductsPage() {
                                     </p>
 
                                     <div className="flex items-center justify-center gap-2 flex-wrap">
-                                        <span className="text-sm font-bold text-gray-900">{price.toFixed(0)} TL</span>
+                                        <span className="text-sm font-bold text-gray-900">{discountedPrice.toFixed(0)} TL</span>
+                                        {discount > 0 && (
+                                            <span className="text-xs text-red-500 line-through">{originalPrice.toFixed(0)} TL</span>
+                                        )}
                                     </div>
                                 </Link>
                             );

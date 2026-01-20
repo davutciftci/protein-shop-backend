@@ -2,7 +2,7 @@
 import { IoClose } from 'react-icons/io5';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function CartSidepanel() {
     const { items, isOpen, closeCart, updateQuantity, removeFromCart, totalPrice } = useCart();
@@ -57,7 +57,13 @@ export default function CartSidepanel() {
                                         </div>
 
                                         <div className="flex-1">
-                                            <h3 className="font-bold text-gray-900 text-sm">{item.name}</h3>
+                                            <Link
+                                                to={`/urun/${item.categorySlug || 'urunler'}/${item.slug || item.id}`}
+                                                onClick={closeCart}
+                                                className="font-bold text-gray-900 text-sm hover:text-blue-600 transition-colors block"
+                                            >
+                                                {item.name}
+                                            </Link>
                                             {item.aroma && (
                                                 <p className="text-xs text-gray-500">{item.aroma}</p>
                                             )}

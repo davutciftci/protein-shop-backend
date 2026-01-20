@@ -134,7 +134,6 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* Çok Satanlar */}
             <section className="py-8 px-4">
                 <div className="container-custom">
                     <h2 className="text-xl font-bold text-center mb-8 tracking-wider">ÇOK SATANLAR</h2>
@@ -150,25 +149,26 @@ export default function HomePage() {
                     ) : (
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
                             {products.map((product, index) => {
-                                // İlk fotoğrafı al veya placeholder kullan
                                 const productImage = product.photos && product.photos.length > 0
                                     ? product.photos[0].url
                                     : '/images/placeholder-product.jpg';
 
-                                // İndirim hesapla
                                 const hasDiscount = product.variants && product.variants.some(v => v.discount && v.discount > 0);
                                 const maxDiscount = hasDiscount && product.variants
                                     ? Math.max(...product.variants.map(v => v.discount || 0))
                                     : 0;
 
-                                // Fiyat hesapla (ilk varyantın fiyatı veya basePrice)
-                                const displayPrice = product.variants && product.variants.length > 0
+                                const originalPrice = product.variants && product.variants.length > 0
                                     ? product.variants[0].price
                                     : product.basePrice || 0;
 
+                                const discountedPrice = maxDiscount > 0
+                                    ? Math.round(originalPrice * (1 - maxDiscount / 100))
+                                    : originalPrice;
+
                                 return (
                                     <Link
-                                        to={`/urun/${product.slug}`}
+                                        to={`/urun/${product.category?.slug || 'urunler'}/${product.slug}`}
                                         key={product.id}
                                         className="group flex flex-col"
                                         style={{ order: index }}
@@ -206,8 +206,13 @@ export default function HomePage() {
                                             </span>
                                             <div className="flex flex-row items-baseline gap-2 justify-center">
                                                 <span className="text-lg font-bold text-gray-900">
-                                                    {Number(displayPrice).toFixed(0)} TL
+                                                    {Number(discountedPrice).toFixed(0)} TL
                                                 </span>
+                                                {maxDiscount > 0 && (
+                                                    <span className="text-sm text-red-500 line-through">
+                                                        {Number(originalPrice).toFixed(0)} TL
+                                                    </span>
+                                                )}
                                             </div>
                                         </div>
                                     </Link>

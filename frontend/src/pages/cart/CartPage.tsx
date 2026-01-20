@@ -1,4 +1,5 @@
 ﻿import { FiTrash } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 
 export default function CartPage() {
@@ -7,12 +8,12 @@ export default function CartPage() {
     return (
         <div className="container-custom py-8">
             <div className="max-w-md mx-auto bg-white shadow-xl flex flex-col min-h-[600px] border border-gray-100">
-                {}
+                { }
                 <div className="flex items-center justify-center p-6 bg-white relative">
                     <h2 className="text-lg font-bold text-gray-900">SEPETİM</h2>
                 </div>
 
-                {}
+                { }
                 <div className="flex-1 overflow-y-auto p-4">
                     {items.length === 0 ? (
                         <div className="flex flex-col items-center justify-center h-full">
@@ -22,9 +23,9 @@ export default function CartPage() {
                         <div className="space-y-4">
                             {items.map((item, index) => (
                                 <div key={`${item.id}-${index}`} className="flex justify-between p-4 bg-[#F9F9F9] mb-4">
-                                    {}
+                                    { }
                                     <div className="flex gap-4">
-                                        {}
+                                        { }
                                         <div className="w-16 h-16 flex-shrink-0 bg-white p-1">
                                             <img
                                                 src={item.image}
@@ -33,9 +34,14 @@ export default function CartPage() {
                                             />
                                         </div>
 
-                                        {}
+                                        { }
                                         <div className="flex-1">
-                                            <h3 className="font-bold text-gray-900 text-sm">{item.name}</h3>
+                                            <Link
+                                                to={`/urun/${item.categorySlug || 'urunler'}/${item.slug || item.id}`}
+                                                className="font-bold text-gray-900 text-sm hover:text-blue-600 transition-colors block"
+                                            >
+                                                {item.name}
+                                            </Link>
                                             {item.aroma && (
                                                 <p className="text-xs text-gray-500">{item.aroma}</p>
                                             )}
@@ -45,7 +51,7 @@ export default function CartPage() {
                                         </div>
                                     </div>
 
-                                    {}
+                                    { }
                                     <div className="flex flex-col items-end justify-between gap-4">
                                         <span className="font-bold text-gray-900 text-sm">{item.price} TL</span>
 
@@ -92,7 +98,7 @@ export default function CartPage() {
                     )}
                 </div>
 
-                {}
+                { }
                 <div className="border-t p-4 space-y-4">
                     <div className="flex items-center justify-between">
                         <span className="text-gray-600">TOPLAM</span>

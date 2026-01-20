@@ -22,6 +22,7 @@ export const ENDPOINTS = {
         BY_PRODUCT: (productId: number) => `/photos/product/${productId}`,
     },
     COMMENTS: {
+        APPROVED: '/comments/approved',
         BY_PRODUCT: (productId: number) => `/comments/product/${productId}`,
         MY_COMMENTS: '/comments/my/comments',
         CREATE: '/comments',

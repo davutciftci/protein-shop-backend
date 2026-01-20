@@ -36,14 +36,14 @@ export default function Footer() {
             { name: 'Lansmana Özel Fırsatlar', link: '/firsatlar' },
         ],
         populerUrunler: [
-            { name: 'Whey Protein', link: '/urun/whey-protein' },
-            { name: 'Cream of Rice', link: '/urun/cream-of-rice' },
-            { name: 'Creatine', link: '/urun/creatine' },
-            { name: 'BCAA+', link: '/urun/milk-protein' },
-            { name: 'Pre-Workout', link: '/urun/pre-workout-supreme' },
-            { name: 'Fitness Paketi', link: '/urun/fitness-paketi' },
-            { name: 'Collagen', link: '/urun/collagen-coffee' },
-            { name: 'Günlük Vitamin Paketi', link: '/urun/gunluk-vitamin-paketi' },
+            { name: 'Whey Protein', link: '/urun/protein/whey-protein' },
+            { name: 'Cream of Rice', link: '/urun/gida/cream-of-rice' },
+            { name: 'Creatine', link: '/urun/spor-gidalari/creatine' },
+            { name: 'BCAA+', link: '/urun/spor-gidalari/milk-protein' },
+            { name: 'Pre-Workout', link: '/urun/spor-gidalari/pre-workout-supreme' },
+            { name: 'Fitness Paketi', link: '/urun/paketler/fitness-paketi' },
+            { name: 'Collagen', link: '/urun/saglik/collagen-coffee' },
+            { name: 'Günlük Vitamin Paketi', link: '/urun/vitamin/gunluk-vitamin-paketi' },
             { name: 'ZMA', link: '/urunler?q=zma' },
         ]
     };

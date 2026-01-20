@@ -46,7 +46,6 @@ export default function AdminLayout() {
 
     return (
         <div className="min-h-screen bg-gray-100 flex">
-            {/* Sidebar */}
             <aside className="w-64 bg-white shadow-md">
                 <div className="p-6 border-b">
                     <h1 className="text-2xl font-black italic" style={{ fontFamily: 'Arial, sans-serif' }}>
@@ -65,8 +64,8 @@ export default function AdminLayout() {
                                 key={item.path}
                                 to={item.path}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-lg mb-2 transition-colors ${isActive
-                                        ? 'bg-blue-600 text-white'
-                                        : 'text-gray-700 hover:bg-gray-100'
+                                    ? 'bg-blue-600 text-white'
+                                    : 'text-gray-700 hover:bg-gray-100'
                                     }`}
                             >
                                 <Icon className="w-5 h-5" />
@@ -85,9 +84,7 @@ export default function AdminLayout() {
                 </nav>
             </aside>
 
-            {/* Main Content */}
             <div className="flex-1">
-                {/* Header */}
                 <header className="bg-white shadow-sm p-4 flex items-center justify-between">
                     <h2 className="text-xl font-bold text-gray-800">
                         {menuItems.find(item => item.path === location.pathname)?.label || 'Admin Panel'}
@@ -100,7 +97,6 @@ export default function AdminLayout() {
                     </div>
                 </header>
 
-                {/* Content */}
                 <main className="p-6">
                     <Outlet />
                 </main>

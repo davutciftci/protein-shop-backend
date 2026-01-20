@@ -46,6 +46,11 @@ export interface ProductComment {
         firstName: string;
         lastName: string;
     };
+    product?: {
+        id: number;
+        name: string;
+        slug: string;
+    };
 }
 
 export interface Product {

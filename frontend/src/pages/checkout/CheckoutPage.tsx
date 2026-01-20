@@ -1,6 +1,6 @@
 ﻿import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Check, ChevronDown } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { addressService } from '../../services';
@@ -184,16 +184,19 @@ export default function CheckoutPage() {
 
                                         <button
                                             onClick={() => setStep(2)}
-                                            className="w-full bg-black text-white font-bold py-4 rounded-lg hover:bg-gray-900 transition-colors"
+                                            disabled={addresses.length === 0 || selectedAddressId === null}
+                                            className="w-full bg-black text-white font-bold py-4 rounded-lg hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
-                                            Kargo ile Devam Et
+                                            {addresses.length === 0 ? 'Önce Adres Tanımlayın' : 'Kargo ile Devam Et'}
                                         </button>
                                     </>
                                 ) : (
 
                                     <div className="animate-fade-in">
                                         <div className="flex justify-between items-center mb-6">
-                                            <h3 className="text-lg font-medium text-gray-900">Adres Düzenle</h3>
+                                            <h3 className="text-lg font-medium text-gray-900">
+                                                {editingAddress && 'id' in editingAddress ? 'Adres Düzenle' : 'Yeni Adres Ekle'}
+                                            </h3>
                                             <button
                                                 onClick={() => setIsEditing(false)}
                                                 className="text-sm font-medium text-gray-500 hover:text-black"
@@ -204,51 +207,67 @@ export default function CheckoutPage() {
 
                                         <div className="space-y-4 mb-8">
                                             <div className="space-y-1">
-                                                <label className="text-xs text-gray-500 ml-1">Adres Başlığı</label>
+                                                <label className="text-xs text-gray-500 ml-1">Adres Başlığı *</label>
                                                 <input
                                                     type="text"
                                                     className="w-full p-4 border border-gray-200 rounded-lg focus:outline-none focus:border-black transition-colors"
-                                                    defaultValue={editingAddress?.title}
+                                                    value={editingAddress?.title || ''}
+                                                    onChange={(e) => setEditingAddress(prev => prev ? { ...prev, title: e.target.value } : null)}
                                                     placeholder="Örn: Ev, Ofis"
+                                                    required
                                                 />
                                             </div>
 
                                             <div className="space-y-1">
-                                                <label className="text-xs text-gray-500 ml-1">Adres</label>
+                                                <label className="text-xs text-gray-500 ml-1">Ad Soyad *</label>
+                                                <input
+                                                    type="text"
+                                                    className="w-full p-4 border border-gray-200 rounded-lg focus:outline-none focus:border-black transition-colors"
+                                                    value={editingAddress?.fullName || ''}
+                                                    onChange={(e) => setEditingAddress(prev => prev ? { ...prev, fullName: e.target.value } : null)}
+                                                    placeholder="Ad Soyad"
+                                                    required
+                                                />
+                                            </div>
+
+                                            <div className="space-y-1">
+                                                <label className="text-xs text-gray-500 ml-1">Adres *</label>
                                                 <textarea
                                                     className="w-full p-4 border border-gray-200 rounded-lg focus:outline-none focus:border-black transition-colors min-h-[100px] resize-none"
-                                                    defaultValue={editingAddress?.addressLine1}
+                                                    value={editingAddress?.addressLine1 || ''}
+                                                    onChange={(e) => setEditingAddress(prev => prev ? { ...prev, addressLine1: e.target.value } : null)}
                                                     placeholder="Açık adresiniz"
+                                                    required
                                                 />
                                             </div>
 
                                             <div className="grid grid-cols-2 gap-4">
                                                 <div className="space-y-1">
-                                                    <label className="text-xs text-gray-500 ml-1">İl</label>
-                                                    <div className="relative">
-                                                        <select className="w-full p-4 border border-gray-200 rounded-lg focus:outline-none focus:border-black appearance-none bg-white">
-                                                            <option>İstanbul</option>
-                                                            <option>Ankara</option>
-                                                            <option>İzmir</option>
-                                                        </select>
-                                                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-                                                    </div>
+                                                    <label className="text-xs text-gray-500 ml-1">İl *</label>
+                                                    <input
+                                                        type="text"
+                                                        className="w-full p-4 border border-gray-200 rounded-lg focus:outline-none focus:border-black transition-colors"
+                                                        value={editingAddress?.city || ''}
+                                                        onChange={(e) => setEditingAddress(prev => prev ? { ...prev, city: e.target.value } : null)}
+                                                        placeholder="İl"
+                                                        required
+                                                    />
                                                 </div>
                                                 <div className="space-y-1">
-                                                    <label className="text-xs text-gray-500 ml-1">İlçe</label>
-                                                    <div className="relative">
-                                                        <select className="w-full p-4 border border-gray-200 rounded-lg focus:outline-none focus:border-black appearance-none bg-white">
-                                                            <option>Ataşehir</option>
-                                                            <option>Kadıköy</option>
-                                                            <option>Üsküdar</option>
-                                                        </select>
-                                                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-                                                    </div>
+                                                    <label className="text-xs text-gray-500 ml-1">İlçe *</label>
+                                                    <input
+                                                        type="text"
+                                                        className="w-full p-4 border border-gray-200 rounded-lg focus:outline-none focus:border-black transition-colors"
+                                                        value={editingAddress?.district || ''}
+                                                        onChange={(e) => setEditingAddress(prev => prev ? { ...prev, district: e.target.value } : null)}
+                                                        placeholder="İlçe"
+                                                        required
+                                                    />
                                                 </div>
                                             </div>
 
                                             <div className="space-y-1">
-                                                <label className="text-xs text-gray-500 ml-1">Telefon</label>
+                                                <label className="text-xs text-gray-500 ml-1">Telefon *</label>
                                                 <div className="flex border border-gray-200 rounded-lg overflow-hidden focus-within:border-black transition-colors">
                                                     <div className="bg-gray-50 px-4 flex items-center gap-2 border-r border-gray-200">
                                                         <img src="https://flagcdn.com/w20/tr.png" alt="TR" className="w-5" />
@@ -257,17 +276,24 @@ export default function CheckoutPage() {
                                                     <input
                                                         type="tel"
                                                         className="flex-1 p-4 focus:outline-none"
-                                                        defaultValue="537 265 80 23"
+                                                        value={editingAddress?.phoneNumber || ''}
+                                                        onChange={(e) => setEditingAddress(prev => prev ? { ...prev, phoneNumber: e.target.value } : null)}
                                                         placeholder="5XX XXX XX XX"
+                                                        required
                                                     />
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div className="flex gap-4">
-                                            <button className="flex-1 py-4 border border-gray-200 rounded-lg font-medium text-gray-900 hover:bg-gray-50 transition-colors">
-                                                Adresi Sil
-                                            </button>
+                                            {editingAddress && 'id' in editingAddress && editingAddress.id && (
+                                                <button
+                                                    onClick={handleDeleteAddress}
+                                                    className="flex-1 py-4 border border-gray-200 rounded-lg font-medium text-red-600 hover:bg-red-50 transition-colors"
+                                                >
+                                                    Adresi Sil
+                                                </button>
+                                            )}
                                             <button
                                                 onClick={handleSaveAddress}
                                                 className="flex-1 py-4 bg-black text-white rounded-lg font-bold hover:bg-gray-900 transition-colors"
@@ -358,7 +384,12 @@ export default function CheckoutPage() {
                                         </div>
                                     </div>
                                     <div className="flex-1">
-                                        <h4 className="text-sm font-bold text-gray-900">{item.name}</h4>
+                                        <Link
+                                            to={`/urun/${item.categorySlug || 'urunler'}/${item.slug || item.id}`}
+                                            className="text-sm font-bold text-gray-900 hover:text-blue-600 transition-colors"
+                                        >
+                                            {item.name}
+                                        </Link>
                                         <p className="text-xs text-gray-500 mt-1">{item.aroma ? item.aroma : 'Standart'}</p>
                                         <p className="text-xs text-gray-500">{item.size}</p>
                                     </div>
@@ -376,18 +407,19 @@ export default function CheckoutPage() {
 
                     <div className="border-t border-gray-200 py-6 space-y-4">
                         <div className="flex justify-between items-center text-gray-600">
-                            <span className="text-sm flex items-center gap-1">
-                                Ara Toplam
-                                <span className="w-4 h-4 rounded-full bg-gray-200 text-gray-500 text-[10px] flex items-center justify-center cursor-help">?</span>
-                            </span>
+                            <span className="text-sm">Ara Toplam</span>
                             <span className="font-medium">{totalPrice.toLocaleString('tr-TR')} TL</span>
+                        </div>
+                        <div className="flex justify-between items-center text-gray-600">
+                            <span className="text-sm">KDV (%20)</span>
+                            <span className="font-medium">{(totalPrice * 0.20).toLocaleString('tr-TR')} TL</span>
                         </div>
                     </div>
 
                     <div className="border-t border-gray-200 pt-6">
                         <div className="flex justify-between items-center">
-                            <span className="text-lg font-bold text-gray-900">Toplam</span>
-                            <span className="text-xl font-bold text-gray-900">{totalPrice.toLocaleString('tr-TR')} TL</span>
+                            <span className="text-lg font-bold text-gray-900">Toplam (KDV Dahil)</span>
+                            <span className="text-xl font-bold text-gray-900">{(totalPrice * 1.20).toLocaleString('tr-TR')} TL</span>
                         </div>
                     </div>
                 </div>

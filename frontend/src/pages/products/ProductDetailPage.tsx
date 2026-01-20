@@ -51,6 +51,8 @@ export default function ProductDetailPage() {
             image: product.image || '',
             aroma: selectedAromaName,
             size: selectedSizeWeight,
+            slug: product.slug,
+            categorySlug: product.category?.slug,
         }, quantity);
     };
 
@@ -64,6 +66,7 @@ export default function ProductDetailPage() {
                 const BACKEND_BASE_URL = 'http://localhost:3000';
                 const mappedProduct = {
                     ...productData,
+                    slug: productData.slug || slug,
                     image: productData.photos?.[0]?.url ? `${BACKEND_BASE_URL}${productData.photos[0].url}` : '/default-product.jpg',
                     images: productData.photos?.map(p => `${BACKEND_BASE_URL}${p.url}`) || [],
                     expirationDate: productData.expirationDate
@@ -813,7 +816,7 @@ export default function ProductDetailPage() {
                     {PRODUCTS.slice(0, 6).map((item) => (
                         <Link
                             key={item.id}
-                            to={`/urun/${item.slug}`}
+                            to={`/urun/${item.category?.slug || product?.category?.slug || 'urunler'}/${item.slug}`}
                             className="group flex flex-col"
                         >
                             <div className="relative aspect-square mb-1">
@@ -870,7 +873,7 @@ export default function ProductDetailPage() {
                 <div className="flex items-center gap-2 mt-8 text-sm">
                     <Link to="/" className="text-gray-600 hover:text-gray-900">OJS Nutrition</Link>
                     <span className="text-gray-400">&gt;</span>
-                    <Link to={`/kategori/${product?.category?.slug || 'protein'}`} className="text-gray-600 hover:text-gray-900 capitalize">{product?.category?.name || 'Protein'}</Link>
+                    <Link to={`/urunler?kategori=${product?.category?.slug || 'protein'}`} className="text-gray-600 hover:text-gray-900 capitalize">{product?.category?.name || 'Protein'}</Link>
                     <span className="text-gray-400">&gt;</span>
                     <span className="text-gray-600 uppercase">{product?.category?.name ? `${product.category.name.toUpperCase()}LER` : 'PROTEİNLER'}</span>
                     <span className="text-gray-400">&gt;</span>

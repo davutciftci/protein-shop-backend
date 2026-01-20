@@ -107,7 +107,6 @@ export default function CategoryManagement() {
                 </button>
             </div>
 
-            {/* Inline Form */}
             {isEditing && (
                 <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow mb-6 p-6">
                     <h2 className="text-lg font-semibold mb-4">
@@ -181,7 +180,6 @@ export default function CategoryManagement() {
                 </form>
             )}
 
-            {/* Categories Table */}
             <div className="bg-white rounded-lg shadow overflow-hidden">
                 <table className="w-full">
                     <thead className="bg-gray-50 border-b">

@@ -3,6 +3,14 @@ import { ENDPOINTS } from '../api/endpoints';
 import type { ApiResponse, ProductComment, CreateCommentRequest } from '../types';
 
 export const commentService = {
+    async getApprovedComments(limit: number = 20): Promise<ProductComment[]> {
+        const response = await apiClient.get<ApiResponse<ProductComment[]>>(
+            ENDPOINTS.COMMENTS.APPROVED,
+            { params: { limit } }
+        );
+        return response.data.data || [];
+    },
+
     async getProductComments(productId: number): Promise<ProductComment[]> {
         const response = await apiClient.get<ApiResponse<ProductComment[]>>(
             ENDPOINTS.COMMENTS.BY_PRODUCT(productId)

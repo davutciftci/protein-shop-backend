@@ -10,6 +10,8 @@ export interface CartItem {
     aroma?: string;
     size?: string;
     variantId?: number;
+    slug?: string;
+    categorySlug?: string;
 }
 
 interface CartContextType {

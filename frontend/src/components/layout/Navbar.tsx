@@ -189,7 +189,7 @@ export default function Navbar() {
             <div className="hidden md:block bg-gray-900 text-white">
                 <div className="container-custom">
                     <div className="flex items-center justify-between h-8">
-                        <Link to="/protein" className="text-semibold">
+                        <Link to="/urunler?kategori=protein" className="text-semibold">
                             PROTEİN
                         </Link>
                         <Link to="/urunler?kategori=spor-gidalari" className="text-semibold">
@@ -260,7 +260,7 @@ export default function Navbar() {
                         { }
                         <div className="flex flex-col border-b border-gray-300">
                             <Link
-                                to="/protein"
+                                to="/urunler?kategori=protein"
                                 className="flex items-center justify-between px-6 py-4 text-gray-900 hover:bg-gray-50 font-semibold border-b border-gray-200"
                                 onClick={toggleMenu}
                             >
