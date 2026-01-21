@@ -154,12 +154,6 @@ export default function ProductDetailPage() {
         return variant || product.variants[0];
     };
 
-    // Get the price for the currently selected variant
-    const getVariantPrice = () => {
-        const variant = getSelectedVariant();
-        return variant?.price || product.basePrice || 0;
-    };
-
     // Get the serving info for the currently selected variant
     const getVariantServings = () => {
         const variant = getSelectedVariant();
@@ -227,14 +221,35 @@ export default function ProductDetailPage() {
                 </button>
                 {expandedSection === 'nutrition' && (
                     <div className="pb-4">
-                        {/* Nutrition Values */}
-                        <ul className="space-y-2 mb-4">
-                            {product.nutritionInfo?.map((info, index) => (
-                                <li key={index} className="text-sm text-gray-600">
-                                    {info}
-                                </li>
-                            )) || <li className="text-sm text-gray-600">Bilgi mevcut değil</li>}
-                        </ul>
+                        {/* Nutrition Values Table */}
+                        {product.nutritionInfo && product.nutritionInfo.length > 0 ? (
+                            <div className="space-y-3">
+                                <div className="flex justify-between items-center border-b border-gray-300 pb-2">
+                                    <span className="font-bold text-gray-900">BESİN DEĞERLERİ</span>
+                                    <span className="font-bold text-gray-900">25 g servis için</span>
+                                </div>
+                                <div className="space-y-2">
+                                    {product.nutritionInfo.map((info, index) => {
+                                        const parts = info.split(':');
+                                        if (parts.length === 2) {
+                                            return (
+                                                <div key={index} className="flex justify-between items-center border-b border-gray-100 pb-2">
+                                                    <span className="text-sm text-gray-900">{parts[0].trim()}</span>
+                                                    <span className="text-sm text-gray-900">{parts[1].trim()}</span>
+                                                </div>
+                                            );
+                                        }
+                                        return (
+                                            <div key={index} className="text-sm text-gray-600">
+                                                {info}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        ) : (
+                            <p className="text-sm text-gray-600">Bilgi mevcut değil</p>
+                        )}
 
                         {/* Ingredients */}
                         {product.ingredients && (
@@ -261,7 +276,7 @@ export default function ProductDetailPage() {
                         <ul className="space-y-2">
                             {product.usage?.map((item: string, index) => (
                                 <li key={index} className="flex items-start gap-2 text-sm text-gray-600">
-                                    <span className="font-medium text-gray-900">{index + 1}.</span>
+                                    <span className="text-green-500 mt-0.5">•</span>
                                     {item}
                                 </li>
                             )) || <li className="text-sm text-gray-600">Bilgi mevcut değil</li>}
@@ -306,31 +321,7 @@ export default function ProductDetailPage() {
         </div>
     );
 
-    const QuantityPriceRow = () => (
-        <div className="flex items-center gap-4 flex-wrap">
-            { }
-            <div className="flex items-center border border-gray-300 rounded">
-                <button
-                    onClick={() => handleQuantityChange(-1)}
-                    className="w-10 h-10 flex items-center justify-center hover:bg-gray-100 transition-colors text-xl font-medium text-gray-600"
-                    disabled={quantity <= 1}
-                >
-                    -
-                </button>
-                <span className="w-10 h-10 flex items-center justify-center font-medium border-x border-gray-300">{quantity}</span>
-                <button
-                    onClick={() => handleQuantityChange(1)}
-                    className="w-10 h-10 flex items-center justify-center hover:bg-gray-100 transition-colors text-xl font-medium text-gray-600"
-                    disabled={quantity >= 10}
-                >
-                    +
-                </button>
-            </div>
 
-            { }
-            <span className="text-2xl font-bold text-gray-900">{getDiscountedPrice()} TL</span>
-        </div>
-    );
 
     const ProductInfo = () => (
         <>
@@ -404,39 +395,63 @@ export default function ProductDetailPage() {
         )
     );
 
-    const SizeSelection = () => (
-        product.sizes && product.sizes.length > 0 && (
+    const SizeSelection = () => {
+        // Helper function to get discount for a specific size based on selected aroma
+        const getSizeDiscount = (sizeWeight: string) => {
+            if (!product.variants || !product.aromas) return 0;
+
+            const selectedAromaName = product.aromas[selectedAroma]?.name;
+
+            // Find the variant matching selected aroma and this size
+            const variant = product.variants.find(
+                (v: any) => v.aroma === selectedAromaName && v.size === sizeWeight
+            );
+
+            // If no exact match, try to find by size only
+            if (!variant) {
+                const sizeVariant = product.variants.find((v: any) => v.size === sizeWeight);
+                return sizeVariant?.discount ? Number(sizeVariant.discount) : 0;
+            }
+
+            return variant?.discount ? Number(variant.discount) : 0;
+        };
+
+        return product.sizes && product.sizes.length > 0 && (
             <div className="mb-6">
                 <p className="text-sm font-bold text-gray-900 mb-3">BOYUT:</p>
                 <div className="flex flex-wrap gap-3">
-                    {product.sizes.map((size, index) => (
-                        <button
-                            key={index}
-                            onClick={() => setSelectedSize(index)}
-                            className={`relative px-4 py-3 rounded border-2 transition-all min-w-[100px] ${selectedSize === index
-                                ? 'border-gray-800'
-                                : 'border-gray-200 hover:border-gray-300'
-                                }`}
-                        >
-                            {size.discount && size.discount > 0 && (
-                                <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-[#ef0000] text-white text-[10px] font-bold px-2 pb-0.5 rounded whitespace-nowrap mb-2">
-                                    %{size.discount} İNDİRİM
-                                </span>
-                            )}
-                            {selectedSize === index && (
-                                <div className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-blue-900 rounded-full flex items-center justify-center">
-                                    <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                    </svg>
-                                </div>
-                            )}
-                            <div className="text-sm font-bold text-gray-900">{size.weight}</div>
-                        </button>
-                    ))}
+                    {product.sizes.map((size, index) => {
+                        const discount = getSizeDiscount(size.weight);
+
+                        return (
+                            <button
+                                key={index}
+                                onClick={() => setSelectedSize(index)}
+                                className={`relative px-4 py-3 rounded border-2 transition-all min-w-[100px] ${selectedSize === index
+                                    ? 'border-gray-800'
+                                    : 'border-gray-200 hover:border-gray-300'
+                                    }`}
+                            >
+                                {discount > 0 && (
+                                    <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-[#ef0000] text-white text-[10px] font-bold px-2 pb-0.5 rounded whitespace-nowrap mb-2">
+                                        %{discount} İNDİRİM
+                                    </span>
+                                )}
+                                {selectedSize === index && (
+                                    <div className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-blue-900 rounded-full flex items-center justify-center">
+                                        <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                        </svg>
+                                    </div>
+                                )}
+                                <div className="text-sm font-bold text-gray-900">{size.weight}</div>
+                            </button>
+                        );
+                    })}
                 </div>
             </div>
-        )
-    );
+        );
+    };
 
     const AddToCartButton = ({ showPrice = false }: { showPrice?: boolean }) => (
         <div className="flex items-center gap-4">
@@ -507,10 +522,7 @@ export default function ProductDetailPage() {
                                 +
                             </button>
                         </div>
-                        <button onClick={handleAddToCart} className="flex-1 flex items-center justify-center gap-3 bg-gray-900 hover:bg-gray-800 text-white font-bold py-3 px-8 rounded transition-colors">
-                            <ShoppingCart className="w-5 h-5" />
-                            SEPETE EKLE
-                        </button>
+                        <AddToCartButton />
                     </div>
 
                     <ShippingIcons />
@@ -586,10 +598,7 @@ export default function ProductDetailPage() {
                             <div className="flex justify-end mb-2">
                                 <span className="text-sm font-bold text-gray-500">{getVariantServings()} TL /Servis</span>
                             </div>
-                            <button onClick={handleAddToCart} className="w-full flex items-center justify-center gap-3 bg-gray-900 hover:bg-gray-800 text-white font-bold py-3 rounded transition-colors">
-                                <ShoppingCart className="w-5 h-5" />
-                                SEPETE EKLE
-                            </button>
+                            <AddToCartButton />
                         </div>
                     </div>
 
@@ -621,8 +630,8 @@ export default function ProductDetailPage() {
                             <AromaSelection />
                             <SizeSelection />
 
-                            { }
-                            <div className="flex items-baseline justify-between mb-4">
+                            {/* Fiyat */}
+                            <div className="flex items-baseline justify-between mb-2">
                                 <div className="flex items-center gap-2">
                                     <span className="text-3xl font-bold text-gray-900">{getDiscountedPrice()} TL</span>
                                     {hasDiscount() && (
@@ -630,6 +639,11 @@ export default function ProductDetailPage() {
                                     )}
                                 </div>
                                 <span className="text-sm font-bold text-gray-500">{getVariantServings()} TL /Servis</span>
+                            </div>
+
+                            {/* KDV Bilgisi */}
+                            <div className="text-xs text-gray-500 mb-4">
+                                (KDV Dahil - KDV Hariç: {(getDiscountedPrice() / 1.20).toFixed(2)} TL)
                             </div>
 
                             { }
@@ -651,10 +665,7 @@ export default function ProductDetailPage() {
                                         +
                                     </button>
                                 </div>
-                                <button onClick={handleAddToCart} className="flex-1 flex items-center justify-center gap-3 bg-gray-900 hover:bg-gray-800 text-white font-bold py-3 px-8 rounded transition-colors">
-                                    <ShoppingCart className="w-5 h-5" />
-                                    SEPETE EKLE
-                                </button>
+                                <AddToCartButton />
                             </div>
                         </div>
                     </div>
@@ -699,7 +710,7 @@ export default function ProductDetailPage() {
                     { }
                     <div className="flex-1 space-y-2">
                         {(() => {
-                            const reviews = product.productReviews || [];
+                            const reviews = product.comments || [];
                             const totalReviews = reviews.length;
                             const ratingCounts = [0, 0, 0, 0, 0];
                             reviews.forEach((r: any) => {
@@ -733,8 +744,8 @@ export default function ProductDetailPage() {
 
                 { }
                 <div className="space-y-4 mb-8">
-                    {(product.productReviews && product.productReviews.length > 0) ? (
-                        product.productReviews.map((review: any, index: number) => (
+                    {(product.comments && product.comments.length > 0) ? (
+                        product.comments.map((review: any, index: number) => (
                             <div
                                 key={index}
                                 className={`bg-[#F7F7F7] px-6 py-8 rounded-[30px] ${index >= 3 ? 'hidden md:block' : ''}`}

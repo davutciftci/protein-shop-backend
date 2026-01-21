@@ -98,12 +98,26 @@ export default function CartPage() {
                     )}
                 </div>
 
-                { }
-                <div className="border-t p-4 space-y-4">
-                    <div className="flex items-center justify-between">
-                        <span className="text-gray-600">TOPLAM</span>
-                        <span className="font-bold text-gray-900">{totalPrice} TL</span>
+                {/* Fiyat Detayları */}
+                <div className="border-t p-4 space-y-3">
+                    {/* Ara Toplam (KDV Hariç) */}
+                    <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Ara Toplam (KDV Hariç)</span>
+                        <span className="text-gray-900">{(totalPrice / 1.20).toFixed(2)} TL</span>
                     </div>
+
+                    {/* KDV Tutarı */}
+                    <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">KDV (%20)</span>
+                        <span className="text-gray-900">{(totalPrice - totalPrice / 1.20).toFixed(2)} TL</span>
+                    </div>
+
+                    {/* Toplam (KDV Dahil) */}
+                    <div className="flex items-center justify-between font-bold border-t pt-3">
+                        <span className="text-gray-900">TOPLAM (KDV Dahil)</span>
+                        <span className="text-gray-900">{totalPrice.toFixed(2)} TL</span>
+                    </div>
+
                     <button
                         className="w-full py-3 bg-gray-900 text-white font-medium rounded flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors"
                     >

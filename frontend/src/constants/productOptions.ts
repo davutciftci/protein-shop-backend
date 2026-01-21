@@ -2,17 +2,17 @@
 export const AROMAS = [
     { name: 'Limonata', color: '#FFD700' },
     { name: 'Yeşil Elma', color: '#7CFC00' },
-    { name: 'Tiger Blood', color: '#FF6B35' },
-    { name: 'Dragon Blood', color: '#DC143C' },
+    { name: 'Tiger Blood', color: '#FF4500' },
+    { name: 'Dragon Blood', color: '#8B0000' },
     { name: 'Çikolata', color: '#5D3A1A' },
-    { name: 'Çilek', color: '#FF4D6D' },
+    { name: 'Çilek', color: '#DC143C' },
     { name: 'Cookie & Cream', color: '#D2B48C' },
     { name: 'Muz', color: '#FFE135' },
     { name: 'Choco Nut', color: '#6B4423' },
     { name: 'Birthday Cake', color: '#FFB6C1' },
     { name: 'Bisküvi', color: '#C4A35A' },
     { name: 'Salted Caramel', color: '#C68E17' },
-    { name: 'Blueberry', color: '#4169E1' },
+    { name: 'Blueberry', color: '#5B4B8A' },
 ];
 
 // Size options for product variants

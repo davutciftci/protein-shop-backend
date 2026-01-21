@@ -8,7 +8,6 @@ export const validate = (schema: ZodSchema) => {
             schema.parse(req.body);
             next();
         } catch (error: unknown) {
-            // Type guard for Zod errors
             if (error && typeof error === 'object' && 'issues' in error) {
                 const zodError = error as { issues: Array<{ path: (string | number)[]; message: string }> };
                 const errors = zodError.issues?.map((err) => ({
@@ -17,7 +16,6 @@ export const validate = (schema: ZodSchema) => {
                 }));
                 next(new ValidationError('Validasyon hatası', errors));
             } else {
-                // If it's not a Zod error, pass the original error to the next middleware
                 next(error);
             }
         }

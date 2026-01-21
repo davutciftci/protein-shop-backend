@@ -149,8 +149,9 @@ export default function HomePage() {
                     ) : (
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
                             {products.map((product, index) => {
+                                const BACKEND_BASE_URL = 'http://localhost:3000';
                                 const productImage = product.photos && product.photos.length > 0
-                                    ? product.photos[0].url
+                                    ? `${BACKEND_BASE_URL}${product.photos[0].url}`
                                     : '/images/placeholder-product.jpg';
 
                                 const hasDiscount = product.variants && product.variants.some(v => v.discount && v.discount > 0);
@@ -173,7 +174,7 @@ export default function HomePage() {
                                         className="group flex flex-col"
                                         style={{ order: index }}
                                     >
-                                        <div className="relative aspect-square rounded-sm mb-4 overflow-hidden bg-gray-100">
+                                        <div className="relative aspect-square rounded-sm mb-4 overflow-hidde">
                                             <img
                                                 src={productImage}
                                                 alt={product.name}

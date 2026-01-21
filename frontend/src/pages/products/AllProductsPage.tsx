@@ -74,8 +74,9 @@ export default function AllProductsPage() {
     };
 
     const getProductImage = (product: Product) => {
+        const BACKEND_BASE_URL = 'http://localhost:3000';
         if (product.photos && product.photos.length > 0) {
-            return product.photos[0].url;
+            return `${BACKEND_BASE_URL}${product.photos[0].url}`;
         }
         return '/images/placeholder-product.jpg';
     };
@@ -124,7 +125,7 @@ export default function AllProductsPage() {
                                     to={`/urun/${product.category?.slug || 'urunler'}/${product.slug}`}
                                     className="group flex flex-col"
                                 >
-                                    <div className="relative aspect-square mb-2 bg-gray-100 rounded-lg">
+                                    <div className="relative aspect-square mb-2  rounded-lg">
                                         <img
                                             src={image}
                                             alt={product.name}

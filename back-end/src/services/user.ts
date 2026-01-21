@@ -10,24 +10,15 @@ export const createUser = async (userData: {
     lastName: string;
     email: string;
     password: string;
-    tcNo: string;
     birthDay: Date;
 }) => {
 
-    const existingUser = await prisma.user.findFirst({
-        where: {
-            OR: [
-                { email: userData.email },
-                { tcNo: userData.tcNo }
-            ]
-        }
+    const existingUser = await prisma.user.findUnique({
+        where: { email: userData.email }
     });
 
     if (existingUser) {
-        if (existingUser.email === userData.email) {
-            throw new ConflictError('Bu email zaten kullanılıyor');
-        }
-        throw new ConflictError('Bu TC numarası zaten kullanılıyor');
+        throw new ConflictError('Bu email zaten kullanılıyor');
     }
     const hashedPassword = await bcrypt.hash(userData.password, 10);
 
@@ -37,7 +28,6 @@ export const createUser = async (userData: {
             lastName: userData.lastName,
             email: userData.email,
             hashedPassword,
-            tcNo: userData.tcNo,
             birthDay: userData.birthDay
         }
     })

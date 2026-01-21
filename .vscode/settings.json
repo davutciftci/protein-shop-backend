@@ -1,0 +1,4 @@
+{
+    "prisma.showPreviewFeatureWarnings": false,
+    "prisma.showPrisma7Warning": false
+}

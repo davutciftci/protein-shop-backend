@@ -9,13 +9,10 @@ import { createCategorySchema, updateCategorySchema } from '../validators/catego
 
 const router = Router();
 
-router.get('', getCategories); // tüm kategorileri getirir
-router.get('/:id', getCategory) // id'ye göre kategori getirir
-// admin yetkisi olmadan kategorileri oluşturamaz 
+router.get('', getCategories);
+router.get('/:id', getCategory)
 router.post('/', authenticate, requireRole(UserRole.ADMIN), validate(createCategorySchema), createdNewCategory)
-// admin yetkisi olmadan kategorileri güncelleme yetkisi yoktur
 router.put('/:id', authenticate, requireRole(UserRole.ADMIN), validate(updateCategorySchema), updateCategoryById);
-// admin yetkisi olmadan kategorileri silme yetkisi yoktur
 router.delete('/:id', authenticate, requireRole(UserRole.ADMIN), deleteCategoryById);
 
 export default router;

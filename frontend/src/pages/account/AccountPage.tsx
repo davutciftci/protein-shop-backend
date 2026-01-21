@@ -1,19 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { VscSettings } from 'react-icons/vsc';
 import { TfiPackage } from 'react-icons/tfi';
 import { CiLocationOn } from 'react-icons/ci';
 import { MdDeleteOutline } from 'react-icons/md';
 import { ChevronDown } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
+import { addressService } from '../../services';
+import type { UserAddress } from '../../types';
 
-interface Address {
-    id: number;
-    title: string;
-    fullAddress: string;
-}
+
 
 export default function AccountPage() {
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [activeTab, setActiveTab] = useState('account');
     const [selectedCountry, setSelectedCountry] = useState({ code: '+90', flag: 'tr', name: 'Türkiye' });
     const [formData, setFormData] = useState({
@@ -23,19 +23,47 @@ export default function AccountPage() {
         email: ''
     });
 
+    // Kullanıcı bilgilerini formData'ya yükle
+    useEffect(() => {
+        if (user) {
+            setFormData({
+                firstName: user.firstName || '',
+                lastName: user.lastName || '',
+                phone: '',  // Telefon şu an user objemizde yok
+                email: user.email || ''
+            });
+        }
+    }, [user]);
 
-    const [addresses, setAddresses] = useState<Address[]>([]);
+
+    const [addresses, setAddresses] = useState<UserAddress[]>([]);
     const [showAddressForm, setShowAddressForm] = useState(false);
     const [editingAddressId, setEditingAddressId] = useState<number | null>(null);
     const [addressFormData, setAddressFormData] = useState({
         title: '',
         firstName: '',
         lastName: '',
-        address: '',
+        phoneNumber: '',
+        addressLine1: '',
         city: '',
         district: '',
-        phone: ''
+        postalCode: ''
     });
+
+    // Adresleri veritabanından çek
+    useEffect(() => {
+        const fetchAddresses = async () => {
+            if (user) {
+                try {
+                    const fetchedAddresses = await addressService.getMyAddresses();
+                    setAddresses(fetchedAddresses);
+                } catch (error) {
+                    console.error('Adresler yüklenemedi:', error);
+                }
+            }
+        };
+        fetchAddresses();
+    }, [user]);
 
     const countries = [
         { code: '+90', flag: 'tr', name: 'Türkiye' },
@@ -81,60 +109,92 @@ export default function AccountPage() {
             title: '',
             firstName: '',
             lastName: '',
-            address: '',
+            phoneNumber: '',
+            addressLine1: '',
             city: '',
             district: '',
-            phone: ''
+            postalCode: ''
         });
     };
 
-    const handleEditAddress = (address: Address) => {
+    const handleEditAddress = (address: UserAddress) => {
         setShowAddressForm(true);
         setEditingAddressId(address.id);
-        const [line1, line2] = address.fullAddress.split('\n');
+        // fullName'i firstName ve lastName'e ayır
+        const nameParts = address.fullName.split(' ');
+        const firstName = nameParts[0] || '';
+        const lastName = nameParts.slice(1).join(' ') || '';
+
         setAddressFormData({
             title: address.title,
-            firstName: '',
-            lastName: '',
-            address: line1 || '',
-            city: line2?.includes('İstanbul') ? 'İstanbul' : '',
-            district: line2?.includes('Ataşehir') ? 'Ataşehir' : '',
-            phone: ''
+            firstName,
+            lastName,
+            phoneNumber: address.phoneNumber,
+            addressLine1: address.addressLine1,
+            city: address.city,
+            district: address.district,
+            postalCode: address.postalCode || ''
         });
     };
 
-    const handleDeleteAddress = (id: number) => {
-        setAddresses(addresses.filter(addr => addr.id !== id));
+    const handleDeleteAddress = async (id: number) => {
+        try {
+            await addressService.deleteAddress(id);
+            const updatedAddresses = await addressService.getMyAddresses();
+            setAddresses(updatedAddresses);
+        } catch (error) {
+            console.error('Adres silinemedi:', error);
+            alert('Adres silinirken bir hata oluştu');
+        }
     };
 
-    const handleAddressSubmit = (e: React.FormEvent) => {
+    const handleAddressSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const newAddress: Address = {
-            id: editingAddressId || Date.now(),
-            title: addressFormData.title,
-            fullAddress: `${addressFormData.address}\n${addressFormData.district}, ${addressFormData.city}, Türkiye`
-        };
+        try {
+            // firstName ve lastName'i birleştir
+            const fullName = `${addressFormData.firstName.trim()} ${addressFormData.lastName.trim()}`.trim();
 
-        if (editingAddressId) {
-            setAddresses(addresses.map(addr =>
-                addr.id === editingAddressId ? newAddress : addr
-            ));
-        } else {
-            setAddresses([...addresses, newAddress]);
+            const addressData = {
+                title: addressFormData.title,
+                fullName,
+                phoneNumber: addressFormData.phoneNumber,
+                addressLine1: addressFormData.addressLine1,
+                city: addressFormData.city,
+                district: addressFormData.district,
+                postalCode: addressFormData.postalCode
+            };
+
+            if (editingAddressId) {
+                // Güncelleme
+                await addressService.updateAddress(editingAddressId, addressData);
+            } else {
+                // Yeni adres oluştur
+                await addressService.createAddress(addressData);
+            }
+
+            // Adresleri yeniden yükle
+            const updatedAddresses = await addressService.getMyAddresses();
+            setAddresses(updatedAddresses);
+
+            // Formu temizle
+            setShowAddressForm(false);
+            setEditingAddressId(null);
+            setAddressFormData({
+                title: '',
+                firstName: '',
+                lastName: '',
+                phoneNumber: '',
+                addressLine1: '',
+                city: '',
+                district: '',
+                postalCode: ''
+            });
+        } catch (error: any) {
+            console.error('Adres kaydedilemedi:', error);
+            console.error('Hata detayı:', error.response?.data);
+            alert(`Adres kaydedilirken bir hata oluştu: ${error.response?.data?.message || error.message}`);
         }
-
-        setShowAddressForm(false);
-        setEditingAddressId(null);
-        setAddressFormData({
-            title: '',
-            firstName: '',
-            lastName: '',
-            address: '',
-            city: '',
-            district: '',
-            phone: ''
-        });
     };
 
     const EmptyAddressComponent = () => (
@@ -162,6 +222,7 @@ export default function AccountPage() {
                         required
                     />
                 </div>
+
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -199,8 +260,8 @@ export default function AccountPage() {
                         *Adres
                     </label>
                     <textarea
-                        name="address"
-                        value={addressFormData.address}
+                        name="addressLine1"
+                        value={addressFormData.addressLine1}
                         onChange={handleAddressInputChange}
                         rows={4}
                         className="w-full px-4 py-3 border bg-gray-100 border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all resize-none"
@@ -260,12 +321,26 @@ export default function AccountPage() {
                         </div>
                         <input
                             type="tel"
-                            name="phone"
-                            value={addressFormData.phone}
+                            name="phoneNumber"
+                            value={addressFormData.phoneNumber}
                             onChange={handleAddressInputChange}
                             className="flex-1 px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
                         />
                     </div>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Posta Kodu
+                    </label>
+                    <input
+                        type="text"
+                        name="postalCode"
+                        value={addressFormData.postalCode}
+                        onChange={handleAddressInputChange}
+                        placeholder="34000"
+                        className="w-full px-4 py-3 border bg-gray-100 border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
+                    />
                 </div>
 
                 <div className="flex justify-end">
@@ -300,7 +375,7 @@ export default function AccountPage() {
                             <div key={address.id} className="border border-gray-300 rounded-lg p-6 flex flex-col min-h-[180px]">
                                 <h3 className="font-bold text-gray-900 mb-3">{address.title}</h3>
                                 <p className="text-sm text-gray-700 mb-4 leading-relaxed whitespace-pre-line flex-1">
-                                    {address.fullAddress}
+                                    {address.addressLine1}
                                 </p>
                                 <div className="flex justify-between items-center gap-4 pt-4 border-t border-gray-200">
                                     <button
@@ -345,6 +420,7 @@ export default function AccountPage() {
                             />
                         </div>
 
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -381,8 +457,8 @@ export default function AccountPage() {
                                 *Adres
                             </label>
                             <textarea
-                                name="address"
-                                value={addressFormData.address}
+                                name="addressLine1"
+                                value={addressFormData.addressLine1}
                                 onChange={handleAddressInputChange}
                                 rows={4}
                                 className="w-full px-4 py-3 border bg-gray-100 border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all resize-none"
@@ -442,8 +518,8 @@ export default function AccountPage() {
                                 </div>
                                 <input
                                     type="tel"
-                                    name="phone"
-                                    value={addressFormData.phone}
+                                    name="phoneNumber"
+                                    value={addressFormData.phoneNumber}
                                     onChange={handleAddressInputChange}
                                     className="flex-1 px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
                                 />
@@ -532,7 +608,7 @@ export default function AccountPage() {
                                             </label>
                                             <input
                                                 type="text"
-                                                name="firstName"
+                                                name="fullName"
                                                 value={formData.firstName}
                                                 onChange={handleInputChange}
                                                 className="w-full px-4 py-3 border bg-gray-100 border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
@@ -545,7 +621,7 @@ export default function AccountPage() {
                                             </label>
                                             <input
                                                 type="text"
-                                                name="lastName"
+                                                name="fullName"
                                                 value={formData.lastName}
                                                 onChange={handleInputChange}
                                                 className="w-full px-4 py-3 border bg-gray-100 border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
@@ -583,7 +659,7 @@ export default function AccountPage() {
                                             </div>
                                             <input
                                                 type="tel"
-                                                name="phone"
+                                                name="phoneNumber"
                                                 value={formData.phone}
                                                 onChange={handleInputChange}
                                                 className="flex-1 px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
@@ -601,7 +677,8 @@ export default function AccountPage() {
                                             name="email"
                                             value={formData.email}
                                             onChange={handleInputChange}
-                                            className="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
+                                            disabled
+                                            className="w-full px-4 py-3 bg-gray-200 border border-gray-300 rounded-lg cursor-not-allowed opacity-60"
                                             placeholder="iletisim@onlyjs.com"
                                         />
                                     </div>
@@ -682,6 +759,7 @@ export default function AccountPage() {
                                                 />
                                             </div>
 
+
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                 <div>
                                                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -718,8 +796,8 @@ export default function AccountPage() {
                                                     *Adres
                                                 </label>
                                                 <textarea
-                                                    name="address"
-                                                    value={addressFormData.address}
+                                                    name="addressLine1"
+                                                    value={addressFormData.addressLine1}
                                                     onChange={handleAddressInputChange}
                                                     rows={4}
                                                     className="w-full px-4 py-3 border bg-gray-100 border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all resize-none"
@@ -779,8 +857,8 @@ export default function AccountPage() {
                                                     </div>
                                                     <input
                                                         type="tel"
-                                                        name="phone"
-                                                        value={addressFormData.phone}
+                                                        name="phoneNumber"
+                                                        value={addressFormData.phoneNumber}
                                                         onChange={handleAddressInputChange}
                                                         className="flex-1 px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
                                                     />
@@ -817,7 +895,7 @@ export default function AccountPage() {
                                                         <div key={address.id} className="border border-gray-300 rounded-lg p-6 flex flex-col min-h-[180px]">
                                                             <h3 className="font-bold text-gray-900 mb-3">{address.title}</h3>
                                                             <p className="text-sm text-gray-700 mb-4 leading-relaxed whitespace-pre-line flex-1">
-                                                                {address.fullAddress}
+                                                                {address.addressLine1}
                                                             </p>
                                                             <div className="flex justify-between items-center gap-4 pt-4 border-t border-gray-200">
                                                                 <button
@@ -862,6 +940,7 @@ export default function AccountPage() {
                                                         />
                                                     </div>
 
+
                                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                         <div>
                                                             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -898,8 +977,8 @@ export default function AccountPage() {
                                                             *Adres
                                                         </label>
                                                         <textarea
-                                                            name="address"
-                                                            value={addressFormData.address}
+                                                            name="addressLine1"
+                                                            value={addressFormData.addressLine1}
                                                             onChange={handleAddressInputChange}
                                                             rows={4}
                                                             className="w-full px-4 py-3 border bg-gray-100 border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all resize-none"
@@ -959,8 +1038,8 @@ export default function AccountPage() {
                                                             </div>
                                                             <input
                                                                 type="tel"
-                                                                name="phone"
-                                                                value={addressFormData.phone}
+                                                                name="phoneNumber"
+                                                                value={addressFormData.phoneNumber}
                                                                 onChange={handleAddressInputChange}
                                                                 className="flex-1 px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
                                                             />

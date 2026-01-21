@@ -106,7 +106,7 @@ export default function Navbar() {
 
                                 { }
                                 {isAccountDropdownOpen && (
-                                    <div className="absolute right-0 w-[120px] text-center justify-center bg-white border border-gray-200 rounded shadow-lg z-50">
+                                    <div className="absolute right-0 w-[95px] text-center justify-center bg-white border border-gray-200 rounded shadow-lg z-50">
                                         {isAuthenticated ? (
                                             <>
                                                 <Link

@@ -6,7 +6,6 @@ export interface User {
     lastName: string;
     email: string;
     role: UserRole;
-    tcNo?: string;
     birth_date?: string;
     createdAt?: string;
     updatedAt?: string;
@@ -21,7 +20,6 @@ export interface RegisterRequest {
     firstName: string;
     lastName: string;
     email: string;
-    tcNo: string;
     password: string;
     birth_date: string;
 }

@@ -12,8 +12,16 @@ export const getAllShippingMethods = asyncHandler(async (req: Request, res: Resp
         }
     });
 
+    // Encoding hatası düzeltmesi
+    const fixedMethods = shippingMethods.map(method => ({
+        ...method,
+        deliveryDays: method.deliveryDays
+            .replace(/i\?\?/g, 'iş')
+            .replace(/g\?\?n\?\?/g, 'günü')
+    }));
+
     return res.status(200).json({
         status: 'success',
-        data: shippingMethods
+        data: fixedMethods
     });
 });

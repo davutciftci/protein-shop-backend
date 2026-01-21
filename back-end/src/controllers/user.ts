@@ -10,19 +10,17 @@ interface RegisterRequest {
     firstName: string;
     lastName: string;
     email: string;
-    tcNo: string;
     password: string;
     birth_date: string;
 }
 
 export const register = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { firstName, lastName, email, tcNo, password, birth_date } = req.body as RegisterRequest;
+        const { firstName, lastName, email, password, birth_date } = req.body as RegisterRequest;
         const user = await createUser({
             firstName,
             lastName,
             email,
-            tcNo,
             password,
             birthDay: new Date(birth_date)
         });
@@ -68,7 +66,6 @@ export const getProfile = asyncHandler(async (req: Request, res: Response, next:
                 firstName: true,
                 lastName: true,
                 email: true,
-                tcNo: true,
                 birthDay: true,
                 role: true,
                 createdAt: true,

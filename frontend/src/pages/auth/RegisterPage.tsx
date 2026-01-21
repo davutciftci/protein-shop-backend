@@ -7,7 +7,6 @@ export default function RegisterPage() {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [tcNo, setTcNo] = useState('');
     const [birth_date, setBirthDate] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +25,6 @@ export default function RegisterPage() {
                 lastName,
                 email,
                 password,
-                tcNo,
                 birth_date,
             });
             navigate('/giris');
@@ -91,22 +89,7 @@ export default function RegisterPage() {
                             </div>
                         </div>
 
-                        <div>
-                            <label htmlFor="tcNo" className="block text-sm text-gray-700 mb-2">
-                                *TC Kimlik No
-                            </label>
-                            <input
-                                type="text"
-                                id="tcNo"
-                                value={tcNo}
-                                onChange={(e) => setTcNo(e.target.value)}
-                                className="w-full px-4 py-3 rounded-[4px] border border-gray-200 bg-gray-100 text-sm focus:outline-none focus:border-gray-300"
-                                required
-                                maxLength={11}
-                                pattern="[0-9]{11}"
-                                disabled={isLoading}
-                            />
-                        </div>
+
 
                         <div>
                             <label htmlFor="birth_date" className="block text-sm text-gray-700 mb-2">

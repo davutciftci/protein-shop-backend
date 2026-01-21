@@ -9,7 +9,6 @@ export const errorHandler = (
     res: Response,
     next: NextFunction
 ) => {
-    // ValidationError için özel handling - errors dizisi ile
     if (err instanceof ValidationError) {
         return res.status(err.statusCode).json({
             status: 'error',

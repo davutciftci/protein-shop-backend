@@ -43,8 +43,9 @@ export default function ProteinPage() {
 
     // Ürün görseli helper
     const getProductImage = (product: Product) => {
+        const BACKEND_BASE_URL = 'http://localhost:3000';
         if (product.photos && product.photos.length > 0) {
-            return product.photos[0].url;
+            return `${BACKEND_BASE_URL}${product.photos[0].url}`;
         }
         return '/images/placeholder-product.jpg';
     };

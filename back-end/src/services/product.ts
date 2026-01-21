@@ -354,7 +354,6 @@ export const createProduct = async (data: {
             ingredients: data.ingredients,
             nutritionValues: data.nutritionValues,
             aminoAcids: data.aminoAcids,
-            // Varyantları ürünle birlikte oluştur
             variants: data.variants && data.variants.length > 0 ? {
                 create: data.variants.map(v => ({
                     name: v.name,
@@ -367,7 +366,6 @@ export const createProduct = async (data: {
                     servings: v.servings,
                 }))
             } : undefined,
-            // Fotoğrafları ürünle birlikte oluştur
             photos: data.photos && data.photos.length > 0 ? {
                 create: data.photos.map((p, index) => ({
                     url: p.url,
@@ -467,14 +465,11 @@ export const updateProduct = async (
             : undefined,
     };
 
-    // If variants are provided, delete existing and create new ones
     if (variants && variants.length > 0) {
-        // Delete existing variants
         await prisma.productVariant.deleteMany({
             where: { productId: id },
         });
 
-        // Create new variants
         await prisma.productVariant.createMany({
             data: variants.map(v => ({
                 productId: id,
@@ -490,14 +485,11 @@ export const updateProduct = async (
         });
     }
 
-    // If photos are provided, delete existing and create new ones
     if (photos && photos.length > 0) {
-        // Delete existing photos
         await prisma.productPhoto.deleteMany({
             where: { productId: id },
         });
 
-        // Create new photos
         await prisma.productPhoto.createMany({
             data: photos.map((p, index) => ({
                 productId: id,

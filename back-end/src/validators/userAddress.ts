@@ -13,17 +13,13 @@ export const createAddressSchema = z.object({
 
     phoneNumber: z
         .string({ message: 'Telefon numarası gerekli' })
-        .regex(/^[0-9]{10}$/, 'Telefon numarası 10 haneli olmalı (örn: 5551234567)'),
+        .min(10, 'Telefon numarası en az 10 karakter olmalı')
+        .max(14, 'Telefon numarası en fazla 14 karakter olmalı'),
 
     addressLine1: z
         .string({ message: 'Adres satırı gerekli' })
         .min(10, 'Adres en az 10 karakter olmalı')
         .max(500, 'Adres en fazla 500 karakter olmalı'),
-
-    addressLine2: z
-        .string()
-        .max(500, 'Ek adres en fazla 500 karakter olmalı')
-        .optional(),
 
     city: z
         .string({ message: 'Şehir gerekli' })
@@ -37,8 +33,10 @@ export const createAddressSchema = z.object({
 
     postalCode: z
         .string()
-        .regex(/^[0-9]{5}$/, 'Posta kodu 5 haneli olmalı')
-        .optional(),
+        .min(5, 'Posta kodu en az 5 karakter olmalı')
+        .max(10, 'Posta kodu en fazla 10 karakter olmalı')
+        .optional()
+        .or(z.literal('')),
 
     isDefault: z
         .boolean()

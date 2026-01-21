@@ -33,10 +33,10 @@ const fileFilter = (req: Request, file: Express.Multer.File, cb: multer.FileFilt
     const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/jpg'];
 
     if (allowedMimeTypes.includes(file.mimetype)) {
-        cb(null, true); // Dosyayı kabul et
+        cb(null, true);
     } else {
         console.log('[Multer] file rejected:', file.originalname);
-        cb(new Error("Sadece resim dosyaları yüklenebilir (jpg, jpeg, png, gif, webp)")); // Dosyayı reddet
+        cb(new Error("Sadece resim dosyaları yüklenebilir (jpg, jpeg, png, gif, webp)"));
     }
 };
 
@@ -44,6 +44,6 @@ export const upload = multer({
     storage: storage,
     fileFilter: fileFilter,
     limits: {
-        fileSize: 5 * 1024 * 1024 // 5MB limit
+        fileSize: 5 * 1024 * 1024
     }
 });

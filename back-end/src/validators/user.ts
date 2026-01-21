@@ -15,11 +15,6 @@ export const registerSchema = z.object({
         .string({ message: 'Email gerekli' })
         .email('Geçerli bir email adresi girin'),
 
-    tcNo: z
-        .string({ message: 'TC Kimlik numarası gerekli' })
-        .length(11, 'TC Kimlik numarası 11 haneli olmalı')
-        .regex(/^\d+$/, 'TC Kimlik numarası sadece rakamlardan oluşmalı'),
-
     password: z
         .string({ message: 'Şifre gerekli' })
         .min(6, 'Şifre en az 6 karakter olmalı')
