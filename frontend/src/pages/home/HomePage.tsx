@@ -4,14 +4,7 @@ import { Star } from 'lucide-react';
 import { productService } from '../../services/productService';
 import type { Product } from '../../types';
 
-const PRODUCT_CATEGORIES = [
-    { name: 'Protein Tozları', icon: '💪', link: '/urunler?kategori=protein' },
-    { name: 'Amino Asitler', icon: '🧬', link: '/urunler?kategori=amino' },
-    { name: 'Vitaminler', icon: '💊', link: '/urunler?kategori=vitamin' },
-    { name: 'Spor Gıdaları', icon: '🏋️', link: '/urunler?kategori=spor' },
-    { name: 'Sağlıklı Atıştırmalıklar', icon: '🍪', link: '/urunler?kategori=atistirmalik' },
-    { name: 'Kilo Kontrolü', icon: '⚖️', link: '/urunler?kategori=kilo' },
-];
+
 
 const CATEGORY_CARDS = [
     {
@@ -59,16 +52,8 @@ const CATEGORY_CARDS = [
 ];
 
 export default function HomePage() {
-    const [isMobile, setIsMobile] = useState(false);
     const [products, setProducts] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 1024);
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
 
     useEffect(() => {
         const fetchProducts = async () => {
