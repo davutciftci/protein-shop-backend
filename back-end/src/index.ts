@@ -53,7 +53,6 @@ app.use('/api/payments', paymentRouter);
 app.use('/api/shipping', shippingRouter);
 app.use('/api/admin/stats', adminStatsRouter);
 
-// Test endpoint (health check)
 app.get('/health', (req: Request, res: Response) => {
     res.status(200).json({
         status: 'success',
@@ -61,7 +60,6 @@ app.get('/health', (req: Request, res: Response) => {
     });
 });
 
-// Error handler
 app.use(errorHandler);
 
 app.listen(PORT, () => {

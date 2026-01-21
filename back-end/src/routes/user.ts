@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { getProfile, login, register, requestPasswordResetController, resetPasswordController } from "../controllers/user";
+import { getProfile, login, register, updateProfile, requestPasswordResetController, resetPasswordController } from "../controllers/user";
 import { authenticate, AuthenticatedRequest } from "../middlewares/auth";
-import { loginSchema, registerSchema, requestPasswordResetSchema, resetPasswordSchema } from "../validators/user";
+import { loginSchema, registerSchema, requestPasswordResetSchema, resetPasswordSchema, updateProfileSchema } from "../validators/user";
 import { validate } from "../middlewares/validate";
 import { UserRole } from '../../generated/prisma';
 import { requireRole } from "../middlewares/role";
@@ -14,6 +14,7 @@ router.post('/forgot-password', validate(requestPasswordResetSchema), requestPas
 router.post('/reset-password', validate(resetPasswordSchema), resetPasswordController);
 router.get('/profile', authenticate, getProfile);
 router.get('/me', authenticate, getProfile);
+router.patch('/profile', authenticate, validate(updateProfileSchema), updateProfile);
 router.get('/admin-only', authenticate, requireRole(UserRole.ADMIN), (req, res) => {
     res.json({
         status: 'success',

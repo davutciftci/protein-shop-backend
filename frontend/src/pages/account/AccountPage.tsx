@@ -29,7 +29,7 @@ export default function AccountPage() {
             setFormData({
                 firstName: user.firstName || '',
                 lastName: user.lastName || '',
-                phone: '',  // Telefon şu an user objemizde yok
+                phone: (user as any).phoneNumber || (user as any).phone || '',
                 email: user.email || ''
             });
         }
@@ -89,9 +89,46 @@ export default function AccountPage() {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Form data:', formData);
+
+        try {
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                alert('Lütfen tekrar giriş yapın');
+                return;
+            }
+
+            const requestBody: any = {};
+
+            if (formData.firstName) requestBody.firstName = formData.firstName;
+            if (formData.lastName) requestBody.lastName = formData.lastName;
+            if (formData.phone && formData.phone.trim() !== '') {
+                requestBody.phoneNumber = formData.phone;
+            }
+
+            const response = await fetch('http://localhost:3000/api/user/profile', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Profil güncellenemedi');
+            }
+
+            await response.json();
+            alert('Bilgileriniz başarıyla güncellendi!');
+
+            window.location.reload();
+        } catch (error: any) {
+            console.error('Profil güncellenirken hata:', error);
+            alert(error.message || 'Bir hata oluştu, lütfen tekrar deneyin');
+        }
     };
 
     const handleAddressInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -152,7 +189,6 @@ export default function AccountPage() {
         e.preventDefault();
 
         try {
-            // firstName ve lastName'i birleştir
             const fullName = `${addressFormData.firstName.trim()} ${addressFormData.lastName.trim()}`.trim();
 
             const addressData = {
@@ -166,18 +202,14 @@ export default function AccountPage() {
             };
 
             if (editingAddressId) {
-                // Güncelleme
                 await addressService.updateAddress(editingAddressId, addressData);
             } else {
-                // Yeni adres oluştur
                 await addressService.createAddress(addressData);
             }
 
-            // Adresleri yeniden yükle
             const updatedAddresses = await addressService.getMyAddresses();
             setAddresses(updatedAddresses);
 
-            // Formu temizle
             setShowAddressForm(false);
             setEditingAddressId(null);
             setAddressFormData({
@@ -258,7 +290,7 @@ export default function AccountPage() {
                                             </label>
                                             <input
                                                 type="text"
-                                                name="fullName"
+                                                name="firstName"
                                                 value={formData.firstName}
                                                 onChange={handleInputChange}
                                                 className="w-full px-4 py-3 border bg-gray-100 border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
@@ -271,7 +303,7 @@ export default function AccountPage() {
                                             </label>
                                             <input
                                                 type="text"
-                                                name="fullName"
+                                                name="lastName"
                                                 value={formData.lastName}
                                                 onChange={handleInputChange}
                                                 className="w-full px-4 py-3 border bg-gray-100 border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
@@ -309,11 +341,11 @@ export default function AccountPage() {
                                             </div>
                                             <input
                                                 type="tel"
-                                                name="phoneNumber"
+                                                name="phone"
                                                 value={formData.phone}
                                                 onChange={handleInputChange}
                                                 className="flex-1 px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
-                                                placeholder=""
+                                                placeholder="5XX XXX XX XX"
                                             />
                                         </div>
                                     </div>

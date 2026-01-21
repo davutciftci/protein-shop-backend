@@ -66,6 +66,7 @@ export const getProfile = asyncHandler(async (req: Request, res: Response, next:
                 firstName: true,
                 lastName: true,
                 email: true,
+                phoneNumber: true,
                 birthDay: true,
                 role: true,
                 createdAt: true,
@@ -95,7 +96,7 @@ export const requestPasswordResetController = asyncHandler(async (req: Request, 
 
         return res.status(200).json({
             status: 'success',
-            message: 'Eğer bu email adresi sistemde kayıtlıysa, şifre sıfırlama linki gönderilmiştir.'
+            message: 'Eğer bu email adresi sistemde kayıtlıysa, şifre sıfırlama linki gönderilecektir.'
         });
     } catch (error) {
         next(error);
@@ -111,6 +112,45 @@ export const resetPasswordController = asyncHandler(async (req: Request, res: Re
         return res.status(200).json({
             status: 'success',
             message: 'Şifreniz başarıyla güncellendi'
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+export const updateProfile = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId = (req as AuthenticatedRequest).user?.userId;
+        const { firstName, lastName, phoneNumber } = req.body;
+
+        if (!userId) {
+            throw new NotFoundError('Kullanıcı bulunamadı');
+        }
+
+        const updatedUser = await prisma.user.update({
+            where: { id: userId },
+            data: {
+                ...(firstName && { firstName }),
+                ...(lastName && { lastName }),
+                ...(phoneNumber !== undefined && { phoneNumber }),
+            },
+            select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                email: true,
+                phoneNumber: true,
+                birthDay: true,
+                role: true,
+                createdAt: true,
+                updatedAt: true,
+            }
+        });
+
+        return res.status(200).json({
+            status: 'success',
+            message: 'Profil başarıyla güncellendi',
+            data: updatedUser,
         });
     } catch (error) {
         next(error);

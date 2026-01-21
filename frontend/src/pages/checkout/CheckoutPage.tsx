@@ -480,7 +480,11 @@ export default function CheckoutPage() {
                         <div className="flex justify-between items-center">
                             <span className="text-lg font-bold text-gray-900">Toplam (KDV Dahil)</span>
                             <span className="text-xl font-bold text-gray-900">
-                                {((totalPrice * 1.20) + (shippingMethods.find(m => m.code === selectedShipping)?.price || 0)).toLocaleString('tr-TR')} TL
+                                {(() => {
+                                    const shippingPrice = Number(shippingMethods.find(m => m.code === selectedShipping)?.price || 0);
+                                    const total = (totalPrice * 1.20) + shippingPrice;
+                                    return total.toLocaleString('tr-TR');
+                                })()} TL
                             </span>
                         </div>
                     </div>

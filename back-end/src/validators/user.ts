@@ -62,3 +62,29 @@ export const resetPasswordSchema = z.object({
         .min(6, 'Şifre en az 6 karakter olmalı')
         .max(50, 'Şifre en fazla 50 karakter olmalı')
 })
+
+export const updateProfileSchema = z.object({
+    firstName: z
+        .string()
+        .min(2, 'İsim en az 2 karakter olmalı')
+        .max(50, 'İsim en fazla 50 karakter olmalı')
+        .optional(),
+
+    lastName: z
+        .string()
+        .min(2, 'Soyisim en az 2 karakter olmalı')
+        .max(50, 'Soyisim en fazla 50 karakter olmalı')
+        .optional(),
+
+    phoneNumber: z
+        .union([z.string(), z.null(), z.undefined()])
+        .refine(
+            (val) => {
+                if (val === null || val === undefined || val === '') return true;
+                return /^[0-9]{10,15}$/.test(val);
+            },
+            { message: 'Telefon numarası 10-15 haneli rakam olmalı' }
+        )
+        .transform((val) => val === '' ? null : val)
+        .optional()
+})

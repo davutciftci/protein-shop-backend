@@ -49,7 +49,6 @@ export const createAddress = async (
         fullName: string;
         phoneNumber: string;
         addressLine1: string;
-        addressLine2?: string;
         city: string;
         district: string;
         postalCode?: string;
@@ -96,7 +95,6 @@ export const updateAddress = async (
         fullName?: string;
         phoneNumber?: string;
         addressLine1?: string;
-        addressLine2?: string;
         city?: string;
         district?: string;
         postalCode?: string;
