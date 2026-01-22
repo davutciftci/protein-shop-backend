@@ -44,11 +44,11 @@ const baseTemplate = (content: string) => `
       font-size: 12px;
       color: #6c757d;
     }
-    .button {
+    a {
       display: inline-block;
       padding: 12px 24px;
       background-color: #2563eb;
-      color: #ffffff;
+      color: #ffffff !important;
       text-decoration: none;
       border-radius: 4px;
       margin: 20px 0;
@@ -88,7 +88,7 @@ const baseTemplate = (content: string) => `
 // Hoşgeldin emaili
 
 export const welcomeEmail = (firstName: string) => {
-    const content = `
+  const content = `
     <h2>Hoş Geldiniz ${firstName}! 🎉</h2>
     <p>Protein Shop ailesine katıldığınız için teşekkür ederiz!</p>
     <p>Hesabınız başarıyla oluşturuldu. Artık en kaliteli protein ürünlerine kolayca ulaşabilirsiniz.</p>
@@ -98,19 +98,19 @@ export const welcomeEmail = (firstName: string) => {
     <p>Sorularınız için bizimle iletişime geçebilirsiniz.</p>
   `;
 
-    return baseTemplate(content);
+  return baseTemplate(content);
 };
 
 // Sipariş onay emaili
 export const orderConfirmationEmail = (order: OrderWithRelations) => {
-    const itemsHtml = order.items.map((item: OrderItemWithVariant) => `
+  const itemsHtml = order.items.map((item: OrderItemWithVariant) => `
     <div class="product-item">
       <strong>${item.productName} - ${item.variantName}</strong><br>
       Miktar: ${item.quantity} x ${item.price} TL = ${item.subtotal} TL
     </div>
   `).join('');
 
-    const content = `
+  const content = `
     <h2>Siparişiniz Alındı! ✅</h2>
     <p>Merhaba ${order.user.firstName},</p>
     <p>Siparişiniz başarıyla alınmıştır. Sipariş detaylarınız aşağıdadır:</p>
@@ -147,12 +147,12 @@ export const orderConfirmationEmail = (order: OrderWithRelations) => {
     <p>Ödemeniz onaylandıktan sonra siparişiniz hazırlanmaya başlanacaktır.</p>
   `;
 
-    return baseTemplate(content);
+  return baseTemplate(content);
 };
 
 // Sipariş kargoya verildi emaili
 export const orderShippedEmail = (order: OrderWithRelations) => {
-    const content = `
+  const content = `
     <h2>Siparişiniz Kargoya Verildi! 📦</h2>
     <p>Merhaba ${order.user.firstName},</p>
     <p><strong>${order.orderNumber}</strong> numaralı siparişiniz kargoya verilmiştir.</p>
@@ -170,13 +170,13 @@ export const orderShippedEmail = (order: OrderWithRelations) => {
     <p>Tahmini teslimat süresi: 2-3 iş günü</p>
   `;
 
-    return baseTemplate(content);
+  return baseTemplate(content);
 };
 
 //Sipariş iptal edildi emaili
 
 export const orderCancelledEmail = (order: OrderWithRelations) => {
-    const content = `
+  const content = `
     <h2>Siparişiniz İptal Edildi</h2>
     <p>Merhaba ${order.user.firstName},</p>
     <p><strong>${order.orderNumber}</strong> numaralı siparişiniz iptal edilmiştir.</p>
@@ -196,20 +196,20 @@ export const orderCancelledEmail = (order: OrderWithRelations) => {
     <p>Sorularınız için bizimle iletişime geçebilirsiniz.</p>
   `;
 
-    return baseTemplate(content);
+  return baseTemplate(content);
 };
 
 //Şifre sıfırlama emaili
 export const passwordResetEmail = (firstName: string, resetToken: string) => {
-    const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+  const resetUrl = `${process.env.FRONTEND_URL}/sifre-sifirla?token=${resetToken}`;
 
-    const content = `
+  const content = `
     <h2>Şifre Sıfırlama Talebi</h2>
     <p>Merhaba ${firstName},</p>
     <p>Şifrenizi sıfırlamak için bir talepte bulundunuz.</p>
     <p>Aşağıdaki butona tıklayarak yeni şifrenizi oluşturabilirsiniz:</p>
     
-    <a href="${resetUrl}" class="button">
+    <a href="${resetUrl}" class="button text-white">
       Şifremi Sıfırla
     </a>
 
@@ -221,5 +221,44 @@ export const passwordResetEmail = (firstName: string, resetToken: string) => {
     </p>
   `;
 
-    return baseTemplate(content);
+  return baseTemplate(content);
+};
+
+export const contactFormEmail = (
+  firstName: string,
+  lastName: string,
+  email: string,
+  message: string
+) => {
+  const content = `
+    <h2> Yeni İletişim Formu Mesajı</h2>
+    <p>Sitenizden yeni bir iletişim mesajı geldi:</p>
+    
+    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+      <p style="margin: 12px 0;">
+        <strong style="color: #2563eb; font-size: 14px;"> Ad Soyad:</strong><br/>
+        <span style="color: #333; font-size: 16px; font-weight: 500;">${firstName} ${lastName}</span>
+      </p>
+      
+      <p style="margin: 12px 0;">
+        <strong style="color: #2563eb; font-size: 14px;"> E-posta:</strong><br/>
+        <a href="mailto:${email}" style="color: #ffffff !important; font-size: 15px; text-decoration: underline;">${email}</a>
+      </p>
+      
+      <div style="margin-top: 20px;">
+        <p style="margin-bottom: 10px;">
+          <strong style="color: #2563eb; font-size: 14px;"> Mesaj:</strong>
+        </p>
+        <div style="background-color: #ffffff; padding: 16px; border-left: 4px solid #2563eb; border-radius: 4px; color: #333; font-size: 15px; line-height: 1.6;">
+          ${message.replace(/\n/g, '<br/>')}
+        </div>
+      </div>
+    </div>
+    
+    <p style="color: #6c757d; font-size: 13px; margin-top: 20px;">
+      Bu mesaja yanıt vermek için yukarıdaki e-posta adresini kullanabilirsiniz.
+    </p>
+  `;
+
+  return baseTemplate(content);
 };

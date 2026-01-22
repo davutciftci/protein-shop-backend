@@ -14,7 +14,7 @@ export const validate = (schema: ZodSchema) => {
                     field: err.path.join('.'),
                     message: err.message,
                 }));
-                next(new ValidationError('Validasyon hatası', errors));
+                next(new ValidationError('Bilgileri eksiksiz doldurunuz.', errors));
             } else {
                 next(error);
             }

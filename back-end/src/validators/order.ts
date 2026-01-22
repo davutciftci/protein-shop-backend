@@ -2,14 +2,12 @@ import { z } from 'zod';
 import { OrderStatus } from '../../generated/prisma';
 
 export const createOrderSchema = z.object({
-    addressId: z
+    shippingAddressId: z
         .number({ message: 'Adres ID gerekli' })
-        .int('Adres ID tam sayı olmalı')
-        .positive('Geçersiz adres ID'),
+        .int({ message: 'Adres ID tam sayı olmalı' })
+        .positive({ message: 'Adres ID pozitif olmalı' }),
 
-    paymentMethod: z
-        .string({ message: 'Ödeme yöntemi gerekli' })
-        .min(2, 'Ödeme yöntemi en az 2 karakter olmalı'),
+    paymentMethod: z.string().optional(),
 });
 
 

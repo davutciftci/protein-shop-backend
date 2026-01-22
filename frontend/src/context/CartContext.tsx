@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import { apiClient } from '../api/client';
 
 export interface CartItem {
     id: number;
@@ -30,59 +31,112 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-const CART_STORAGE_KEY = 'protein-shop-cart';
-
 export function CartProvider({ children }: { children: ReactNode }) {
-    const [items, setItems] = useState<CartItem[]>(() => {
-        const saved = localStorage.getItem(CART_STORAGE_KEY);
-        return saved ? JSON.parse(saved) : [];
-    });
+    const [items, setItems] = useState<CartItem[]>([]);
     const [isOpen, setIsOpen] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
 
-    useEffect(() => {
-        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
-    }, [items]);
-
-    const addToCart = (newItem: Omit<CartItem, 'quantity'>, quantity: number = 1) => {
-        setItems(prevItems => {
-            const existingItem = prevItems.find(
-                item => item.id === newItem.id && item.aroma === newItem.aroma && item.size === newItem.size
-            );
-
-            if (existingItem) {
-                return prevItems.map(item =>
-                    item.id === newItem.id && item.aroma === newItem.aroma && item.size === newItem.size
-                        ? { ...item, quantity: item.quantity + quantity }
-                        : item
-                );
+    const fetchCart = async () => {
+        try {
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                console.log('fetchCart: Token yok');
+                return;
             }
 
-            return [...prevItems, { ...newItem, quantity }];
-        });
-        setIsOpen(true);
-        setShowAlert(true);
-        setTimeout(() => setShowAlert(false), 3000);
+            console.log('fetchCart: Backend\'den cart çekiliyor...');
+            const response = await apiClient.get('/cart');
+            console.log('fetchCart response:', response.data);
+
+            const backendItems = response.data.data?.cart?.items || [];
+            console.log('fetchCart backend items:', backendItems);
+
+            const formattedItems = backendItems.map((item: any) => {
+                console.log('Mapping item:', item);
+                return {
+                    id: item.variant.product.id,
+                    name: item.variant.product.name,
+                    description: item.variant.product.description || '',
+                    price: Number(item.variant.price),
+                    image: item.variant.product.photos?.[0]?.url || '/placeholder.png',
+                    quantity: item.quantity,
+                    aroma: item.variant.aroma,
+                    size: item.variant.size,
+                    variantId: item.variantId,
+                    slug: item.variant.product.slug,
+                    categorySlug: ''
+                };
+            });
+
+            console.log('fetchCart formatted items:', formattedItems);
+            setItems(formattedItems);
+        } catch (error) {
+            console.error('Failed to fetch cart:', error);
+        }
     };
 
-    const removeFromCart = (id: number) => {
-        setItems(prevItems => prevItems.filter(item => item.id !== id));
+    useEffect(() => {
+        fetchCart();
+    }, []);
+
+    const addToCart = async (newItem: Omit<CartItem, 'quantity'>, quantity: number = 1) => {
+        console.log('addToCart çağrıldı:', { newItem, quantity });
+        try {
+            const token = localStorage.getItem('authToken');
+            console.log('Token:', token ? 'VAR' : 'YOK');
+            console.log('variantId:', newItem.variantId);
+
+            if (!token || !newItem.variantId) {
+                console.error('No token or variantId', { token: !!token, variantId: newItem.variantId });
+                return;
+            }
+
+            console.log('Backend\'e cart item ekleniyor...');
+            const response = await apiClient.post('/cart/items', {
+                variantId: newItem.variantId,
+                quantity
+            });
+            console.log('Backend response:', response.data);
+
+            await fetchCart();
+            setIsOpen(true);
+            setShowAlert(true);
+            setTimeout(() => setShowAlert(false), 3000);
+        } catch (error) {
+            console.error('Backend cart add failed:', error);
+        }
     };
 
-    const updateQuantity = (id: number, quantity: number) => {
+    const removeFromCart = async (variantId: number) => {
+        try {
+            await apiClient.delete(`/cart/items/${variantId}`);
+            await fetchCart();
+        } catch (error) {
+            console.error('Backend cart remove failed:', error);
+        }
+    };
+
+    const updateQuantity = async (variantId: number, quantity: number) => {
         if (quantity <= 0) {
-            removeFromCart(id);
+            removeFromCart(variantId);
             return;
         }
-        setItems(prevItems =>
-            prevItems.map(item =>
-                item.id === id ? { ...item, quantity } : item
-            )
-        );
+
+        try {
+            await apiClient.put(`/cart/items/${variantId}`, { quantity });
+            await fetchCart();
+        } catch (error) {
+            console.error('Backend cart update failed:', error);
+        }
     };
 
-    const clearCart = () => {
-        setItems([]);
+    const clearCart = async () => {
+        try {
+            await apiClient.delete('/cart');
+            setItems([]);
+        } catch (error) {
+            console.error('Backend cart clear failed:', error);
+        }
     };
 
     const openCart = () => setIsOpen(true);

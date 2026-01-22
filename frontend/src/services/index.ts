@@ -5,4 +5,5 @@ export { cartService } from './cartService';
 export { orderService } from './orderService';
 export { addressService } from './addressService';
 export { commentService } from './commentService';
+export { reviewService } from './reviewService';
 export { adminService } from './adminService';

@@ -1,5 +1,5 @@
 import { sendEmail } from '../config/email';
-import { orderCancelledEmail, orderConfirmationEmail, orderShippedEmail, passwordResetEmail, welcomeEmail } from '../templates/email';
+import { orderCancelledEmail, orderConfirmationEmail, orderShippedEmail, passwordResetEmail, welcomeEmail, contactFormEmail } from '../templates/email';
 import { OrderWithRelations } from '../types';
 
 
@@ -17,7 +17,8 @@ export const sendWelcomeEmail = async (email: string, firstName: string) => {
 export const sendOrderConfirmationEmail = async (order: OrderWithRelations) => {
     try {
         await sendEmail(
-            order.user.email, `Siparişiniz Alındı - ${order.orderNumber}`,
+            'prtinnn@gmail.com',
+            `Siparişiniz Alındı - ${order.orderNumber}`,
             orderConfirmationEmail(order)
         )
     } catch (error) {
@@ -28,7 +29,8 @@ export const sendOrderConfirmationEmail = async (order: OrderWithRelations) => {
 export const sendOrderShippedEmail = async (order: OrderWithRelations) => {
     try {
         await sendEmail(
-            order.user.email, `Siparişiniz Kargoya Verildi - ${order.orderNumber}`,
+            'prtinnn@gmail.com',
+            `Siparişiniz Kargoya Verildi - ${order.orderNumber}`,
             orderShippedEmail(order)
         )
     } catch (error) {
@@ -39,7 +41,7 @@ export const sendOrderShippedEmail = async (order: OrderWithRelations) => {
 export const sendOrderCancelledEmail = async (order: OrderWithRelations) => {
     try {
         await sendEmail(
-            order.user.email,
+            'prtinnn@gmail.com',
             `Siparişiniz İptal Edildi - ${order.orderNumber}`,
             orderCancelledEmail(order)
         )
@@ -57,5 +59,17 @@ export const sendPasswordResetEmail = async (email: string, firstName: string, r
         )
     } catch (error) {
         console.error('[EmailService] Failed to send password reset email: ', error)
+    }
+}
+
+export const sendContactFormEmail = async (firstName: string, lastName: string, email: string, message: string) => {
+    try {
+        await sendEmail(
+            'prtinnn@gmail.com',
+            `Yeni İletişim Mesajı - ${firstName} ${lastName}`,
+            contactFormEmail(firstName, lastName, email, message)
+        )
+    } catch (error) {
+        console.error('[EmailService] Failed to send contact form email: ', error)
     }
 }

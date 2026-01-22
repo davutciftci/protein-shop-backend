@@ -27,6 +27,7 @@ export default function CheckoutPage() {
     const [selectedShipping, setSelectedShipping] = useState<string | null>(null);
     const [isEditing, setIsEditing] = useState(false);
     const [editingAddress, setEditingAddress] = useState<Partial<UserAddress> | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         if (!isLoading && !isAuthenticated) {
@@ -125,6 +126,32 @@ export default function CheckoutPage() {
             } catch (error) {
                 console.error('Adres silinemedi:', error);
             }
+        }
+    };
+
+    const handlePlaceOrder = async () => {
+        if (!selectedAddressId || !selectedShipping) {
+            alert('Lütfen tüm bilgileri doldurun');
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        try {
+            const orderData = {
+                shippingAddressId: selectedAddressId,
+                shippingMethodCode: selectedShipping
+            };
+
+            await apiClient.post('/orders', orderData);
+
+            alert('Siparişiniz alındı!');
+            navigate('/hesabim/siparislerim');
+        } catch (error: any) {
+            console.error('Sipariş oluşturma hatası:', error);
+            alert(error.response?.data?.message || 'Bir hata oluştu. Lütfen tekrar deneyin.');
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -400,8 +427,24 @@ export default function CheckoutPage() {
                         </div>
                         {step === 3 && (
                             <div className="pl-12 py-4">
-                                <div className="p-4 bg-gray-50 rounded-lg text-gray-600">
-                                    Ödeme formu burada olacak...
+                                <h3 className="text-lg font-medium text-gray-900 mb-4">Ödeme</h3>
+                                <p className="text-gray-600 mb-6">
+                                    Siparişinizi onaylamak için aşağıdaki butona tıklayın.
+                                </p>
+                                <div className="flex gap-4">
+                                    <button
+                                        onClick={() => setStep(2)}
+                                        className="px-6 py-3 border border-gray-200 rounded-lg font-medium text-gray-900 hover:bg-gray-50"
+                                    >
+                                        Geri
+                                    </button>
+                                    <button
+                                        onClick={handlePlaceOrder}
+                                        disabled={isSubmitting}
+                                        className="flex-1 bg-black text-white font-bold py-3 rounded-lg hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        {isSubmitting ? 'İşleniyor...' : 'Sipariş Ver'}
+                                    </button>
                                 </div>
                             </div>
                         )}

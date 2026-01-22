@@ -39,20 +39,23 @@ export default function ProductDetailPage() {
             variant = product.variants[0];
         }
 
-        const originalPrice = variant?.price || product.basePrice || 0;
-        const discount = variant?.discount || 0;
-        const finalPrice = discount > 0 ? Math.round(originalPrice * (1 - discount / 100)) : originalPrice;
+        const selectedVariant = getSelectedVariant();
+        if (!selectedVariant) {
+            alert('Lütfen bir varyant seçin');
+            return;
+        }
 
         addToCart({
             id: product.id,
+            variantId: selectedVariant.id,
             name: product.name,
             description: product.description || '',
-            price: typeof finalPrice === 'string' ? parseFloat(finalPrice) : finalPrice,
-            image: product.image || '',
-            aroma: selectedAromaName,
-            size: selectedSizeWeight,
+            price: Number(selectedVariant.price),
+            image: product.photos?.[0]?.url || '/placeholder.png',
+            aroma: selectedVariant.aroma || undefined,
+            size: selectedVariant.size || undefined,
             slug: product.slug,
-            categorySlug: product.category?.slug,
+            categorySlug: product.category?.slug
         }, quantity);
     };
 
@@ -62,7 +65,6 @@ export default function ProductDetailPage() {
 
             try {
                 const productData = await productService.getProductBySlug(slug);
-                // Backend base URL for static uploads (without /api prefix)
                 const BACKEND_BASE_URL = 'http://localhost:3000';
                 const mappedProduct = {
                     ...productData,
@@ -72,7 +74,6 @@ export default function ProductDetailPage() {
                     expirationDate: productData.expirationDate
                         ? new Date(productData.expirationDate).toLocaleDateString('tr-TR', { month: '2-digit', year: 'numeric' })
                         : undefined,
-                    // Extract unique sizes with their info
                     sizes: productData.variants
                         ?.filter((v, i, arr) => arr.findIndex(x => x.size === v.size) === i)
                         .map((v) => ({
@@ -81,7 +82,6 @@ export default function ProductDetailPage() {
                             price: v.price,
                             discount: v.discount
                         })) || [],
-                    // Extract unique aromas
                     aromas: productData.variants
                         ?.filter((v, i, arr) => arr.findIndex(x => x.aroma === v.aroma) === i)
                         .map((v) => ({
@@ -128,51 +128,37 @@ export default function ProductDetailPage() {
         setExpandedSection(prev => prev === section ? null : section);
     };
 
-    // Find the variant that matches selected aroma and size
     const getSelectedVariant = () => {
         if (!product.variants || product.variants.length === 0) return null;
 
         const selectedAromaName = product.aromas?.[selectedAroma]?.name;
         const selectedSizeWeight = product.sizes?.[selectedSize]?.weight;
 
-        // Try to find exact match for aroma + size
         let variant = product.variants.find(
             (v: any) => v.aroma === selectedAromaName && v.size === selectedSizeWeight
         );
-
-        // If no exact match, try to find by size only
         if (!variant) {
             variant = product.variants.find((v: any) => v.size === selectedSizeWeight);
         }
 
-        // If still no match, try by aroma only
         if (!variant) {
             variant = product.variants.find((v: any) => v.aroma === selectedAromaName);
         }
-
-        // Fallback to first variant
         return variant || product.variants[0];
     };
-
-    // Get the serving info for the currently selected variant
     const getVariantServings = () => {
         const variant = getSelectedVariant();
         return variant?.servings || '';
     };
-
-    // Get the discount percentage for the currently selected variant
     const getVariantDiscount = () => {
         const variant = getSelectedVariant();
         return variant?.discount && variant.discount > 0 ? variant.discount : 0;
     };
 
-    // Get original price (what's stored in DB - base price)
     const getOriginalPrice = () => {
         const variant = getSelectedVariant();
         return variant?.price || product.basePrice || 0;
     };
-
-    // Calculate discounted price (if discount exists)
     const getDiscountedPrice = () => {
         const originalPrice = getOriginalPrice();
         const discount = getVariantDiscount();
@@ -182,7 +168,6 @@ export default function ProductDetailPage() {
         return originalPrice;
     };
 
-    // Check if there's an active discount
     const hasDiscount = () => getVariantDiscount() > 0;
 
     const ExpandableSections = () => (

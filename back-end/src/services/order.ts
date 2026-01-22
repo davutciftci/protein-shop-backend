@@ -168,8 +168,11 @@ export const createOrder = async (
         },
     });
 
+    console.log('[OrderService] Cart found:', cart ? 'YES' : 'NO');
+    console.log('[OrderService] Cart items count:', cart?.items?.length || 0);
+
     if (!cart || cart.items.length === 0) {
-        console.log('[OrderService] Cart is empty');
+        console.log('[OrderService] Cart is empty - userId:', userId);
         throw new BadRequestError('Sepetiniz boş');
     }
 

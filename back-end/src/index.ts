@@ -15,31 +15,28 @@ import shippingRouter from './routes/shipping';
 import { errorHandler } from './middlewares/error';
 import path from 'path';
 import adminStatsRouter from './routes/adminStats';
+import contactRouter from './routes/contact';
+import reviewRouter from './routes/review';
 dotenv.config();
 
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
 
-// CORS Middleware
+
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:3001', 'http://127.0.0.1:5173'],
+    origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3001', 'http://127.0.0.1:5173'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-// Middleware
 app.use(express.json());
-// urlencoded formatındaki requestler 
 app.use(express.urlencoded({ extended: true }));
-
-// static file serving
 const uploadsPath = path.join(process.cwd(), "uploads");
 console.log('[Server] CWD:', process.cwd());
 console.log('[Server] Static files served from:', uploadsPath);
 app.use('/uploads', express.static(uploadsPath));
 
-//routes
 app.use('/api/user', userRouter);
 app.use('/api/categories', categoryRouter);
 app.use('/api/products', productRouter);
@@ -52,6 +49,8 @@ app.use('/api/orders', orderRouter);
 app.use('/api/payments', paymentRouter);
 app.use('/api/shipping', shippingRouter);
 app.use('/api/admin/stats', adminStatsRouter);
+app.use('/api/reviews', reviewRouter);
+app.use('/api/contact', contactRouter);
 
 app.get('/health', (req: Request, res: Response) => {
     res.status(200).json({

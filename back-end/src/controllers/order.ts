@@ -100,11 +100,10 @@ export const createNewOrder = async (
 ) => {
     try {
         const userId = req.user?.userId!;
-        const { addressId, paymentMethod } = req.body;
+        const { shippingAddressId, paymentMethod } = req.body;
         console.log('[OrderController] createNewOrder - User ID:', userId, 'Body:', req.body);
 
-        const order = await createOrder(userId, addressId, paymentMethod);
-
+        const order = await createOrder(userId, shippingAddressId, paymentMethod || 'MANUAL');
         console.log('[OrderController] createNewOrder - Success, order ID:', order.id);
 
         res.status(201).json({

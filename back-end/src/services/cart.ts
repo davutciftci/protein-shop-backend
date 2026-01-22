@@ -12,10 +12,8 @@ export const getOrCreateCart = async (userId: number) => {
                     variant: {
                         include: {
                             product: {
-                                select: {
-                                    id: true,
-                                    name: true,
-                                    slug: true,
+                                include: {
+                                    photos: true,
                                 },
                             },
                         },
@@ -36,10 +34,8 @@ export const getOrCreateCart = async (userId: number) => {
                         variant: {
                             include: {
                                 product: {
-                                    select: {
-                                        id: true,
-                                        name: true,
-                                        slug: true,
+                                    include: {
+                                        photos: true,
                                     },
                                 },
                             },

@@ -119,20 +119,25 @@ model ProductPhoto {
 }
 
 model ProductComment {
-  id         Int      @id @default(autoincrement())
-  rating     Int
-  comment    String   @db.Text
-  isApproved Boolean  @default(false) @map("is_approved")
-  userId     Int      @map("user_id")
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  productId  Int      @map("product_id")
-  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
+  id          Int        @id @default(autoincrement())
+  rating      Int
+  comment     String     @db.Text
+  isApproved  Boolean    @default(false) @map("is_approved")
+  userId      Int        @map("user_id")
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId   Int        @map("product_id")
+  product     Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  orderId     Int?       @map("order_id")
+  order       Order?     @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  orderItemId Int?       @map("order_item_id")
+  orderItem   OrderItem? @relation(fields: [orderItemId], references: [id], onDelete: SetNull)
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
 
   @@index([productId])
   @@index([userId])
   @@index([isApproved])
+  @@index([orderId])
   @@map("product_comments")
 }
 
@@ -211,52 +216,54 @@ model ShippingMethod {
 }
 
 model Order {
-  id              Int          @id @default(autoincrement())
-  orderNumber     String       @unique @map("order_number")
-  status          OrderStatus  @default(PENDING)
-  subtotal        Decimal      @db.Decimal(10, 2)
-  shippingCost    Decimal      @default(0) @map("shipping_cost") @db.Decimal(10, 2)
-  shippingMethod  String?      @map("shipping_method")
-  taxAmount       Decimal      @default(0) @map("tax_amount") @db.Decimal(10, 2)
-  totalAmount     Decimal      @map("total_amount") @db.Decimal(10, 2)
-  shippingAddress Json         @map("shipping_address")
-  paymentMethod   String?      @map("payment_method")
-  paymentStatus   String?      @default("pending") @map("payment_status")
-  paidAt          DateTime?    @map("paid_at")
-  trackingNumber  String?      @map("tracking_number")
-  shippedAt       DateTime?    @map("shipped_at")
-  deliveredAt     DateTime?    @map("delivered_at")
-  cancelledAt     DateTime?    @map("cancelled_at")
-  cancelReason    String?      @map("cancel_reason")
-  user            User?        @relation(fields: [userId], references: [id])
-  address         UserAddress? @relation(fields: [addressId], references: [id])
-  addressId       Int?         @map("address_id")
+  id              Int              @id @default(autoincrement())
+  orderNumber     String           @unique @map("order_number")
+  status          OrderStatus      @default(PENDING)
+  subtotal        Decimal          @db.Decimal(10, 2)
+  shippingCost    Decimal          @default(0) @map("shipping_cost") @db.Decimal(10, 2)
+  shippingMethod  String?          @map("shipping_method")
+  taxAmount       Decimal          @default(0) @map("tax_amount") @db.Decimal(10, 2)
+  totalAmount     Decimal          @map("total_amount") @db.Decimal(10, 2)
+  shippingAddress Json             @map("shipping_address")
+  paymentMethod   String?          @map("payment_method")
+  paymentStatus   String?          @default("pending") @map("payment_status")
+  paidAt          DateTime?        @map("paid_at")
+  trackingNumber  String?          @map("tracking_number")
+  shippedAt       DateTime?        @map("shipped_at")
+  deliveredAt     DateTime?        @map("delivered_at")
+  cancelledAt     DateTime?        @map("cancelled_at")
+  cancelReason    String?          @map("cancel_reason")
+  user            User?            @relation(fields: [userId], references: [id])
+  address         UserAddress?     @relation(fields: [addressId], references: [id])
+  addressId       Int?             @map("address_id")
   userId          Int?
   items           OrderItem[]
-  createdAt       DateTime     @default(now()) @map("created_at")
-  updatedAt       DateTime     @updatedAt @map("updated_at") @db.Timestamp(6)
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at") @db.Timestamp(6)
   Payment         Payment?
+  productComments ProductComment[]
 
   @@map("orders")
 }
 
 model OrderItem {
-  id              Int            @id @default(autoincrement())
-  productName     String         @map("product_name")
-  variantName     String         @map("variant_name")
+  id              Int              @id @default(autoincrement())
+  productName     String           @map("product_name")
+  variantName     String           @map("variant_name")
   sku             String
-  price           Decimal        @db.Decimal(10, 2)
+  price           Decimal          @db.Decimal(10, 2)
   quantity        Int
-  subtotal        Decimal        @db.Decimal(10, 2)
-  productSnapshot Json           @map("product_snapshot")
-  orderId         Int            @map("order_id")
-  order           Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  variantId       Int            @map("variant_id")
-  variant         ProductVariant @relation(fields: [variantId], references: [id], onDelete: Restrict)
-  productId       Int            @map("product_id")
-  product         Product        @relation(fields: [productId], references: [id], onDelete: Restrict)
-  createdAt       DateTime       @default(now()) @map("created_at")
-  updatedAt       DateTime       @updatedAt @map("updated_at")
+  subtotal        Decimal          @db.Decimal(10, 2)
+  productSnapshot Json             @map("product_snapshot")
+  orderId         Int              @map("order_id")
+  order           Order            @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  variantId       Int              @map("variant_id")
+  variant         ProductVariant   @relation(fields: [variantId], references: [id], onDelete: Restrict)
+  productId       Int              @map("product_id")
+  product         Product          @relation(fields: [productId], references: [id], onDelete: Restrict)
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+  productComments ProductComment[]
 
   @@index([orderId])
   @@index([variantId])

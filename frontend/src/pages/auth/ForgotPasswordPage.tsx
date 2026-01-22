@@ -14,7 +14,7 @@ export default function ForgotPasswordPage() {
         setIsLoading(true);
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/users/forgot-password`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000/api'}/user/forgot-password`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
