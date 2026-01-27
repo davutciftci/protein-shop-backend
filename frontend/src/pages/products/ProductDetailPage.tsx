@@ -22,7 +22,7 @@ export default function ProductDetailPage() {
     const handleAddToCart = () => {
         if (!product) return;
 
-        // Get the variant matching selected aroma and size
+
         const selectedAromaName = product.aromas?.[selectedAroma]?.name;
         const selectedSizeWeight = product.sizes?.[selectedSize]?.weight;
 
@@ -211,7 +211,6 @@ export default function ProductDetailPage() {
                             <div className="space-y-3">
                                 <div className="flex justify-between items-center border-b border-gray-300 pb-2">
                                     <span className="font-bold text-gray-900">BESİN DEĞERLERİ</span>
-                                    <span className="font-bold text-gray-900">25 g servis için</span>
                                 </div>
                                 <div className="space-y-2">
                                     {product.nutritionInfo.map((info, index) => {
@@ -381,18 +380,15 @@ export default function ProductDetailPage() {
     );
 
     const SizeSelection = () => {
-        // Helper function to get discount for a specific size based on selected aroma
         const getSizeDiscount = (sizeWeight: string) => {
             if (!product.variants || !product.aromas) return 0;
 
             const selectedAromaName = product.aromas[selectedAroma]?.name;
 
-            // Find the variant matching selected aroma and this size
             const variant = product.variants.find(
                 (v: any) => v.aroma === selectedAromaName && v.size === sizeWeight
             );
 
-            // If no exact match, try to find by size only
             if (!variant) {
                 const sizeVariant = product.variants.find((v: any) => v.size === sizeWeight);
                 return sizeVariant?.discount ? Number(sizeVariant.discount) : 0;
@@ -555,10 +551,10 @@ export default function ProductDetailPage() {
                     </div>
 
                     { }
-                    <div className="grid md:grid-cols-2 md:gap-8 mt-6">
+                    <div className="grid md:grid-cols-2 md:gap-10 mt-6">
                         { }
                         <div className="flex items-center gap-4 flex-wrap">
-                            <div className="flex items-center border border-gray-300 rounded">
+                            <div className="flex items-center border">
                                 <button
                                     onClick={() => handleQuantityChange(-1)}
                                     className="w-10 h-10 flex items-center justify-center hover:bg-gray-100 transition-colors text-xl font-medium text-gray-600"
@@ -575,7 +571,14 @@ export default function ProductDetailPage() {
                                     +
                                 </button>
                             </div>
-                            <span className="text-2xl font-bold text-gray-900">{getDiscountedPrice()} TL</span>
+                            <div className="flex items-center space-x-4">
+                                <div className="flex items-center gap-2">
+                                    <span className="text-3xl font-bold text-gray-900">{getDiscountedPrice()} TL</span>
+                                    {hasDiscount() && (
+                                        <span className="text-lg text-red-500 line-through">{getOriginalPrice()} TL</span>
+                                    )}
+                                </div>
+                            </div>
                         </div>
 
                         { }
@@ -626,11 +629,6 @@ export default function ProductDetailPage() {
                                 <span className="text-sm font-bold text-gray-500">{getVariantServings()} TL /Servis</span>
                             </div>
 
-                            {/* KDV Bilgisi */}
-                            <div className="text-xs text-gray-500 mb-4">
-                                (KDV Dahil - KDV Hariç: {(getDiscountedPrice() / 1.20).toFixed(2)} TL)
-                            </div>
-
                             { }
                             <div className="flex items-center gap-4">
                                 <div className="flex items-center border border-gray-300 rounded">
@@ -677,18 +675,18 @@ export default function ProductDetailPage() {
                 <div className="flex flex-col md:flex-row gap-8 mb-8">
                     { }
                     <div className="flex flex-col items-center">
-                        <div className="text-4xl font-bold text-gray-900">4.8</div>
+                        <div className="text-4xl font-bold text-gray-900">buraya yorum toplam yorum puani gelecek</div>
                         <div className="flex items-center gap-1 my-2">
                             {[...Array(5)].map((_, i) => (
                                 <MdOutlineStar key={i} className="w-6 h-6 text-yellow-400" />
                             ))}
                         </div>
-                        <div className="text-sm text-gray-600 mb-6">{product?.reviews?.toLocaleString('tr-TR') || '10.869'} YORUM</div>
+                        <div className="text-sm text-gray-600 mb-6">{product?.reviews?.toLocaleString('tr-TR') || 'toplam yorum sayisi gelcek'} YORUM</div>
                         <button
                             className="text-white text-sm font-medium px-6 py-2.5 rounded-full transition-all hover:opacity-90"
                             style={{ background: 'linear-gradient(135deg, #1F23AA 0%, #387EC7 100%)' }}
                         >
-                            YORUM ({product?.reviews?.toLocaleString('tr-TR') || '10869'})
+                            YORUM ({product?.reviews?.toLocaleString('tr-TR') || 'toplam yorum sayisi gelcek'})
                         </button>
                     </div>
 

@@ -120,19 +120,11 @@ export default function CartSidepanel() {
                 </div>
 
                 <div className="border-t p-4 space-y-3">
-                    {/* Ara Toplam (KDV Hariç) */}
                     <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-600">Ara Toplam (KDV Hariç)</span>
-                        <span className="text-gray-900">{(totalPrice / 1.20).toFixed(2)} TL</span>
+                        <span className="text-gray-600">Ara Toplam</span>
+                        <span className="text-gray-900">{(totalPrice).toFixed(2)} TL</span>
                     </div>
 
-                    {/* KDV Tutarı */}
-                    <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-600">KDV (%20)</span>
-                        <span className="text-gray-900">{(totalPrice - totalPrice / 1.20).toFixed(2)} TL</span>
-                    </div>
-
-                    {/* Toplam (KDV Dahil) */}
                     <div className="flex items-center justify-between font-bold border-t pt-3">
                         <span className="text-gray-900">TOPLAM</span>
                         <span className="text-gray-900">{totalPrice.toFixed(2)} TL</span>

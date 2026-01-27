@@ -31,6 +31,14 @@ export interface ProductPhoto {
     displayOrder: number;
     productId: number;
 }
+export type ProductImageSource = {
+    photos?: {
+        url: string;
+        isPrimary?: boolean;
+        displayOrder?: number;
+    }[];
+};
+
 
 export interface ProductComment {
     id: number;
@@ -83,15 +91,15 @@ export interface Product {
     photos?: ProductPhoto[];
     comments?: ProductComment[];
 
-    // Frontend-specific fields (some moved to main Product interface)
-    image?: string; // Primary image URL
-    images?: string[]; // All image URLs
-    aromas?: Array<{ id: number; name: string; color: string }>; // For flavor options
-    sizes?: Array<{ id: number; weight: string; servings?: number; price: number; discount?: number }>; // For size/variant options
-    pricePerServing?: string; // Price per serving
-    reviews?: number; // Number of reviews
-    rating?: number; // Average rating
-    tags?: string[]; // Product tags
+
+    image?: string;
+    images?: string[];
+    aromas?: Array<{ id: number; name: string; color: string }>;
+    sizes?: Array<{ id: number; weight: string; servings?: number; price: number; discount?: number }>;
+    pricePerServing?: string;
+    reviews?: number;
+    rating?: number;
+    tags?: string[];
 }
 
 export interface ProductSearchParams {

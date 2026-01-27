@@ -1,8 +1,17 @@
 ﻿import { FiTrash } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
+import type { ProductImageSource } from '../../types';
+
 
 export default function CartPage() {
+    const getProductImage = (product: ProductImageSource) => {
+        const BACKEND_BASE_URL = 'http://localhost:3000';
+        if (product.photos && product.photos.length > 0) {
+            return `${BACKEND_BASE_URL}${product.photos[0].url}`;
+        }
+        return '/images/placeholder-product.jpg';
+    };
     const { items, updateQuantity, removeFromCart, totalPrice } = useCart();
 
     return (
@@ -21,14 +30,14 @@ export default function CartPage() {
                         </div>
                     ) : (
                         <div className="space-y-4">
-                            {items.map((item, index) => (
-                                <div key={`${item.id}-${index}`} className="flex justify-between p-4 bg-[#F9F9F9] mb-4">
+                            {items.map((item) => (
+                                <div key={item.cartItemId} className="flex justify-between p-4 bg-[#F9F9F9] mb-4">
                                     { }
                                     <div className="flex gap-4">
                                         { }
                                         <div className="w-16 h-16 flex-shrink-0 bg-white p-1">
                                             <img
-                                                src={item.image}
+                                                src={getProductImage(item)}
                                                 alt={item.name}
                                                 className="w-full h-full object-contain"
                                             />
@@ -58,7 +67,7 @@ export default function CartPage() {
                                         <div className="flex items-center bg-white rounded border border-gray-200 h-8">
                                             {item.quantity === 1 ? (
                                                 <button
-                                                    onClick={() => removeFromCart(item.id)}
+                                                    onClick={() => removeFromCart(item.cartItemId)}
                                                     className="w-8 h-full flex items-center justify-center hover:bg-gray-50 text-gray-500"
                                                 >
                                                     <FiTrash className="w-3.5 h-3.5" />
@@ -66,13 +75,13 @@ export default function CartPage() {
                                             ) : (
                                                 <>
                                                     <button
-                                                        onClick={() => removeFromCart(item.id)}
+                                                        onClick={() => removeFromCart(item.cartItemId)}
                                                         className="w-8 h-full flex items-center justify-center hover:bg-gray-50 text-gray-500 border-r border-gray-100"
                                                     >
                                                         <FiTrash className="w-3.5 h-3.5" />
                                                     </button>
                                                     <button
-                                                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                        onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
                                                         className="w-8 h-full flex items-center justify-center hover:bg-gray-50 text-gray-600 font-medium"
                                                     >
                                                         -
@@ -85,7 +94,7 @@ export default function CartPage() {
                                             </span>
 
                                             <button
-                                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
                                                 className="w-8 h-full flex items-center justify-center hover:bg-gray-50 text-gray-600 font-medium"
                                             >
                                                 +
@@ -98,21 +107,12 @@ export default function CartPage() {
                     )}
                 </div>
 
-                {/* Fiyat Detayları */}
                 <div className="border-t p-4 space-y-3">
-                    {/* Ara Toplam (KDV Hariç) */}
                     <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-600">Ara Toplam (KDV Hariç)</span>
-                        <span className="text-gray-900">{(totalPrice / 1.20).toFixed(2)} TL</span>
+                        <span className="text-gray-600">Ara Toplam</span>
+                        <span className="text-gray-900">{(totalPrice).toFixed(2)} TL</span>
                     </div>
 
-                    {/* KDV Tutarı */}
-                    <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-600">KDV (%20)</span>
-                        <span className="text-gray-900">{(totalPrice - totalPrice / 1.20).toFixed(2)} TL</span>
-                    </div>
-
-                    {/* Toplam (KDV Dahil) */}
                     <div className="flex items-center justify-between font-bold border-t pt-3">
                         <span className="text-gray-900">TOPLAM (KDV Dahil)</span>
                         <span className="text-gray-900">{totalPrice.toFixed(2)} TL</span>

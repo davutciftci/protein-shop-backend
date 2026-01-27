@@ -29,7 +29,6 @@ export default function AllProductsPage() {
         fetchProducts();
     }, []);
 
-    // Filtreleme
     const filteredProducts = products.filter(product => {
         let matchesCategory = true;
         if (category) {
@@ -49,7 +48,6 @@ export default function AllProductsPage() {
         return matchesCategory && matchesSearch;
     });
 
-    // Helper fonksiyonlar
     const getDisplayPrice = (product: Product) => {
         if (product.variants && product.variants.length > 0) {
             return Number(product.variants[0].price);

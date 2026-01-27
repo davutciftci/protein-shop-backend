@@ -4,22 +4,28 @@ import { apiClient } from '../api/client';
 export interface CartItem {
     id: number;
     name: string;
+    cartItemId: number;
     description: string;
     price: number;
     image: string;
     quantity: number;
     aroma?: string;
-    size?: string;
+    size?: string | number;
     variantId?: number;
     slug?: string;
     categorySlug?: string;
+    photos?: {
+        url: string;
+        isPrimary?: boolean;
+        displayOrder?: number;
+    }[];
 }
 
 interface CartContextType {
     items: CartItem[];
     isOpen: boolean;
     showAlert: boolean;
-    addToCart: (item: Omit<CartItem, 'quantity'>, quantity?: number) => void;
+    addToCart: (item: Omit<CartItem, 'quantity' | 'cartItemId'>, quantity?: number) => void;
     removeFromCart: (id: number) => void;
     updateQuantity: (id: number, quantity: number) => void;
     openCart: () => void;
@@ -61,10 +67,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
                     image: item.variant.product.photos?.[0]?.url || '/placeholder.png',
                     quantity: item.quantity,
                     aroma: item.variant.aroma,
-                    size: item.variant.size,
+                    size: item.variant.size?.item || item.variantId,
                     variantId: item.variantId,
                     slug: item.variant.product.slug,
-                    categorySlug: ''
+                    categorySlug: '',
+                    cartItemId: item.id
                 };
             });
 
@@ -79,7 +86,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         fetchCart();
     }, []);
 
-    const addToCart = async (newItem: Omit<CartItem, 'quantity'>, quantity: number = 1) => {
+    const addToCart = async (newItem: Omit<CartItem, 'quantity' | 'cartItemId'>, quantity: number = 1) => {
         console.log('addToCart çağrıldı:', { newItem, quantity });
         try {
             const token = localStorage.getItem('authToken');
