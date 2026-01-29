@@ -144,3 +144,47 @@ export const updateProfile = asyncHandler(async (req: Request, res: Response, ne
         data: updatedUser,
     });
 });
+
+export const changePassword = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const userId = (req as AuthenticatedRequest).user?.userId;
+    const { currentPassword, newPassword } = req.body;
+
+    if (!userId) {
+        throw new NotFoundError('Kullanıcı bulunamadı');
+    }
+
+    // Kullanıcıyı bul
+    const user = await prisma.user.findUnique({
+        where: { id: userId }
+    });
+
+    if (!user) {
+        throw new NotFoundError('Kullanıcı bulunamadı');
+    }
+
+    // Mevcut şifreyi doğrula
+    const bcrypt = require('bcrypt');
+    const isPasswordValid = await bcrypt.compare(currentPassword, user.hashedPassword);
+
+    if (!isPasswordValid) {
+        return res.status(400).json({
+            status: 'error',
+            message: 'Mevcut şifre hatalı'
+        });
+    }
+
+    // Yeni şifreyi hashle
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Şifreyi güncelle
+    await prisma.user.update({
+        where: { id: userId },
+        data: { hashedPassword }
+    });
+
+    return res.status(200).json({
+        status: 'success',
+        message: 'Şifreniz başarıyla güncellendi'
+    });
+});
+

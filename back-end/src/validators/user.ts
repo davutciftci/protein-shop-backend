@@ -88,3 +88,21 @@ export const updateProfileSchema = z.object({
         .transform((val) => val === '' ? null : val)
         .optional()
 })
+
+export const changePasswordSchema = z.object({
+    currentPassword: z
+        .string({ message: 'Mevcut şifre gerekli' })
+        .min(1, 'Mevcut şifre boş olamaz'),
+
+    newPassword: z
+        .string({ message: 'Yeni şifre gerekli' })
+        .min(6, 'Yeni şifre en az 6 karakter olmalı')
+        .max(50, 'Yeni şifre en fazla 50 karakter olmalı'),
+
+    confirmPassword: z
+        .string({ message: 'Şifre tekrarı gerekli' })
+        .min(1, 'Şifre tekrarı boş olamaz')
+}).refine((data) => data.newPassword === data.confirmPassword, {
+    message: 'Yeni şifreler eşleşmiyor',
+    path: ['confirmPassword']
+})

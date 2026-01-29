@@ -4,6 +4,7 @@ import { VscSettings } from 'react-icons/vsc';
 import { TfiPackage } from 'react-icons/tfi';
 import { CiLocationOn } from 'react-icons/ci';
 import { MdDeleteOutline } from 'react-icons/md';
+import { RiLockPasswordLine } from 'react-icons/ri';
 import { ChevronDown } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { addressService } from '../../services';
@@ -25,6 +26,14 @@ export default function AccountPage() {
         phone: '',
         email: ''
     });
+
+    const [passwordFormData, setPasswordFormData] = useState({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+    });
+    const [passwordError, setPasswordError] = useState('');
+    const [passwordSuccess, setPasswordSuccess] = useState('');
 
     useEffect(() => {
         if (tabFromUrl) {
@@ -318,6 +327,16 @@ export default function AccountPage() {
                             >
                                 <CiLocationOn className="w-5 h-5" />
                                 <span className="font-medium">Adreslerim</span>
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('password')}
+                                className={`flex-shrink-0 md:w-full flex items-center gap-2 px-2 md:px-4 py-2 md:py-3 rounded-lg transition-colors border whitespace-nowrap text-sm ${activeTab === 'password'
+                                    ? 'bg-black text-white border-black'
+                                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border-gray-200'
+                                    }`}
+                            >
+                                <RiLockPasswordLine className="w-5 h-5" />
+                                <span className="font-medium">Şifre Değiştir</span>
                             </button>
                         </nav>
                     </div>
@@ -806,6 +825,112 @@ export default function AccountPage() {
                                         )}
                                     </>
                                 )}
+                            </div>
+                        )}
+
+                        {activeTab === 'password' && (
+                            <div className="px-4 md:px-8 py-4">
+                                <h2 className="text-xl font-bold mb-6">Şifre Değiştir</h2>
+                                
+                                {passwordSuccess && (
+                                    <div className="p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm mb-4">
+                                        {passwordSuccess}
+                                    </div>
+                                )}
+
+                                {passwordError && (
+                                    <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm mb-4">
+                                        {passwordError}
+                                    </div>
+                                )}
+
+                                <form onSubmit={async (e) => {
+                                    e.preventDefault();
+                                    setPasswordError('');
+                                    setPasswordSuccess('');
+
+                                    if (passwordFormData.newPassword !== passwordFormData.confirmPassword) {
+                                        setPasswordError('Yeni şifreler eşleşmiyor');
+                                        return;
+                                    }
+
+                                    if (passwordFormData.newPassword.length < 6) {
+                                        setPasswordError('Yeni şifre en az 6 karakter olmalıdır');
+                                        return;
+                                    }
+
+                                    try {
+                                        const response = await apiClient.post('/user/change-password', {
+                                            currentPassword: passwordFormData.currentPassword,
+                                            newPassword: passwordFormData.newPassword,
+                                            confirmPassword: passwordFormData.confirmPassword
+                                        });
+
+                                        if (response.data.status === 'success') {
+                                            setPasswordSuccess('Şifreniz başarıyla güncellendi!');
+                                            setPasswordFormData({
+                                                currentPassword: '',
+                                                newPassword: '',
+                                                confirmPassword: ''
+                                            });
+                                        }
+                                    } catch (error: any) {
+                                        setPasswordError(error.response?.data?.message || 'Şifre değiştirme başarısız oldu');
+                                    }
+                                }} className="space-y-4 max-w-md">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            *Mevcut Şifre
+                                        </label>
+                                        <input
+                                            type="password"
+                                            value={passwordFormData.currentPassword}
+                                            onChange={(e) => setPasswordFormData(prev => ({ ...prev, currentPassword: e.target.value }))}
+                                            className="w-full px-4 py-3 border bg-gray-100 border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
+                                            placeholder="Mevcut şifrenizi girin"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            *Yeni Şifre
+                                        </label>
+                                        <input
+                                            type="password"
+                                            value={passwordFormData.newPassword}
+                                            onChange={(e) => setPasswordFormData(prev => ({ ...prev, newPassword: e.target.value }))}
+                                            className="w-full px-4 py-3 border bg-gray-100 border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
+                                            placeholder="Yeni şifrenizi girin (en az 6 karakter)"
+                                            required
+                                            minLength={6}
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            *Yeni Şifre (Tekrar)
+                                        </label>
+                                        <input
+                                            type="password"
+                                            value={passwordFormData.confirmPassword}
+                                            onChange={(e) => setPasswordFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                                            className="w-full px-4 py-3 border bg-gray-100 border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
+                                            placeholder="Yeni şifrenizi tekrar girin"
+                                            required
+                                            minLength={6}
+                                        />
+                                    </div>
+
+                                    <div className="flex justify-end">
+                                        <button
+                                            type="submit"
+                                            className="px-8 py-3 bg-black text-white font-medium rounded-lg hover:bg-gray-800 transition-colors"
+                                        >
+                                            Şifreyi Güncelle
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         )}
                     </div>
