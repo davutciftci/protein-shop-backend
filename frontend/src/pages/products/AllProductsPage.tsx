@@ -90,6 +90,9 @@ export default function AllProductsPage() {
             'spor-gidalari': 'SPOR GIDALARI',
             'saglik': 'SAĞLIK',
             'protein': 'PROTEİN',
+            'aksesuar': 'AKSESUAR',
+            'paketler': 'PAKETLER',
+            'lansmanaozel': 'LANSMANA ÖZEL FIRSATLAR',
         };
         return categoryTitles[category] || 'TÜM ÜRÜNLER';
     };

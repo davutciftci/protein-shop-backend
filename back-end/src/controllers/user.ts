@@ -4,6 +4,7 @@ import { asyncHandler } from '../utils/asyncHandler';
 import { AuthenticatedRequest } from '../middlewares/auth';
 import prisma from '../utils/prisma';
 import { NotFoundError } from '../utils/customErrors';
+import jwt from 'jsonwebtoken';
 
 
 interface RegisterRequest {
@@ -24,12 +25,22 @@ export const register = asyncHandler(async (req: Request, res: Response, next: N
         birthDay: new Date(birth_date)
     });
 
+    // Kayıt sonrası otomatik login için token oluştur
+    const token = jwt.sign(
+        { userId: user.id, email: user.email, role: user.role },
+        process.env.JWT_SECRET!,
+        { expiresIn: '7d' }
+    );
+
     const { hashedPassword, ...userWithoutPassword } = user;
 
     return res.status(201).json({
         status: "success",
         message: 'Kullanıcı başarıyla oluşturuldu',
-        data: userWithoutPassword
+        data: { 
+            user: userWithoutPassword,
+            token 
+        }
     });
 });
 

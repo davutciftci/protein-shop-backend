@@ -10,6 +10,7 @@ import AllProductsPage from '../pages/products/AllProductsPage';
 import ContactPage from '../pages/contact/ContactPage';
 import ReviewsPage from '../pages/reviews/ReviewsPage';
 import FAQPage from '../pages/faq/FAQPage';
+import BlogPage from '../pages/blog/BlogPage';
 import LoginPage from '../pages/auth/LoginPage';
 import RegisterPage from '../pages/auth/RegisterPage';
 import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage';
@@ -77,6 +78,10 @@ export const router = createBrowserRouter([
             {
                 path: 'kvkk',
                 element: <KVKKPage />,
+            },
+            {
+                path: 'blog',
+                element: <BlogPage />,
             }
         ]
     },

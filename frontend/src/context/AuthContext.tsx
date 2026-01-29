@@ -56,20 +56,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const login = async (data: LoginRequest) => {
-        try {
-            const { authService } = await import('../services/authService');
-            const response = await authService.login(data);
-            setStoredToken(response.token);
-            setUser(response.user);
-        } catch (error) {
-            // Hatayı üst katmana fırlat ki LoginPage'de yakalansın
-            throw error;
-        }
+        const { authService } = await import('../services/authService');
+        const response = await authService.login(data);
+        setStoredToken(response.token);
+        setUser(response.user);
     };
 
     const register = async (data: RegisterRequest) => {
         const { authService } = await import('../services/authService');
-        await authService.register(data);
+        const response = await authService.register(data);
+        setStoredToken(response.token);
+        setUser(response.user);
     };
 
     const logout = () => {

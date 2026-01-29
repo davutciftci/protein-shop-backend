@@ -87,13 +87,10 @@ export const sendPasswordResetEmail = async (email: string, firstName: string, r
 }
 
 export const sendContactFormEmail = async (firstName: string, lastName: string, email: string, message: string) => {
-    try {
-        await sendEmail(
-            'prtinnn@gmail.com',
-            `Yeni İletişim Mesajı - ${firstName} ${lastName}`,
-            contactFormEmail(firstName, lastName, email, message)
-        )
-    } catch (error) {
-        console.error('[EmailService] Failed to send contact form email: ', error)
-    }
+    await sendEmail(
+        'prtinnn@gmail.com',
+        `Yeni İletişim Mesajı - ${firstName} ${lastName}`,
+        contactFormEmail(firstName, lastName, email, message)
+    );
+    console.log('[EmailService] Contact form email sent successfully');
 }

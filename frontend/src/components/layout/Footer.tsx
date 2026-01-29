@@ -12,6 +12,10 @@ export default function Footer() {
         }));
     };
 
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     const footerLinks = {
         ojsNutrition: [
             { name: 'İletişim', link: '/iletisim' },
@@ -26,14 +30,14 @@ export default function Footer() {
         ],
         kategoriler: [
             { name: 'Protein', link: '/urunler?kategori=protein' },
-            { name: 'Spor Gıdaları', link: '/urunler?kategori=spor' },
+            { name: 'Spor Gıdaları', link: '/urunler?kategori=spor-gidalari' },
             { name: 'Sağlık', link: '/urunler?kategori=saglik' },
             { name: 'Gıda', link: '/urunler?kategori=gida' },
             { name: 'Vitamin', link: '/urunler?kategori=vitamin' },
             { name: 'Aksesuar', link: '/urunler?kategori=aksesuar' },
             { name: 'Tüm Ürünler', link: '/urunler' },
             { name: 'Paketler', link: '/urunler?kategori=paketler' },
-            { name: 'Lansmana Özel Fırsatlar', link: '/firsatlar' },
+            { name: 'Lansmana Özel Fırsatlar', link: '/urunler?kategori=lansmanaozel' },
         ],
         populerUrunler: [
             { name: 'Whey Protein', link: '/urun/protein/whey-protein' },
@@ -86,7 +90,7 @@ export default function Footer() {
                             <ul className="flex flex-col gap-3">
                                 {footerLinks.ojsNutrition.map((link) => (
                                     <li key={link.name}>
-                                        <Link to={link.link} className="text-xs text-[#999999] hover:text-white transition-colors uppercase font-medium">
+                                        <Link to={link.link} onClick={scrollToTop} className="text-xs text-[#999999] hover:text-white transition-colors uppercase font-medium">
                                             {link.name}
                                         </Link>
                                     </li>
@@ -100,7 +104,7 @@ export default function Footer() {
                         <ul className="flex flex-col gap-3">
                             {footerLinks.kategoriler.map((link) => (
                                 <li key={link.name}>
-                                    <Link to={link.link} className="text-xs text-[#999999] hover:text-white transition-colors uppercase font-medium">
+                                    <Link to={link.link} onClick={scrollToTop} className="text-xs text-[#999999] hover:text-white transition-colors uppercase font-medium">
                                         {link.name}
                                     </Link>
                                 </li>
@@ -113,7 +117,7 @@ export default function Footer() {
                         <ul className="flex flex-col gap-3">
                             {footerLinks.populerUrunler.map((link) => (
                                 <li key={link.name}>
-                                    <Link to={link.link} className="text-xs text-[#999999] hover:text-white transition-colors uppercase font-medium">
+                                    <Link to={link.link} onClick={scrollToTop} className="text-xs text-[#999999] hover:text-white transition-colors uppercase font-medium">
                                         {link.name}
                                     </Link>
                                 </li>
@@ -134,7 +138,7 @@ export default function Footer() {
                                 <ul className="flex flex-col gap-3 pb-6 px-1">
                                     {footerLinks.ojsNutrition.map((link) => (
                                         <li key={link.name}>
-                                            <Link to={link.link} className="text-xs text-[#999999] uppercase">
+                                            <Link to={link.link} onClick={scrollToTop} className="text-xs text-[#999999] uppercase">
                                                 {link.name}
                                             </Link>
                                         </li>
@@ -155,7 +159,7 @@ export default function Footer() {
                                 <ul className="flex flex-col gap-3 pb-6 px-1 ">
                                     {footerLinks.kategoriler.map((link) => (
                                         <li key={link.name}>
-                                            <Link to={link.link} className="text-xs text-[#999999] uppercase">
+                                            <Link to={link.link} onClick={scrollToTop} className="text-xs text-[#999999] uppercase">
                                                 {link.name}
                                             </Link>
                                         </li>
@@ -176,7 +180,7 @@ export default function Footer() {
                                 <ul className="flex flex-col gap-3 pb-6 px-1">
                                     {footerLinks.populerUrunler.map((link) => (
                                         <li key={link.name}>
-                                            <Link to={link.link} className="text-xs text-[#999999] uppercase">
+                                            <Link to={link.link} onClick={scrollToTop} className="text-xs text-[#999999] uppercase">
                                                 {link.name}
                                             </Link>
                                         </li>

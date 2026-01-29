@@ -96,17 +96,24 @@ export default function Navbar() {
                                 onMouseLeave={() => setIsAccountDropdownOpen(false)}
                             >
                                 <button
-                                    className="flex items-center justify-center gap-1 border-2 border-gray-400 rounded text-gray-700 transition-colors px-2"
-                                    style={{ color: '#919191', height: '38px' }}
+                                    className="flex flex-col items-center justify-center gap-0.5 border-2 border-gray-400 rounded text-gray-700 transition-colors px-3 py-1"
+                                    style={{ color: '#919191', minHeight: '38px' }}
                                 >
-                                    <User className="w-5 h-5" />
-                                    <span className="text-sm font-medium">HESAP</span>
-                                    <ChevronDown className="w-4 h-4" />
+                                    <div className="flex items-center gap-1">
+                                        <User className="w-5 h-5" />
+                                        <span className="text-sm font-medium">HESAP</span>
+                                        <ChevronDown className="w-4 h-4" />
+                                    </div>
+                                    {isAuthenticated && user && (
+                                        <span className="text-xs font-normal text-gray-600">
+                                            {user.firstName} {user.lastName}
+                                        </span>
+                                    )}
                                 </button>
 
-                                { }
+                                {/* Dropdown */}
                                 {isAccountDropdownOpen && (
-                                    <div className="absolute right-0 w-[95px] text-center justify-center bg-white border border-gray-200 rounded shadow-lg z-50">
+                                    <div className="absolute right-0 w-[100px] bg-white border border-gray-200 rounded shadow-lg z-50">
                                         {isAuthenticated ? (
                                             <>
                                                 <Link

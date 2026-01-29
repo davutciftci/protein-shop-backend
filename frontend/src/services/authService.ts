@@ -30,12 +30,13 @@ export const authService = {
         }
     },
 
-    async register(data: RegisterRequest): Promise<User> {
+    async register(data: RegisterRequest): Promise<AuthResponse> {
         try {
             const response = await apiClient.post(ENDPOINTS.AUTH.REGISTER, data);
             const result = response.data;
 
-            if (result.data) {
+            if (result.data?.token) {
+                setAuthToken(result.data.token);
                 return result.data;
             }
 
